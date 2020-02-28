@@ -23,14 +23,19 @@ class DateView extends StatefulWidget {
 
 class _DateViewState extends State<DateView> {
   List list;
-  List<Widget> addOrEditPages;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    list = widget.sharedPreferences.getStringList(widget.sharedPreferencesKey);
+  List addOrEditPages;
+  String newElement;
+  List editPages;
+  List<Type> test;
+  List hello = [Courroie(sharedPreferences: null)];
+  int index;
+
+  void init() {
     addOrEditPages = [
-      Vidangee(sharedPreferences: widget.sharedPreferences),
+      Vidangee(
+        sharedPreferences: widget.sharedPreferences,
+        index: index,
+      ),
       Courroie(sharedPreferences: widget.sharedPreferences),
       Armortisseur(
         sharedPreferences: widget.sharedPreferences,
@@ -40,15 +45,44 @@ class _DateViewState extends State<DateView> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    init();
+    list = widget.sharedPreferences.getStringList(widget.sharedPreferencesKey);
+
+    editPages = [
+      Vidangee(
+        sharedPreferences: widget.sharedPreferences,
+        edit: true,
+      ),
+      Courroie(
+        sharedPreferences: widget.sharedPreferences,
+      ),
+      Armortisseur(
+        sharedPreferences: widget.sharedPreferences,
+      ),
+      Batterie(sharedPreferences: widget.sharedPreferences)
+    ];
+
+    print('iam date view init stat');
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
+          onPressed: () async {
+            index = null;
+            init();
+            print(index);
+            newElement = await Navigator.of(context).push(MaterialPageRoute(
                 builder: (BuildContext context) =>
                     addOrEditPages[widget.index]));
+            list = widget.sharedPreferences
+                .getStringList(widget.sharedPreferencesKey);
           },
         ),
         body: list.length == 0
@@ -58,6 +92,15 @@ class _DateViewState extends State<DateView> {
             : ListView.builder(
                 itemCount: list.length,
                 itemBuilder: (BuildContext context, int index) => ListTile(
+                  onTap: () {
+                    this.index = index;
+                    init();
+
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            addOrEditPages[widget.index],
+                        settings: RouteSettings()));
+                  },
                   title: Text(jsonDecode(list[index])['date']),
                   trailing: IconButton(
                     onPressed: () {

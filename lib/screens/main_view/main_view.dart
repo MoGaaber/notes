@@ -16,11 +16,14 @@ class _MainViewState extends State<MainView> {
 //    {'name': 'FRIENAGE', 'sharedPrefKey': Constants.vidange},
     {'name': 'BATTERIE', 'sharedPrefKey': Constants.batteriPref}
   ];
-
+  String result;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(onPressed: () {
+          print(result);
+        }),
         body: FutureBuilder<SharedPreferences>(
           future: SharedPreferences.getInstance(),
           builder: (BuildContext context,
@@ -36,7 +39,7 @@ class _MainViewState extends State<MainView> {
                 return ListView.builder(
                   itemCount: homeList.length,
                   itemBuilder: (BuildContext context, int index) => ListTile(
-                    onTap: () {
+                    onTap: () async {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (BuildContext context) => DateView(
                               index: index,
