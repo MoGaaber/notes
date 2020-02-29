@@ -57,7 +57,6 @@ class DateViewLogic extends ChangeNotifier {
       BuildContext context}) {
     initializeAddOrEditPages();
     index = selectedMainViewElementIndex;
-
     pageRef = addOrEditPages[index]['refKey'];
     list = sharedPreferences.getStringList(pageRef);
     globalVariables = Provider.of(context, listen: false);
@@ -69,20 +68,21 @@ class DateViewLogic extends ChangeNotifier {
     notifyListeners();
   }
 
-  void navigateToEditItem({int index, BuildContext context}) {
-    pushToAddOrEditPage(
-        context: context, object: AddOrEditModelArgs(index: index));
+  void navigateToEditItem({int index, BuildContext context}) async {
     globalVariables.dateViewIndex = index;
+    pushResult = await navigateToAddOrEditPage(
+        context: context, object: AddOrEditModelArgs(index: index));
+    list[pushResult['index']] = pushResult['element'];
   }
+
   void navigateToAddItem(BuildContext context) async {
     // set it to null because it decides to add new one when it null
     globalVariables.dateViewIndex = null;
-    pushResult = await pushToAddOrEditPage(context: context);
-    sharedPreferences.setStringList(
-        pageRef, sharedPreferences.getStringList(sharedPreferencesKey));
+    pushResult = await navigateToAddOrEditPage(context: context);
+    list.add(pushResult);
   }
 
-  Future pushToAddOrEditPage({BuildContext context, Object object}) {
+  Future navigateToAddOrEditPage({BuildContext context, Object object}) {
     return Navigator.pushNamed(context, addOrEditPages[this.index]['route'],
         arguments: object);
   }
