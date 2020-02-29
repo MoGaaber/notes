@@ -110,7 +110,7 @@ class VidangeLogic extends ChangeNotifier {
             firstDate: DateTime(1500, 1, 1),
             lastDate: DateTime(2500, 1, 1))
         .then((dateTime) {
-      date = DateFormat.yMd().format(dateTime);
+      if (dateTime != null) date = DateFormat.yMd().format(dateTime);
     });
   }
 }

@@ -66,14 +66,14 @@ class DateViewLogic extends ChangeNotifier {
     globalVariables.dateViewIndex = index;
     pushResult = await navigateToAddOrEditPage(
         context: context, object: AddOrEditModelArgs(index: index));
-    list[pushResult['index']] = pushResult['element'];
+    if (pushResult != null) list[pushResult['index']] = pushResult['element'];
   }
 
   void navigateToAddItem(BuildContext context) async {
     // set it to null because it decides to add new one when it null
     globalVariables.dateViewIndex = null;
     pushResult = await navigateToAddOrEditPage(context: context);
-    list.add(pushResult);
+    if (pushResult != null) list.add(pushResult);
   }
 
   Future navigateToAddOrEditPage({BuildContext context, Object object}) {
