@@ -13,13 +13,13 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DateViewLogic extends ChangeNotifier {
-  int index;
-  String sharedPreferencesKey;
+  int index, selectedMainViewElementIndex, itemIndex;
+  String pageRefKey;
   SharedPreferences sharedPreferences;
   List<Map> addOrEditPages;
   List list;
   var pushResult;
-  int itemIndex;
+  GlobalVariables globalVariables;
 
   void initializeAddOrEditPages() {
     addOrEditPages = [
@@ -46,25 +46,19 @@ class DateViewLogic extends ChangeNotifier {
     ];
   }
 
-  GlobalVariables globalVariables;
-  String pageRef;
-  int selectedMainViewElementIndex;
-  String sharedPrefKey;
   DateViewLogic(
       {this.sharedPreferences,
       this.selectedMainViewElementIndex,
-      this.sharedPreferencesKey,
       BuildContext context}) {
     initializeAddOrEditPages();
-    index = selectedMainViewElementIndex;
-    pageRef = addOrEditPages[index]['refKey'];
-    list = sharedPreferences.getStringList(pageRef);
+    pageRefKey = addOrEditPages[selectedMainViewElementIndex]['refKey'];
+    list = sharedPreferences.getStringList(pageRefKey);
     globalVariables = Provider.of(context, listen: false);
   }
 
   void deleteItem({int index}) {
     list.removeAt(index);
-    sharedPreferences.setStringList(sharedPreferencesKey, list);
+    sharedPreferences.setStringList(pageRefKey, list);
     notifyListeners();
   }
 
@@ -83,7 +77,8 @@ class DateViewLogic extends ChangeNotifier {
   }
 
   Future navigateToAddOrEditPage({BuildContext context, Object object}) {
-    return Navigator.pushNamed(context, addOrEditPages[this.index]['route'],
+    return Navigator.pushNamed(
+        context, addOrEditPages[this.selectedMainViewElementIndex]['route'],
         arguments: object);
   }
 }
