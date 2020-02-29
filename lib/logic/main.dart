@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class MainLogic extends ChangeNotifier {
   List list = [
-    {'name': 'VIDANGE', 'sharedPreferencesKey': Constants.vidange},
+    {'name': 'VIDANGE', 'sharedPreferencesKey': Constants.vidangePref},
     {'name': 'COURROIE', 'sharedPreferencesKey': Constants.courroiePref},
     {'name': 'AMORTISSEUR', 'sharedPreferencesKey': Constants.amortisseurPref},
 //    {'name': 'FRIENAGE', 'sharedPrefKey': Constants.vidange},

@@ -29,7 +29,7 @@ class DateView extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            dateViewLogic.navigateToAddItem(context);
+            dateViewLogic.navigateToAddOrEditItem(context);
           },
         ),
         body: dateViewLogic.list.length == 0

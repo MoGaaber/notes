@@ -23,10 +23,26 @@ class DateViewLogic extends ChangeNotifier {
 
   void init() {
     addOrEditPages = [
-      {'page': Vidangee(), 'route': Vidangee.route},
-      {'page': Courroie(), 'route': Courroie.route},
-      {'page': Armortisseur(), 'route': Armortisseur.route},
-      {'page': Batterie(), 'route': Batterie.route}
+      {
+        'page': Vidangee(),
+        'route': Vidangee.route,
+        'refKey': Constants.vidangePref
+      },
+      {
+        'page': Courroie(),
+        'route': Courroie.route,
+        'refKey': Constants.courroiePref
+      },
+      {
+        'page': Armortisseur(),
+        'route': Armortisseur.route,
+        'refKey': Constants.amortisseurPref
+      },
+      {
+        'page': Batterie(),
+        'route': Batterie.route,
+        'refKey': Constants.batteriPref
+      }
     ];
   }
 
@@ -38,7 +54,7 @@ class DateViewLogic extends ChangeNotifier {
     list = sharedPreferences.getStringList(sharedPreferencesKey);
     index = indexx;
   }
-  void navigateToAddItem(BuildContext context) async {
+  void navigateToAddOrEditItem(BuildContext context) async {
     GlobalVariables globalVariables = Provider.of(context, listen: false);
     globalVariables.dateViewIndex = null;
 
@@ -48,6 +64,7 @@ class DateViewLogic extends ChangeNotifier {
       addOrEditPages[index]['route'],
     );
     list = sharedPreferences.getStringList(sharedPreferencesKey);
+    sharedPreferences.setStringList(addOrEditPages[index]['refKey'], list);
   }
 
   void deleteItem({int index}) {

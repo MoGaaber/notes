@@ -201,7 +201,7 @@ class Vidangee extends StatelessWidget {
                 ),
                 FlatButton(
                     onPressed: () {
-                      vidangeLogic.addVidange(context);
+                      vidangeLogic.save(context);
                     },
                     child: Text('Save')),
               ],

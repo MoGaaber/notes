@@ -16,47 +16,49 @@ class VidangeLogic extends ChangeNotifier {
   var formKey = GlobalKey<FormState>();
   String date;
   Color color = Colors.black;
-
+  int dateViewIndex;
   VidangeLogic({@required this.sharedPreferences, int dateViewIndex}) {
     controllers = List.generate(6, (_) => TextEditingController());
     yesOrNo = List.filled(6, false);
-    print(dateViewIndex);
-    initFetchElement(index: dateViewIndex);
+
+    this.dateViewIndex = dateViewIndex;
+    if (dateViewIndex != null) initFetchElement();
   }
-  void initFetchElement({@required int index}) {
-    if (index != null) {
-      decodedelement =
-          jsonDecode(sharedPreferences.getStringList(Constants.vidange)[index]);
-      print(decodedelement);
-      date = decodedelement['date'];
-      controllers[0].text = decodedelement['km'].toString();
-      controllers[1].text = decodedelement['nextOil'].toString();
-      controllers[2].text = decodedelement['oil']['price'] == null
-          ? ''
-          : decodedelement['oil']['price'].toString();
-      controllers[3].text = decodedelement['air']['price'] == null
-          ? ''
-          : decodedelement['air']['price'].toString();
-      controllers[4].text = decodedelement['fuel']['price'] == null
-          ? ''
-          : decodedelement['fuel']['price'].toString();
-      controllers[5].text = decodedelement['clim']['price'] == null
-          ? ''
-          : decodedelement['clim']['price'].toString();
-      yesOrNo[0] = decodedelement['oil']['yesOrNo'];
-      yesOrNo[1] = decodedelement['air']['yesOrNo'];
-      yesOrNo[2] = decodedelement['fuel']['yesOrNo'];
-      yesOrNo[3] = decodedelement['clim']['yesOrNo'];
-    }
+  void initFetchElement() {
+    decodedelement = jsonDecode(
+        sharedPreferences.getStringList(Constants.vidangePref)[dateViewIndex]);
+    print(decodedelement);
+    date = decodedelement['date'];
+    controllers[0].text = decodedelement['km'].toString();
+    controllers[1].text = decodedelement['nextOil'].toString();
+    controllers[2].text = decodedelement['oil']['price'] == null
+        ? ''
+        : decodedelement['oil']['price'].toString();
+    controllers[3].text = decodedelement['air']['price'] == null
+        ? ''
+        : decodedelement['air']['price'].toString();
+    controllers[4].text = decodedelement['fuel']['price'] == null
+        ? ''
+        : decodedelement['fuel']['price'].toString();
+    controllers[5].text = decodedelement['clim']['price'] == null
+        ? ''
+        : decodedelement['clim']['price'].toString();
+    yesOrNo[0] = decodedelement['oil']['yesOrNo'];
+    yesOrNo[1] = decodedelement['air']['yesOrNo'];
+    yesOrNo[2] = decodedelement['fuel']['yesOrNo'];
+    yesOrNo[3] = decodedelement['clim']['yesOrNo'];
   }
 
-  void addVidange(BuildContext context) {
+  void save(BuildContext context) {
     bool validate = formKey.currentState.validate();
+    if (date == null) {
+      color = Colors.red;
+    }
+
     if (validate && date != null) {
-      print('!');
-      var key = Constants.vidange;
+      var key = Constants.vidangePref;
       var list = sharedPreferences.getStringList(key);
-      VidangeModel courroieModel = VidangeModel(
+      VidangeModel vidangeModel = VidangeModel(
           date: date,
           km: double.parse(controllers[0].text),
           nextOil: double.parse(controllers[1].text),
@@ -81,15 +83,17 @@ class VidangeLogic extends ChangeNotifier {
               price: controllers[5].text.isEmpty
                   ? null
                   : double.parse(controllers[5].text)));
-
-      list.add(jsonEncode(courroieModel.toJson()));
-      sharedPreferences.setStringList(Constants.vidange, list).then((x) {
-        Navigator.pop(context, jsonEncode(courroieModel.toJson()));
+      String encodedElement = jsonEncode(vidangeModel.toJson());
+      if (dateViewIndex == null) {
+        list.add(encodedElement);
+      } else {
+        list[dateViewIndex] = jsonEncode(vidangeModel.toJson());
+      }
+      sharedPreferences.setStringList(Constants.vidangePref, list).then((x) {
+        Navigator.pop(context, jsonEncode(vidangeModel.toJson()));
       });
     }
-    if (date == null) {
-      color = Colors.red;
-    }
+
     notifyListeners();
   }
 
