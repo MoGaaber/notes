@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:notes/constants/constants.dart';
-import 'package:notes/logic/main.dart';
-import 'package:notes/logic/root.dart';
-import 'package:notes/screens/date_view/date_view.dart';
+import 'package:notes/logic/main_view.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,7 +10,8 @@ class MainView extends StatelessWidget {
   Widget build(BuildContext context) {
     SharedPreferences sharedPreferences =
         Provider.of<SharedPreferences>(context, listen: true);
-    MainLogic mainLogic = Provider.of<MainLogic>(context, listen: false);
+    MainViewLogic mainLogic =
+        Provider.of<MainViewLogic>(context, listen: false);
 
     return SafeArea(
       child: Scaffold(

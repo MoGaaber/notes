@@ -22,14 +22,13 @@ class DateView extends StatelessWidget {
   Widget build(BuildContext context) {
     DateViewLogic dateViewLogic =
         Provider.of<DateViewLogic>(context, listen: true);
-    GlobalVariables globalVariables = Provider.of(context, listen: false);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            dateViewLogic.navigateToAddOrEditItem(context);
+            dateViewLogic.navigateToAddItem(context);
           },
         ),
         body: dateViewLogic.list.length == 0
@@ -40,7 +39,6 @@ class DateView extends StatelessWidget {
                 itemCount: dateViewLogic.list.length,
                 itemBuilder: (BuildContext context, int index) => ListTile(
                   onTap: () {
-                    globalVariables.dateViewIndex = index;
                     dateViewLogic.navigateToEditItem(
                         context: context, index: index);
                   },

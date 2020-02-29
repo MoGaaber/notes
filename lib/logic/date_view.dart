@@ -18,10 +18,10 @@ class DateViewLogic extends ChangeNotifier {
   SharedPreferences sharedPreferences;
   List<Map> addOrEditPages;
   List list;
-  var newElement;
+  var pushResult;
   int itemIndex;
 
-  void init() {
+  void initializeAddOrEditPages() {
     addOrEditPages = [
       {
         'page': Vidangee(),
@@ -46,25 +46,27 @@ class DateViewLogic extends ChangeNotifier {
     ];
   }
 
+  GlobalVariables globalVariables;
+  String pageRef;
   int indexx;
   String sharedPrefKey;
   DateViewLogic(
-      {this.sharedPreferences, this.indexx, this.sharedPreferencesKey}) {
-    init();
+      {this.sharedPreferences,
+      this.indexx,
+      this.sharedPreferencesKey,
+      BuildContext context}) {
+    initializeAddOrEditPages();
+    pageRef = addOrEditPages[index]['refKey'];
     list = sharedPreferences.getStringList(sharedPreferencesKey);
     index = indexx;
+    globalVariables = Provider.of(context, listen: false);
   }
-  void navigateToAddOrEditItem(BuildContext context) async {
-    GlobalVariables globalVariables = Provider.of(context, listen: false);
+  void navigateToAddItem(BuildContext context) async {
+    // set it to null because it decides to add new one when it null
     globalVariables.dateViewIndex = null;
-
-    itemIndex = null;
-    newElement = await Navigator.pushNamed(
-      context,
-      addOrEditPages[index]['route'],
-    );
-    list = sharedPreferences.getStringList(sharedPreferencesKey);
-    sharedPreferences.setStringList(addOrEditPages[index]['refKey'], list);
+    pushResult = await pushToAddOrEditPage(context: context);
+    sharedPreferences.setStringList(
+        pageRef, sharedPreferences.getStringList(sharedPreferencesKey));
   }
 
   void deleteItem({int index}) {
@@ -74,7 +76,14 @@ class DateViewLogic extends ChangeNotifier {
   }
 
   void navigateToEditItem({int index, BuildContext context}) {
-    Navigator.pushNamed(context, addOrEditPages[this.index]['route'],
-        arguments: AddOrEditModelArgs(index: index));
+    pushToAddOrEditPage(
+        context: context, object: AddOrEditModelArgs(index: index));
+    globalVariables.dateViewIndex = index;
+  }
+
+  Future pushToAddOrEditPage({BuildContext context, Object object}) {
+    return Navigator.pushNamed(context, addOrEditPages[this.index]['route'],
+        arguments: object);
   }
 }
+//AddOrEditModelArgs(index: index)

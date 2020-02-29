@@ -1,29 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:notes/logic/amortisseur.dart';
-import 'package:notes/logic/batterie.dart';
-import 'package:notes/logic/courroie.dart';
-import 'package:notes/logic/main.dart';
+import 'package:notes/logic/main_view.dart';
 import 'package:notes/logic/vidange.dart';
 import 'package:notes/models/add_or_edit.dart';
 import 'package:notes/models/date_view.dart';
 import 'package:notes/screens/add_or_edit/amortisseur.dart';
 import 'package:notes/screens/add_or_edit/batterie.dart';
 import 'package:notes/screens/date_view/date_view.dart';
-import 'package:notes/screens/details_view/courroie.dart';
-import 'package:notes/screens/details_view/vidange.dart';
-import 'package:notes/screens/vidange.dart';
 import 'package:notes/screens/add_or_edit/vidangee.dart';
 import 'package:provider/provider.dart';
-import 'package:provider/single_child_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'constants/constants.dart';
 import 'logic/date_view.dart';
 import 'logic/passed_parameters.dart';
-import 'models/batterie.dart';
 import 'screens/add_or_edit/courroie.dart';
-import 'screens/details_view/amortisseur.dart';
-import 'screens/details_view/batterie.dart';
 import 'screens/main_view/main_view.dart';
 
 void main() => runApp(MyApp());
@@ -64,12 +52,14 @@ class _MyAppState extends State<MyApp> {
           onGenerateRoute: (routeSetting) {
             if (routeSetting.name == MainView.route) {
               return materialPageRoute(ChangeNotifierProvider(
-                  create: (BuildContext context) => MainLogic(),
+                  create: (BuildContext context) =>
+                      MainViewLogic(context: context),
                   child: MainView()));
             } else if (routeSetting.name == DateView.route) {
               final DateViewModelArg args = routeSetting.arguments;
               return materialPageRoute(ChangeNotifierProvider(
                 create: (BuildContext context) => DateViewLogic(
+                    context: context,
                     indexx: Provider.of<GlobalVariables>(context, listen: false)
                         .mainViewindex,
                     sharedPreferencesKey:

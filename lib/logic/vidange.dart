@@ -86,12 +86,18 @@ class VidangeLogic extends ChangeNotifier {
       String encodedElement = jsonEncode(vidangeModel.toJson());
       if (dateViewIndex == null) {
         list.add(encodedElement);
+        sharedPreferences.setStringList(Constants.vidangePref, list).then((x) {
+          Navigator.pop(context, jsonEncode(vidangeModel.toJson()));
+        });
       } else {
         list[dateViewIndex] = jsonEncode(vidangeModel.toJson());
+        sharedPreferences.setStringList(Constants.vidangePref, list).then((x) {
+          Navigator.pop(context, {
+            'element': jsonEncode(vidangeModel.toJson()),
+            'index': dateViewIndex
+          });
+        });
       }
-      sharedPreferences.setStringList(Constants.vidangePref, list).then((x) {
-        Navigator.pop(context, jsonEncode(vidangeModel.toJson()));
-      });
     }
 
     notifyListeners();
