@@ -14,8 +14,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Vidangee extends StatelessWidget {
   static const String route = '/vidangee';
-  int index;
-  Vidangee({this.index});
 // if doing something based on parameters
   @override
   Widget build(BuildContext context) {

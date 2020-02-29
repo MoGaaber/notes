@@ -12,26 +12,13 @@ import 'package:notes/widgets/text_field.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Armortisseur extends StatefulWidget {
+class Armortisseur extends StatelessWidget {
   static const String route = '/armortisseur';
-  int index;
-  Armortisseur({this.index});
-
-  @override
-  _ArmortisseurState createState() => _ArmortisseurState();
-}
-
-class _ArmortisseurState extends State<Armortisseur> {
   String date;
   List<TextEditingController> controllers;
   bool front = false;
   bool rear = false;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    controllers = List.generate(2, (_) => TextEditingController());
-  }
+//  controllers = List.generate(2, (_) => TextEditingController());
 
   @override
   Widget build(BuildContext context) {
@@ -64,8 +51,6 @@ class _ArmortisseurState extends State<Armortisseur> {
                               lastDate: DateTime(2500, 1, 1))
                           .then((dateTime) {
                         this.date = DateFormat.yMd().format(dateTime);
-
-                        setState(() {});
                       });
                     }),
               ],
@@ -96,7 +81,6 @@ class _ArmortisseurState extends State<Armortisseur> {
                         value: front,
                         onChanged: (front) {
                           this.front = front;
-                          setState(() {});
                         })
                   ],
                 ),
@@ -107,7 +91,6 @@ class _ArmortisseurState extends State<Armortisseur> {
                         value: rear,
                         onChanged: (rear) {
                           this.rear = rear;
-                          setState(() {});
                         })
                   ],
                 )

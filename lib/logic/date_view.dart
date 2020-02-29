@@ -62,13 +62,6 @@ class DateViewLogic extends ChangeNotifier {
     list = sharedPreferences.getStringList(pageRef);
     globalVariables = Provider.of(context, listen: false);
   }
-  void navigateToAddItem(BuildContext context) async {
-    // set it to null because it decides to add new one when it null
-    globalVariables.dateViewIndex = null;
-    pushResult = await pushToAddOrEditPage(context: context);
-    sharedPreferences.setStringList(
-        pageRef, sharedPreferences.getStringList(sharedPreferencesKey));
-  }
 
   void deleteItem({int index}) {
     list.removeAt(index);
@@ -80,6 +73,13 @@ class DateViewLogic extends ChangeNotifier {
     pushToAddOrEditPage(
         context: context, object: AddOrEditModelArgs(index: index));
     globalVariables.dateViewIndex = index;
+  }
+  void navigateToAddItem(BuildContext context) async {
+    // set it to null because it decides to add new one when it null
+    globalVariables.dateViewIndex = null;
+    pushResult = await pushToAddOrEditPage(context: context);
+    sharedPreferences.setStringList(
+        pageRef, sharedPreferences.getStringList(sharedPreferencesKey));
   }
 
   Future pushToAddOrEditPage({BuildContext context, Object object}) {

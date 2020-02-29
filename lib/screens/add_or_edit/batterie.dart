@@ -11,22 +11,10 @@ import 'package:notes/widgets/text_field.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Batterie extends StatefulWidget {
-  static const String route = '/batterie';
-  int index;
-  Batterie({this.index});
-  @override
-  _BatterieState createState() => _BatterieState();
-}
-
-class _BatterieState extends State<Batterie> {
+class Batterie extends StatelessWidget {
   List<TextEditingController> controllers;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    controllers = List.generate(2, (_) => TextEditingController());
-  }
+  //controllers = List.generate(2, (_) => TextEditingController());
+  static const String route = '/batterie';
 
   String date;
   @override
@@ -60,8 +48,6 @@ class _BatterieState extends State<Batterie> {
                               lastDate: DateTime(2500, 1, 1))
                           .then((dateTime) {
                         this.date = DateFormat.yMd().format(dateTime);
-
-                        setState(() {});
                       });
                     }),
               ],

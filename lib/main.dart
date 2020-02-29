@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notes/logic/amortisseur.dart';
 import 'package:notes/logic/main_view.dart';
 import 'package:notes/logic/vidange.dart';
 import 'package:notes/models/add_or_edit.dart';
@@ -37,8 +38,40 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        onGenerateRoute: (routeSetting) {
+      initialRoute: MainView.route,
+      routes: {
+        Batterie.route: (_) => Batterie(),
+        Armortisseur.route: (_) => Armortisseur(),
+        Courroie.route: (_) => Courroie(),
+        Vidangee.route: (_) => ChangeNotifierProvider(
+              create: (BuildContext context) => VidangeLogic(
+                  dateViewIndex:
+                      Provider.of<GlobalVariables>(context, listen: false)
+                          .dateViewIndex,
+                  sharedPreferences:
+                      Provider.of<SharedPreferences>(context, listen: false)),
+              child: Vidangee(),
+            ),
+        MainView.route: (_) => ChangeNotifierProvider(
+            create: (BuildContext context) => MainViewLogic(context: context),
+            child: MainView()),
+        DateView.route: (_) => ChangeNotifierProvider(
+            create: (BuildContext context) => DateViewLogic(
+                context: context,
+                selectedMainViewElementIndex:
+                    Provider.of<GlobalVariables>(context, listen: false)
+                        .mainViewIndex,
+                sharedPreferences:
+                    Provider.of<SharedPreferences>(context, listen: false)),
+            child: DateView()),
+      },
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
+/*
+      /*    onGenerateRoute: (routeSetting) {
           if (routeSetting.name == MainView.route) {
             return materialPageRoute(ChangeNotifierProvider(
                 create: (BuildContext __) => MainViewLogic(context: __),
@@ -68,31 +101,19 @@ class _MyAppState extends State<MyApp> {
                             .dateViewIndex,
                     sharedPreferences:
                         Provider.of<SharedPreferences>(context, listen: false)),
-                child: Vidangee(
-                  index: addOrEditModelArgs?.index,
-                ),
+                child: Vidangee(),
               ));
             } else if (routeSetting.name == Courroie.route) {
-              return materialPageRoute(Courroie(
-                index: addOrEditModelArgs?.index,
-              ));
+              return materialPageRoute(Courroie());
             } else if (routeSetting.name == Batterie.route) {
-              return materialPageRoute(Batterie(
-                index: addOrEditModelArgs?.index,
-              ));
+              return materialPageRoute(Batterie());
             } else if (routeSetting.name == Armortisseur.route) {
-              return materialPageRoute(Armortisseur(
-                index: addOrEditModelArgs?.index,
-              ));
+              return materialPageRoute(Armortisseur());
             } else {
               return null;
             }
           }
-        });
-  }
-}
-
-/*
+        }*/
 
 //        ChangeNotifierProvider(
 //          create: (BuildContext context) => AmortisseurLogic(),
