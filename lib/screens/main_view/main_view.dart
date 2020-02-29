@@ -10,7 +10,7 @@ class MainView extends StatelessWidget {
   Widget build(BuildContext context) {
     SharedPreferences sharedPreferences =
         Provider.of<SharedPreferences>(context, listen: true);
-    MainViewLogic mainLogic =
+    MainViewLogic mainViewLogic =
         Provider.of<MainViewLogic>(context, listen: false);
 
     return SafeArea(
@@ -20,15 +20,15 @@ class MainView extends StatelessWidget {
                 child: Text('Loading'),
               )
             : ListView.builder(
-                itemCount: mainLogic.list.length,
+                itemCount: mainViewLogic.mainViewList.length,
                 itemBuilder: (BuildContext context, int index) => ListTile(
                   onTap: () {
-                    mainLogic.navigateToDateView(
+                    mainViewLogic.navigateToDateView(
                       index: index,
                       context: context,
                     );
                   },
-                  title: Text(mainLogic.list[index]['name']),
+                  title: Text(mainViewLogic.mainViewList[index]),
                 ),
               ),
 /*

@@ -14,14 +14,86 @@ import 'logic/passed_parameters.dart';
 import 'screens/add_or_edit/courroie.dart';
 import 'screens/main_view/main_view.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(MultiProvider(
+      child: MyApp(),
+      providers: [
+        FutureProvider<SharedPreferences>(
+            create: (BuildContext context) => SharedPreferences.getInstance()),
+        ChangeNotifierProvider(
+            create: (BuildContext context) => GlobalVariables())
+      ],
+    ));
+
+// This widget is the root of your application.
 
 class MyApp extends StatefulWidget {
-  // This widget is the root of your application.
   @override
   _MyAppState createState() => _MyAppState();
 }
-//      providers: <SingleChildWidget>[
+
+class _MyAppState extends State<MyApp> {
+  MaterialPageRoute materialPageRoute(Widget widget) =>
+      MaterialPageRoute(builder: (_) => widget);
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        onGenerateRoute: (routeSetting) {
+          if (routeSetting.name == MainView.route) {
+            return materialPageRoute(ChangeNotifierProvider(
+                create: (BuildContext __) => MainViewLogic(context: __),
+                child: MainView()));
+          } else if (routeSetting.name == DateView.route) {
+            final DateViewModelArg args = routeSetting.arguments;
+            return materialPageRoute(ChangeNotifierProvider(
+              create: (BuildContext context) => DateViewLogic(
+                  context: context,
+                  selectedMainViewElementIndex:
+                      Provider.of<GlobalVariables>(context, listen: false)
+                          .mainViewIndex,
+                  sharedPreferences:
+                      Provider.of<SharedPreferences>(context, listen: false)),
+              child: DateView(),
+            ));
+          } else {
+            AddOrEditModelArgs addOrEditModelArgs;
+            if (routeSetting.arguments != null) {
+              addOrEditModelArgs = routeSetting.arguments;
+            }
+            if (routeSetting.name == Vidangee.route) {
+              return materialPageRoute(ChangeNotifierProvider(
+                create: (BuildContext context) => VidangeLogic(
+                    dateViewIndex:
+                        Provider.of<GlobalVariables>(context, listen: false)
+                            .dateViewIndex,
+                    sharedPreferences:
+                        Provider.of<SharedPreferences>(context, listen: false)),
+                child: Vidangee(
+                  index: addOrEditModelArgs?.index,
+                ),
+              ));
+            } else if (routeSetting.name == Courroie.route) {
+              return materialPageRoute(Courroie(
+                index: addOrEditModelArgs?.index,
+              ));
+            } else if (routeSetting.name == Batterie.route) {
+              return materialPageRoute(Batterie(
+                index: addOrEditModelArgs?.index,
+              ));
+            } else if (routeSetting.name == Armortisseur.route) {
+              return materialPageRoute(Armortisseur(
+                index: addOrEditModelArgs?.index,
+              ));
+            } else {
+              return null;
+            }
+          }
+        });
+  }
+}
+
+/*
+
 //        ChangeNotifierProvider(
 //          create: (BuildContext context) => AmortisseurLogic(),
 //        ),
@@ -31,86 +103,7 @@ class MyApp extends StatefulWidget {
 //        ChangeNotifierProvider(
 //          create: (BuildContext context) => CourroieLogic(),
 //        ),
-//      ],
 
-class _MyAppState extends State<MyApp> {
-  SharedPreferences sharedPreferences;
-  MaterialPageRoute materialPageRoute(Widget widget) =>
-      MaterialPageRoute(builder: (_) => widget);
-  int index = 0;
-  @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        FutureProvider<SharedPreferences>(
-            create: (BuildContext context) => SharedPreferences.getInstance()),
-        ChangeNotifierProvider(
-            create: (BuildContext context) => GlobalVariables())
-      ],
-      child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          onGenerateRoute: (routeSetting) {
-            if (routeSetting.name == MainView.route) {
-              return materialPageRoute(ChangeNotifierProvider(
-                  create: (BuildContext context) =>
-                      MainViewLogic(context: context),
-                  child: MainView()));
-            } else if (routeSetting.name == DateView.route) {
-              final DateViewModelArg args = routeSetting.arguments;
-              return materialPageRoute(ChangeNotifierProvider(
-                create: (BuildContext context) => DateViewLogic(
-                    context: context,
-                    indexx: Provider.of<GlobalVariables>(context, listen: false)
-                        .mainViewindex,
-                    sharedPreferencesKey:
-                        Provider.of<GlobalVariables>(context, listen: false)
-                            .sharedPrefKey,
-                    sharedPreferences:
-                        Provider.of<SharedPreferences>(context, listen: false)),
-                child: DateView(
-                  index: args.index,
-                  sharedPreferencesKey: args.sharedPreferencesKey,
-                ),
-              ));
-            } else {
-              AddOrEditModelArgs addOrEditModelArgs;
-              if (routeSetting.arguments != null) {
-                addOrEditModelArgs = routeSetting.arguments;
-              }
-              if (routeSetting.name == Vidangee.route) {
-                return materialPageRoute(ChangeNotifierProvider(
-                  create: (BuildContext context) => VidangeLogic(
-                      dateViewIndex:
-                          Provider.of<GlobalVariables>(context, listen: false)
-                              .dateViewIndex,
-                      sharedPreferences: Provider.of<SharedPreferences>(context,
-                          listen: false)),
-                  child: Vidangee(
-                    index: addOrEditModelArgs?.index,
-                  ),
-                ));
-              } else if (routeSetting.name == Courroie.route) {
-                return materialPageRoute(Courroie(
-                  index: addOrEditModelArgs?.index,
-                ));
-              } else if (routeSetting.name == Batterie.route) {
-                return materialPageRoute(Batterie(
-                  index: addOrEditModelArgs?.index,
-                ));
-              } else if (routeSetting.name == Armortisseur.route) {
-                return materialPageRoute(Armortisseur(
-                  index: addOrEditModelArgs?.index,
-                ));
-              } else {
-                return null;
-              }
-            }
-          }),
-    );
-  }
-}
-
-/*
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 

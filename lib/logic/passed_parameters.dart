@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
 class GlobalVariables extends ChangeNotifier {
-  int mainViewindex, dateViewIndex;
+  int mainViewIndex, dateViewIndex;
   String sharedPrefKey;
 }

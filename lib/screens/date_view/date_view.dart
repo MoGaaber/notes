@@ -16,7 +16,6 @@ class DateView extends StatelessWidget {
   static const String route = '/dateView';
   String sharedPreferencesKey;
   int index;
-  DateView({@required this.sharedPreferencesKey, @required this.index});
 
   @override
   Widget build(BuildContext context) {

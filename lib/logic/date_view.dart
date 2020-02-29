@@ -48,17 +48,18 @@ class DateViewLogic extends ChangeNotifier {
 
   GlobalVariables globalVariables;
   String pageRef;
-  int indexx;
+  int selectedMainViewElementIndex;
   String sharedPrefKey;
   DateViewLogic(
       {this.sharedPreferences,
-      this.indexx,
+      this.selectedMainViewElementIndex,
       this.sharedPreferencesKey,
       BuildContext context}) {
     initializeAddOrEditPages();
+    index = selectedMainViewElementIndex;
+
     pageRef = addOrEditPages[index]['refKey'];
-    list = sharedPreferences.getStringList(sharedPreferencesKey);
-    index = indexx;
+    list = sharedPreferences.getStringList(pageRef);
     globalVariables = Provider.of(context, listen: false);
   }
   void navigateToAddItem(BuildContext context) async {
