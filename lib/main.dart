@@ -19,6 +19,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants/constants.dart';
 import 'logic/date_view.dart';
+import 'logic/passed_parameters.dart';
 import 'models/batterie.dart';
 import 'screens/add_or_edit/courroie.dart';
 import 'screens/details_view/amortisseur.dart';
@@ -48,11 +49,16 @@ class _MyAppState extends State<MyApp> {
   SharedPreferences sharedPreferences;
   MaterialPageRoute materialPageRoute(Widget widget) =>
       MaterialPageRoute(builder: (_) => widget);
-
+  int index = 0;
   @override
   Widget build(BuildContext context) {
-    return FutureProvider<SharedPreferences>(
-      create: (BuildContext context) => SharedPreferences.getInstance(),
+    return MultiProvider(
+      providers: [
+        FutureProvider<SharedPreferences>(
+            create: (BuildContext context) => SharedPreferences.getInstance()),
+        ChangeNotifierProvider(
+            create: (BuildContext context) => GlobalVariables())
+      ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           onGenerateRoute: (routeSetting) {
@@ -64,6 +70,11 @@ class _MyAppState extends State<MyApp> {
               final DateViewModelArg args = routeSetting.arguments;
               return materialPageRoute(ChangeNotifierProvider(
                 create: (BuildContext context) => DateViewLogic(
+                    indexx: Provider.of<GlobalVariables>(context, listen: false)
+                        .mainViewindex,
+                    sharedPreferencesKey:
+                        Provider.of<GlobalVariables>(context, listen: false)
+                            .sharedPrefKey,
                     sharedPreferences:
                         Provider.of<SharedPreferences>(context, listen: false)),
                 child: DateView(
@@ -79,6 +90,9 @@ class _MyAppState extends State<MyApp> {
               if (routeSetting.name == Vidangee.route) {
                 return materialPageRoute(ChangeNotifierProvider(
                   create: (BuildContext context) => VidangeLogic(
+                      dateViewIndex:
+                          Provider.of<GlobalVariables>(context, listen: false)
+                              .dateViewIndex,
                       sharedPreferences: Provider.of<SharedPreferences>(context,
                           listen: false)),
                   child: Vidangee(

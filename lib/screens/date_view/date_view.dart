@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:notes/constants/constants.dart';
 import 'package:notes/logic/date_view.dart';
+import 'package:notes/logic/passed_parameters.dart';
 import 'package:notes/models/batterie.dart';
 import 'package:notes/screens/add_or_edit/amortisseur.dart';
 import 'package:notes/screens/add_or_edit/batterie.dart';
@@ -21,11 +22,7 @@ class DateView extends StatelessWidget {
   Widget build(BuildContext context) {
     DateViewLogic dateViewLogic =
         Provider.of<DateViewLogic>(context, listen: true);
-    dateViewLogic.sharedPreferencesKey = this.sharedPreferencesKey;
-    dateViewLogic.list = dateViewLogic.sharedPreferences
-        .getStringList(this.sharedPreferencesKey);
-    dateViewLogic.index = index;
-
+    GlobalVariables globalVariables = Provider.of(context, listen: false);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(),
@@ -43,6 +40,7 @@ class DateView extends StatelessWidget {
                 itemCount: dateViewLogic.list.length,
                 itemBuilder: (BuildContext context, int index) => ListTile(
                   onTap: () {
+                    globalVariables.dateViewIndex = index;
                     dateViewLogic.navigateToEditItem(
                         context: context, index: index);
                   },

@@ -16,13 +16,11 @@ class Vidangee extends StatelessWidget {
   static const String route = '/vidangee';
   int index;
   Vidangee({this.index});
-// if doing something based on class's
-// parameters
+// if doing something based on parameters
   @override
   Widget build(BuildContext context) {
     VidangeLogic vidangeLogic =
         Provider.of<VidangeLogic>(context, listen: false);
-    vidangeLogic.initFetchElement(index: index);
 
     return Consumer<VidangeLogic>(
       builder:
@@ -97,6 +95,7 @@ class Vidangee extends StatelessWidget {
                           value: vidangeLogic.yesOrNo[0],
                           onChanged: (value) {
                             vidangeLogic.yesOrNo[0] = value;
+                            vidangeLogic.notifyListeners();
                           }),
                     ),
                     Flexible(
@@ -125,6 +124,7 @@ class Vidangee extends StatelessWidget {
                           value: vidangeLogic.yesOrNo[1],
                           onChanged: (value) {
                             vidangeLogic.yesOrNo[1] = value;
+                            vidangeLogic.notifyListeners();
                           }),
                     ),
                     Flexible(
@@ -153,6 +153,7 @@ class Vidangee extends StatelessWidget {
                           value: vidangeLogic.yesOrNo[2],
                           onChanged: (value) {
                             vidangeLogic.yesOrNo[2] = value;
+                            vidangeLogic.notifyListeners();
                           }),
                     ),
                     Flexible(
@@ -181,6 +182,7 @@ class Vidangee extends StatelessWidget {
                           value: vidangeLogic.yesOrNo[3],
                           onChanged: (value) {
                             vidangeLogic.yesOrNo[3] = value;
+                            vidangeLogic.notifyListeners();
                           }),
                     ),
                     Flexible(

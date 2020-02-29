@@ -17,9 +17,11 @@ class VidangeLogic extends ChangeNotifier {
   String date;
   Color color = Colors.black;
 
-  VidangeLogic({@required this.sharedPreferences}) {
+  VidangeLogic({@required this.sharedPreferences, int dateViewIndex}) {
     controllers = List.generate(6, (_) => TextEditingController());
     yesOrNo = List.filled(6, false);
+    print(dateViewIndex);
+    initFetchElement(index: dateViewIndex);
   }
   void initFetchElement({@required int index}) {
     if (index != null) {

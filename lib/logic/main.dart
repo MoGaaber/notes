@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:notes/constants/constants.dart';
+import 'package:notes/logic/passed_parameters.dart';
 import 'package:notes/models/date_view.dart';
 import 'package:notes/screens/date_view/date_view.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MainLogic extends ChangeNotifier {
@@ -16,6 +18,10 @@ class MainLogic extends ChangeNotifier {
   SharedPreferences sharedPreferences;
   Future<List<bool>> futures;
   void navigateToDateView({BuildContext context, int index}) {
+    GlobalVariables globalVariables =
+        Provider.of<GlobalVariables>(context, listen: false);
+    globalVariables.mainViewindex = index;
+    globalVariables.sharedPrefKey = list[index]['sharedPreferencesKey'];
     Navigator.pushNamed(context, DateView.route,
         arguments: DateViewModelArg(
             index: index,
