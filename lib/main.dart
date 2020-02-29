@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:notes/logic/amortisseur.dart';
+import 'package:notes/logic/batterie.dart';
+import 'package:notes/logic/courroie.dart';
+import 'package:notes/logic/main.dart';
+import 'package:notes/logic/vidange.dart';
+import 'package:notes/models/add_or_edit.dart';
+import 'package:notes/models/date_view.dart';
 import 'package:notes/screens/add_or_edit/amortisseur.dart';
 import 'package:notes/screens/add_or_edit/batterie.dart';
 import 'package:notes/screens/date_view/date_view.dart';
@@ -6,9 +13,12 @@ import 'package:notes/screens/details_view/courroie.dart';
 import 'package:notes/screens/details_view/vidange.dart';
 import 'package:notes/screens/vidange.dart';
 import 'package:notes/screens/add_or_edit/vidangee.dart';
+import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants/constants.dart';
+import 'logic/date_view.dart';
 import 'models/batterie.dart';
 import 'screens/add_or_edit/courroie.dart';
 import 'screens/details_view/amortisseur.dart';
@@ -22,19 +32,77 @@ class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
+//      providers: <SingleChildWidget>[
+//        ChangeNotifierProvider(
+//          create: (BuildContext context) => AmortisseurLogic(),
+//        ),
+//        ChangeNotifierProvider(
+//          create: (BuildContext context) => BatterieLogic(),
+//        ),
+//        ChangeNotifierProvider(
+//          create: (BuildContext context) => CourroieLogic(),
+//        ),
+//      ],
 
 class _MyAppState extends State<MyApp> {
+  SharedPreferences sharedPreferences;
+  MaterialPageRoute materialPageRoute(Widget widget) =>
+      MaterialPageRoute(builder: (_) => widget);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Noticer',
-        theme: ThemeData(),
-        home: SafeArea(
-          child: Scaffold(
-            body: MainView(),
-          ),
-        ));
+    return FutureProvider<SharedPreferences>(
+      create: (BuildContext context) => SharedPreferences.getInstance(),
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          onGenerateRoute: (routeSetting) {
+            if (routeSetting.name == MainView.route) {
+              return materialPageRoute(ChangeNotifierProvider(
+                  create: (BuildContext context) => MainLogic(),
+                  child: MainView()));
+            } else if (routeSetting.name == DateView.route) {
+              final DateViewModelArg args = routeSetting.arguments;
+              return materialPageRoute(ChangeNotifierProvider(
+                create: (BuildContext context) => DateViewLogic(
+                    sharedPreferences:
+                        Provider.of<SharedPreferences>(context, listen: false)),
+                child: DateView(
+                  index: args.index,
+                  sharedPreferencesKey: args.sharedPreferencesKey,
+                ),
+              ));
+            } else {
+              AddOrEditModelArgs addOrEditModelArgs;
+              if (routeSetting.arguments != null) {
+                addOrEditModelArgs = routeSetting.arguments;
+              }
+              if (routeSetting.name == Vidangee.route) {
+                return materialPageRoute(ChangeNotifierProvider(
+                  create: (BuildContext context) => VidangeLogic(
+                      sharedPreferences: Provider.of<SharedPreferences>(context,
+                          listen: false)),
+                  child: Vidangee(
+                    index: addOrEditModelArgs?.index,
+                  ),
+                ));
+              } else if (routeSetting.name == Courroie.route) {
+                return materialPageRoute(Courroie(
+                  index: addOrEditModelArgs?.index,
+                ));
+              } else if (routeSetting.name == Batterie.route) {
+                return materialPageRoute(Batterie(
+                  index: addOrEditModelArgs?.index,
+                ));
+              } else if (routeSetting.name == Armortisseur.route) {
+                return materialPageRoute(Armortisseur(
+                  index: addOrEditModelArgs?.index,
+                ));
+              } else {
+                return null;
+              }
+            }
+          }),
+    );
   }
 }
 

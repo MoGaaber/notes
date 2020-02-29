@@ -7,11 +7,14 @@ import 'package:intl/intl.dart';
 import 'package:notes/constants/constants.dart';
 import 'package:notes/models/courroie.dart';
 import 'package:notes/widgets/text_field.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Courroie extends StatefulWidget {
-  SharedPreferences sharedPreferences;
-  Courroie({@required this.sharedPreferences});
+  int index;
+  Courroie({this.index});
+  static const String route = '/courroie';
+
   @override
   _CourroieState createState() => _CourroieState();
 }
@@ -28,6 +31,9 @@ class _CourroieState extends State<Courroie> {
   String date;
   @override
   Widget build(BuildContext context) {
+    SharedPreferences sharedPreferences =
+        Provider.of<SharedPreferences>(context, listen: false);
+
     return SafeArea(
       child: Scaffold(
         body: ListView(
@@ -110,17 +116,14 @@ class _CourroieState extends State<Courroie> {
                 onPressed: () {
                   print('hello');
                   var key = Constants.courroiePref;
-                  var list = widget.sharedPreferences.getStringList(key);
+                  var list = sharedPreferences.getStringList(key);
                   CourroieModel courroieModel = CourroieModel(
                       date: date,
                       km: double.parse(controllers[0].text),
                       nextKm: double.parse(controllers[1].text),
                       note: (controllers[2].text));
                   list.add(jsonEncode(courroieModel.toJson()));
-                  widget.sharedPreferences
-                      .setStringList(Constants.courroiePref, list);
-                  print(widget.sharedPreferences
-                      .getStringList(Constants.courroiePref));
+                  sharedPreferences.setStringList(Constants.courroiePref, list);
                 },
                 child: Text('Save')),
           ],

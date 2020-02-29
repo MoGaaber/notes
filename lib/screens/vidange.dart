@@ -587,4 +587,26 @@ class VidangeModel {
         'climFilterPrice': climFilterPrice,
       };
 }
+ListTile buildListTile(
+    navigator,
+    title,
+    ) {
+  return ListTile(
+    onTap: () {
+      navigator();
+    },
+    trailing: Icon(Icons.keyboard_arrow_right, color: Colors.red, size: 30.0),
+    leading: Container(
+      padding: EdgeInsets.only(right: 12.0),
+      decoration: new BoxDecoration(
+          border: new Border(
+              right: new BorderSide(width: 1.0, color: Colors.red))),
+      child: Icon(Icons.autorenew, color: Colors.pink),
+    ),
+    title: Text(
+      title,
+      style: TextStyle(color: Colors.purple, fontWeight: FontWeight.bold),
+    ),
+  );
+}
 */

@@ -6,3 +6,8 @@ class BatterieModel {
   Map<String, dynamic> toJson() =>
       {'date': this.date, 'note': this.note, 'km': this.km};
 }
+
+class BatterieModelArg {
+  bool x;
+  BatterieModelArg({this.x});
+}

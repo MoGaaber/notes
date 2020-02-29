@@ -9,11 +9,14 @@ import 'package:notes/models/amortisseur.dart';
 import 'package:notes/models/batterie.dart';
 import 'package:notes/models/courroie.dart';
 import 'package:notes/widgets/text_field.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Armortisseur extends StatefulWidget {
-  SharedPreferences sharedPreferences;
-  Armortisseur({@required this.sharedPreferences});
+  static const String route = '/armortisseur';
+  int index;
+  Armortisseur({this.index});
+
   @override
   _ArmortisseurState createState() => _ArmortisseurState();
 }
@@ -32,7 +35,9 @@ class _ArmortisseurState extends State<Armortisseur> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.sharedPreferences.getStringList(Constants.amortisseurPref));
+    SharedPreferences sharedPreferences =
+        Provider.of<SharedPreferences>(context, listen: false);
+
     return SafeArea(
       child: Scaffold(
         body: ListView(
@@ -125,7 +130,7 @@ class _ArmortisseurState extends State<Armortisseur> {
             FlatButton(
                 onPressed: () {
                   var key = Constants.amortisseurPref;
-                  var list = widget.sharedPreferences.getStringList(key);
+                  var list = sharedPreferences.getStringList(key);
                   ArmortisseurModel armortisseurModel = ArmortisseurModel(
                       date: date,
                       rear: rear,
@@ -133,8 +138,8 @@ class _ArmortisseurState extends State<Armortisseur> {
                       km: double.parse(controllers[0].text),
                       note: (controllers[1].text));
                   list.add(jsonEncode(armortisseurModel.toJson()));
-                  widget.sharedPreferences
-                      .setStringList(Constants.amortisseurPref, list);
+                  sharedPreferences.setStringList(
+                      Constants.amortisseurPref, list);
                 },
                 child: Text('Save')),
           ],

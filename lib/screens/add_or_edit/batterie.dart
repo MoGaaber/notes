@@ -8,11 +8,13 @@ import 'package:notes/constants/constants.dart';
 import 'package:notes/models/batterie.dart';
 import 'package:notes/models/courroie.dart';
 import 'package:notes/widgets/text_field.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Batterie extends StatefulWidget {
-  SharedPreferences sharedPreferences;
-  Batterie({@required this.sharedPreferences});
+  static const String route = '/batterie';
+  int index;
+  Batterie({this.index});
   @override
   _BatterieState createState() => _BatterieState();
 }
@@ -29,6 +31,9 @@ class _BatterieState extends State<Batterie> {
   String date;
   @override
   Widget build(BuildContext context) {
+    SharedPreferences sharedPreferences =
+        Provider.of<SharedPreferences>(context, listen: false);
+
     return SafeArea(
       child: Scaffold(
         body: ListView(
@@ -96,14 +101,13 @@ class _BatterieState extends State<Batterie> {
             FlatButton(
                 onPressed: () {
                   var key = Constants.batteriPref;
-                  var list = widget.sharedPreferences.getStringList(key);
+                  var list = sharedPreferences.getStringList(key);
                   BatterieModel batteriModel = BatterieModel(
                       date: date,
                       km: double.parse(controllers[0].text),
                       note: (controllers[1].text));
                   list.add(jsonEncode(batteriModel.toJson()));
-                  widget.sharedPreferences
-                      .setStringList(Constants.batteriPref, list);
+                  sharedPreferences.setStringList(Constants.batteriPref, list);
                 },
                 child: Text('Save')),
           ],
