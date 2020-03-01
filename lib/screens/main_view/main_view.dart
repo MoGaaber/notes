@@ -15,20 +15,41 @@ class MainView extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Home',
+          ),
+          backgroundColor: Colors.orange,
+        ),
         body: sharedPreferences == null
             ? Center(
                 child: Text('Loading'),
               )
-            : ListView.builder(
+            : ListView.separated(
                 itemCount: mainViewLogic.mainViewList.length,
-                itemBuilder: (BuildContext context, int index) => ListTile(
-                  onTap: () {
-                    mainViewLogic.navigateToDateView(
-                      index: index,
-                      context: context,
-                    );
-                  },
-                  title: Text(mainViewLogic.mainViewList[index]),
+                itemBuilder: (BuildContext context, int index) => Column(
+                  children: <Widget>[
+                    ListTile(
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        size: 12,
+                      ),
+                      onTap: () {
+                        mainViewLogic.navigateToDateView(
+                          index: index,
+                          context: context,
+                        );
+                      },
+                      title: Text(
+                        mainViewLogic.mainViewList[index],
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 17),
+                      ),
+                    ),
+                  ],
+                ),
+                separatorBuilder: (BuildContext context, int index) => Divider(
+                  height: 2,
                 ),
               ),
 /*

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:notes/constants/constants.dart';
+import 'package:notes/logic/add_or_edit.dart';
 import 'package:notes/models/amortisseur.dart';
 import 'package:notes/models/batterie.dart';
 import 'package:notes/models/courroie.dart';
@@ -14,118 +15,135 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Armortisseur extends StatelessWidget {
   static const String route = '/armortisseur';
-  String date;
-  List<TextEditingController> controllers;
-  bool front = false;
-  bool rear = false;
 //  controllers = List.generate(2, (_) => TextEditingController());
 
   @override
   Widget build(BuildContext context) {
-    SharedPreferences sharedPreferences =
-        Provider.of<SharedPreferences>(context, listen: false);
+    AddOrEditLogic addOrEditLogic =
+        Provider.of<AddOrEditLogic>(context, listen: true);
 
     return SafeArea(
       child: Scaffold(
-        body: ListView(
-          children: <Widget>[
-            SizedBox(
-              height: 50,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            var armortisseurModel = ArmortisseurModel(
+                    date: addOrEditLogic.date,
+                    rear: addOrEditLogic.rear,
+                    front: addOrEditLogic.front,
+                    km: double.parse(addOrEditLogic.controllers[0].text),
+                    note: (addOrEditLogic.controllers[1].text))
+                .toJson();
+            addOrEditLogic.saveChanges(
+                key: Constants.amortisseurPref,
+                object: armortisseurModel,
+                context: context);
+          },
+          child: Icon(Icons.check),
+        ),
+        appBar: AppBar(
+          title: Text('Add Armortisseur item'),
+        ),
+        body: Form(
+          key: addOrEditLogic.formKey,
+          child: ScrollConfiguration(
+            behavior: ScrollBehavior(),
+            child: ListView(
               children: <Widget>[
-                Text(
-                  'Date',
+                SizedBox(
+                  height: 20,
                 ),
-                Text(
-                  date == null ? '' : date,
+                ListTile(
+                  title: Text(
+                    'Choose Date',
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
+                  ),
+                  trailing: Material(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    type: MaterialType.canvas,
+                    color: Colors.orange,
+                    child: IconButton(
+                        iconSize: 30,
+                        icon: Icon(
+                          Icons.date_range,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {}),
+                  ),
                 ),
-                IconButton(
-                    icon: Icon(Icons.date_range),
-                    onPressed: () {
-                      showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(1500, 1, 1),
-                              lastDate: DateTime(2500, 1, 1))
-                          .then((dateTime) {
-                        this.date = DateFormat.yMd().format(dateTime);
-                      });
-                    }),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Text(
-                  'KM',
+                SizedBox.fromSize(
+                  size: Size.fromHeight(20),
                 ),
-                Flexible(
-                    flex: 2,
-                    child: MyTextField(
-                      inputFormatters: [
-                        WhitelistingTextInputFormatter.digitsOnly
+                Center(
+                    child: Text(
+                  '01 / 03 / 2020',
+                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                )),
+                SizedBox(
+                  height: 30,
+                ),
+                Center(
+                  child: MyTextField(
+                    label: 'KM',
+                    inputFormatters: [
+                      WhitelistingTextInputFormatter.digitsOnly
+                    ],
+                    textEditingController: addOrEditLogic.controllers[0],
+                  ),
+                ),
+                SizedBox.fromSize(
+                  size: Size.fromHeight(30),
+                ),
+                Center(
+                  child: MyTextField(
+                    isLong: null,
+                    label: 'Note',
+                    inputFormatters: [
+                      WhitelistingTextInputFormatter.digitsOnly
+                    ],
+                    textEditingController: addOrEditLogic.controllers[0],
+                  ),
+                ),
+                SizedBox.fromSize(
+                  size: Size.fromHeight(40),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          'Front / Av',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w700),
+                        ),
+                        Checkbox(
+                            value: addOrEditLogic.front,
+                            onChanged: (front) {
+                              addOrEditLogic.front = front;
+                              addOrEditLogic.notifyListeners();
+                            })
                       ],
-                      textEditingController: controllers[0],
-                    )),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    Text('Front/Av'),
-                    Checkbox(
-                        value: front,
-                        onChanged: (front) {
-                          this.front = front;
-                        })
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          'Rear / Av',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w700),
+                        ),
+                        Checkbox(
+                            value: addOrEditLogic.rear,
+                            onChanged: (rear) {
+                              addOrEditLogic.rear = rear;
+                              addOrEditLogic.notifyListeners();
+                            })
+                      ],
+                    )
                   ],
                 ),
-                Column(
-                  children: <Widget>[
-                    Text('Rear/Av'),
-                    Checkbox(
-                        value: rear,
-                        onChanged: (rear) {
-                          this.rear = rear;
-                        })
-                  ],
-                )
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Text(
-                  'Note',
-                ),
-                Flexible(
-                    flex: 2,
-                    child: MyTextField(
-                      textInputType: TextInputType.text,
-                      textEditingController: controllers[1],
-                    )),
-              ],
-            ),
-            FlatButton(
-                onPressed: () {
-                  var key = Constants.amortisseurPref;
-                  var list = sharedPreferences.getStringList(key);
-                  ArmortisseurModel armortisseurModel = ArmortisseurModel(
-                      date: date,
-                      rear: rear,
-                      front: front,
-                      km: double.parse(controllers[0].text),
-                      note: (controllers[1].text));
-                  list.add(jsonEncode(armortisseurModel.toJson()));
-                  sharedPreferences.setStringList(
-                      Constants.amortisseurPref, list);
-                },
-                child: Text('Save')),
-          ],
+          ),
         ),
       ),
     );

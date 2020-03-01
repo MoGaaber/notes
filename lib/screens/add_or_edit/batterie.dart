@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:notes/constants/constants.dart';
+import 'package:notes/logic/add_or_edit.dart';
 import 'package:notes/models/batterie.dart';
 import 'package:notes/models/courroie.dart';
 import 'package:notes/widgets/text_field.dart';
@@ -19,84 +20,80 @@ class Batterie extends StatelessWidget {
   String date;
   @override
   Widget build(BuildContext context) {
-    SharedPreferences sharedPreferences =
-        Provider.of<SharedPreferences>(context, listen: false);
+    AddOrEditLogic addOrEditLogic =
+        Provider.of<AddOrEditLogic>(context, listen: true);
 
     return SafeArea(
       child: Scaffold(
-        body: ListView(
-          children: <Widget>[
-            SizedBox(
-              height: 50,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  'Date',
-                ),
-                Text(
-                  date == null ? '' : date,
-                ),
-                IconButton(
-                    icon: Icon(Icons.date_range),
-                    onPressed: () {
-                      showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(1500, 1, 1),
-                              lastDate: DateTime(2500, 1, 1))
-                          .then((dateTime) {
-                        this.date = DateFormat.yMd().format(dateTime);
-                      });
-                    }),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Text(
-                  'KM',
-                ),
-                Flexible(
-                    flex: 2,
-                    child: MyTextField(
-                      inputFormatters: [
-                        WhitelistingTextInputFormatter.digitsOnly
-                      ],
-                      textEditingController: controllers[0],
-                    )),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Text(
-                  'Next KM',
-                ),
-                Flexible(
-                    flex: 2,
-                    child: MyTextField(
-                      inputFormatters: [
-                        WhitelistingTextInputFormatter.digitsOnly
-                      ],
-                      textEditingController: controllers[1],
-                    )),
-              ],
-            ),
-            FlatButton(
-                onPressed: () {
-                  var key = Constants.batteriPref;
-                  var list = sharedPreferences.getStringList(key);
-                  BatterieModel batteriModel = BatterieModel(
-                      date: date,
-                      km: double.parse(controllers[0].text),
-                      note: (controllers[1].text));
-                  list.add(jsonEncode(batteriModel.toJson()));
-                  sharedPreferences.setStringList(Constants.batteriPref, list);
-                },
-                child: Text('Save')),
-          ],
+        body: Form(
+          key: addOrEditLogic.formKey,
+          child: ListView(
+            children: <Widget>[
+              SizedBox(
+                height: 50,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    'Date',
+                  ),
+                  Text(
+                    addOrEditLogic.date == null ? '' : addOrEditLogic.date,
+                  ),
+                  IconButton(
+                      icon: Icon(Icons.date_range),
+                      onPressed: () {
+                        addOrEditLogic.showDatePick(context);
+                      }),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Text(
+                    'KM',
+                  ),
+                  Flexible(
+                      flex: 2,
+                      child: MyTextField(
+                        inputFormatters: [
+                          WhitelistingTextInputFormatter.digitsOnly
+                        ],
+                        textEditingController: addOrEditLogic.controllers[0],
+                      )),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Text(
+                    'Note',
+                  ),
+                  Flexible(
+                      flex: 2,
+                      child: MyTextField(
+                        textInputType: TextInputType.text,
+                        textEditingController: addOrEditLogic.controllers[1],
+                      )),
+                ],
+              ),
+              FlatButton(
+                  onPressed: () {
+                    var batteriModel = BatterieModel(
+                            date: addOrEditLogic.date,
+                            km: double.parse(
+                                addOrEditLogic.controllers[0].text),
+                            note: (addOrEditLogic.controllers[1].text))
+                        .toJson();
+                    addOrEditLogic.saveChanges(
+                        context: context,
+                        object: batteriModel,
+                        key: Constants.batteriPref);
+                  },
+                  child: Text('Save')),
+            ],
+          ),
         ),
       ),
     );

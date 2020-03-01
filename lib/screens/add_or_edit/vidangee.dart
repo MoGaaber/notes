@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:notes/constants/constants.dart';
-import 'package:notes/logic/vidange.dart';
+import 'package:notes/logic/add_or_edit.dart';
 import 'package:notes/models/courroie.dart';
 import 'package:notes/models/vidange.dart';
 import 'package:notes/widgets/text_field.dart';
@@ -17,12 +17,9 @@ class Vidangee extends StatelessWidget {
 // if doing something based on parameters
   @override
   Widget build(BuildContext context) {
-    VidangeLogic vidangeLogic =
-        Provider.of<VidangeLogic>(context, listen: false);
-
-    return Consumer<VidangeLogic>(
+    return Consumer<AddOrEditLogic>(
       builder:
-          (BuildContext context, VidangeLogic vidangeLogic, Widget child) =>
+          (BuildContext context, AddOrEditLogic vidangeLogic, Widget child) =>
               SafeArea(
         child: Scaffold(
           body: Form(

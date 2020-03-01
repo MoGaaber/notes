@@ -14,13 +14,13 @@ class VidangeModel {
       this.clim,
       this.fuel});
   Map<String, dynamic> toJson() => {
-        'km': km,
-        'nextOil': this.nextOil,
-        'date': this.date,
-        'oil': this.oil,
-        'air': this.air,
-        'fuel': this.fuel,
-        'clim': this.clim
+        'KM': km,
+        'Next Oil': this.nextOil,
+        'Date': this.date,
+        'Oil': this.oil,
+        'Air': this.air,
+        'Fuel': this.fuel,
+        'Clim': this.clim
       };
 }
 

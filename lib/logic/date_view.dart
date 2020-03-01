@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:notes/constants/constants.dart';
-import 'package:notes/logic/passed_parameters.dart';
-import 'package:notes/models/add_or_edit.dart';
+import 'package:notes/logic/globals.dart';
 import 'package:notes/models/batterie.dart';
 import 'package:notes/screens/add_or_edit/amortisseur.dart';
 import 'package:notes/screens/add_or_edit/batterie.dart';
@@ -19,29 +18,33 @@ class DateViewLogic extends ChangeNotifier {
   List<Map> addOrEditPages;
   List list;
   var pushResult;
-  GlobalVariables globalVariables;
+  Globals globalVariables;
 
   void initializeAddOrEditPages() {
     addOrEditPages = [
       {
         'page': Vidangee(),
         'route': Vidangee.route,
-        'refKey': Constants.vidangePref
+        'refKey': Constants.vidangePref,
+        'name': 'VIDANGE'
       },
       {
         'page': Courroie(),
         'route': Courroie.route,
-        'refKey': Constants.courroiePref
+        'refKey': Constants.courroiePref,
+        'name': 'COURROIE'
       },
       {
         'page': Armortisseur(),
         'route': Armortisseur.route,
-        'refKey': Constants.amortisseurPref
+        'refKey': Constants.amortisseurPref,
+        'name': 'ARMORTISSEUR'
       },
       {
         'page': Batterie(),
         'route': Batterie.route,
-        'refKey': Constants.batteriPref
+        'refKey': Constants.batteriPref,
+        'name': 'BATTERIE'
       }
     ];
   }
@@ -62,24 +65,26 @@ class DateViewLogic extends ChangeNotifier {
     notifyListeners();
   }
 
-  void navigateToEditItem({int index, BuildContext context}) async {
+  void navigateToSave({int index, BuildContext context}) async {
     globalVariables.dateViewIndex = index;
     pushResult = await navigateToAddOrEditPage(
-        context: context, object: AddOrEditModelArgs(index: index));
-    if (pushResult != null) list[pushResult['index']] = pushResult['element'];
+      context: context,
+    );
+
+    if (pushResult != null) {
+      if (index == null) {
+        list.add(pushResult);
+      } else {
+        list[index] = pushResult;
+      }
+    }
   }
 
-  void navigateToAddItem(BuildContext context) async {
-    // set it to null because it decides to add new one when it null
-    globalVariables.dateViewIndex = null;
-    pushResult = await navigateToAddOrEditPage(context: context);
-    if (pushResult != null) list.add(pushResult);
-  }
-
-  Future navigateToAddOrEditPage({BuildContext context, Object object}) {
+  Future navigateToAddOrEditPage({BuildContext context}) {
     return Navigator.pushNamed(
-        context, addOrEditPages[this.selectedMainViewElementIndex]['route'],
-        arguments: object);
+      context,
+      addOrEditPages[this.selectedMainViewElementIndex]['route'],
+    );
   }
 }
 //AddOrEditModelArgs(index: index)

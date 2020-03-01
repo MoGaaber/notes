@@ -5,10 +5,10 @@ class ArmortisseurModel {
 
   ArmortisseurModel({this.date, this.note, this.km, this.rear, this.front});
   Map<String, dynamic> toJson() => {
-        'rear': this.rear,
-        'front': this.front,
-        'date': this.date,
-        'note': this.note,
-        'km': this.km
+        'Rear / AV': this.rear,
+        'Front / AV': this.front,
+        'Date': this.date,
+        'Note': this.note,
+        'KM': this.km
       };
 }

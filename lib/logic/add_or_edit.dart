@@ -8,7 +8,8 @@ import 'package:notes/models/vidange.dart';
 import 'package:notes/screens/add_or_edit/vidangee.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class VidangeLogic extends ChangeNotifier {
+class AddOrEditLogic extends ChangeNotifier {
+  int test = 1;
   Map<String, dynamic> decodedelement;
   SharedPreferences sharedPreferences;
   List<TextEditingController> controllers;
@@ -17,17 +18,26 @@ class VidangeLogic extends ChangeNotifier {
   String date;
   Color color = Colors.black;
   int dateViewIndex;
-  VidangeLogic({@required this.sharedPreferences, int dateViewIndex}) {
+  List<VoidCallback> fetches;
+  int mainViewIndex;
+  bool front = false;
+  bool rear = false;
+
+  AddOrEditLogic(
+      {@required this.sharedPreferences,
+      @required this.dateViewIndex,
+      @required this.mainViewIndex}) {
     controllers = List.generate(6, (_) => TextEditingController());
     yesOrNo = List.filled(6, false);
-
-    this.dateViewIndex = dateViewIndex;
-    if (dateViewIndex != null) initFetchElement();
+    fetches = [fetchVidange, fetchCourroie, fetchAmortisseur, fetchBatterie];
+    if (dateViewIndex != null) {
+      fetches[mainViewIndex]();
+    }
   }
-  void initFetchElement() {
+  void fetchVidange() {
     decodedelement = jsonDecode(
         sharedPreferences.getStringList(Constants.vidangePref)[dateViewIndex]);
-    print(decodedelement);
+
     date = decodedelement['date'];
     controllers[0].text = decodedelement['km'].toString();
     controllers[1].text = decodedelement['nextOil'].toString();
@@ -47,6 +57,54 @@ class VidangeLogic extends ChangeNotifier {
     yesOrNo[1] = decodedelement['air']['yesOrNo'];
     yesOrNo[2] = decodedelement['fuel']['yesOrNo'];
     yesOrNo[3] = decodedelement['clim']['yesOrNo'];
+  }
+
+  void fetchBatterie() {
+    decodedelement = jsonDecode(
+        sharedPreferences.getStringList(Constants.batteriPref)[dateViewIndex]);
+    controllers[0].text = decodedelement['date'];
+    controllers[1].text = decodedelement['km'];
+    controllers[2].text = decodedelement['note'];
+  }
+
+  void fetchCourroie() {
+    decodedelement = jsonDecode(
+        sharedPreferences.getStringList(Constants.courroiePref)[dateViewIndex]);
+    date = decodedelement['date'];
+    controllers[0].text = decodedelement['km'].toString();
+    controllers[1].text = decodedelement['nextKm'].toString();
+    controllers[2].text = decodedelement['note'].toString();
+  }
+
+  void fetchAmortisseur() {
+    decodedelement = jsonDecode(sharedPreferences
+        .getStringList(Constants.amortisseurPref)[dateViewIndex]);
+    controllers[0].text = decodedelement['date'];
+    controllers[1].text = decodedelement['km'].toString();
+    controllers[2].text = decodedelement['note'];
+    yesOrNo[0] = decodedelement['front'];
+    yesOrNo[1] = decodedelement['rear'];
+  }
+
+  void saveChanges(
+      {BuildContext context, String key, Map<String, dynamic> object}) {
+    bool validate = formKey.currentState.validate();
+    if (date == null) {
+      color = Colors.red;
+    }
+
+    if (validate && date != null) {
+      var list = sharedPreferences.getStringList(key);
+      String encodedElement = jsonEncode(object);
+      if (dateViewIndex == null) {
+        list.add(encodedElement);
+      } else {
+        list[dateViewIndex] = jsonEncode(object);
+      }
+      sharedPreferences.setStringList(key, list).then((x) {
+        Navigator.pop(context, jsonEncode(object));
+      });
+    }
   }
 
   void save(BuildContext context) {
@@ -86,18 +144,12 @@ class VidangeLogic extends ChangeNotifier {
       String encodedElement = jsonEncode(vidangeModel.toJson());
       if (dateViewIndex == null) {
         list.add(encodedElement);
-        sharedPreferences.setStringList(Constants.vidangePref, list).then((x) {
-          Navigator.pop(context, jsonEncode(vidangeModel.toJson()));
-        });
       } else {
         list[dateViewIndex] = jsonEncode(vidangeModel.toJson());
-        sharedPreferences.setStringList(Constants.vidangePref, list).then((x) {
-          Navigator.pop(context, {
-            'element': jsonEncode(vidangeModel.toJson()),
-            'index': dateViewIndex
-          });
-        });
       }
+      sharedPreferences.setStringList(Constants.vidangePref, list).then((x) {
+        Navigator.pop(context, jsonEncode(vidangeModel.toJson()));
+      });
     }
 
     notifyListeners();

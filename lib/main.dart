@@ -1,29 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:notes/logic/amortisseur.dart';
 import 'package:notes/logic/main_view.dart';
-import 'package:notes/logic/vidange.dart';
-import 'package:notes/models/add_or_edit.dart';
-import 'package:notes/models/date_view.dart';
+import 'package:notes/logic/add_or_edit.dart';
 import 'package:notes/screens/add_or_edit/amortisseur.dart';
 import 'package:notes/screens/add_or_edit/batterie.dart';
+import 'package:notes/screens/add_or_edit/frenage.dart';
 import 'package:notes/screens/date_view/date_view.dart';
 import 'package:notes/screens/add_or_edit/vidangee.dart';
+import 'package:notes/temp/amortisseur.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'details_view/amortisseur.dart';
+import 'details_view/vidange.dart';
 import 'logic/date_view.dart';
-import 'logic/passed_parameters.dart';
+import 'logic/globals.dart';
 import 'screens/add_or_edit/courroie.dart';
 import 'screens/main_view/main_view.dart';
 
+/*
 void main() => runApp(MultiProvider(
       child: MyApp(),
       providers: [
         FutureProvider<SharedPreferences>(
             create: (BuildContext context) => SharedPreferences.getInstance()),
-        ChangeNotifierProvider(
-            create: (BuildContext context) => GlobalVariables())
+        ChangeNotifierProvider(create: (BuildContext context) => Globals()),
       ],
     ));
+*/
+
+void main() {
+  runApp(MyApp());
+}
 
 // This widget is the root of your application.
 
@@ -38,33 +45,79 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      home: ChangeNotifierProvider(
+        child: Vidangee(),
+        create: (BuildContext context) => AddOrEditLogic(
+            sharedPreferences: null, dateViewIndex: null, mainViewIndex: null),
+      ),
+      theme: ThemeData(
+          primaryTextTheme: TextTheme(title: TextStyle(color: Colors.white)),
+          primaryColor: Colors.orange,
+          accentColor: Colors.green,
+          popupMenuTheme: PopupMenuThemeData(
+              color: Colors.white,
+              textStyle: TextStyle(
+                color: Colors.black,
+              ),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(5)))),
+          scaffoldBackgroundColor: Colors.white),
+
+      /*
+
       initialRoute: MainView.route,
       routes: {
-        Batterie.route: (_) => Batterie(),
-        Armortisseur.route: (_) => Armortisseur(),
-        Courroie.route: (_) => Courroie(),
+        Batterie.route: (_) => ChangeNotifierProvider(
+            child: Batterie(),
+            create: (BuildContext context) => AddOrEditLogic(
+                mainViewIndex:
+                    Provider.of<Globals>(context, listen: false).mainViewIndex,
+                dateViewIndex:
+                    Provider.of<Globals>(context, listen: false).dateViewIndex,
+                sharedPreferences:
+                    Provider.of<SharedPreferences>(context, listen: false))),
+        Armortisseur.route: (_) => ChangeNotifierProvider(
+            child: Armortisseur(),
+            create: (BuildContext context) => AddOrEditLogic(
+                mainViewIndex:
+                    Provider.of<Globals>(context, listen: false).mainViewIndex,
+                dateViewIndex:
+                    Provider.of<Globals>(context, listen: false).dateViewIndex,
+                sharedPreferences:
+                    Provider.of<SharedPreferences>(context, listen: false))),
+        Courroie.route: (_) => ChangeNotifierProvider(
+            child: Courroie(),
+            create: (BuildContext context) => AddOrEditLogic(
+                mainViewIndex:
+                    Provider.of<Globals>(context, listen: false).mainViewIndex,
+                dateViewIndex:
+                    Provider.of<Globals>(context, listen: false).dateViewIndex,
+                sharedPreferences:
+                    Provider.of<SharedPreferences>(context, listen: false))),
         Vidangee.route: (_) => ChangeNotifierProvider(
-              create: (BuildContext context) => VidangeLogic(
-                  dateViewIndex:
-                      Provider.of<GlobalVariables>(context, listen: false)
-                          .dateViewIndex,
-                  sharedPreferences:
-                      Provider.of<SharedPreferences>(context, listen: false)),
-              child: Vidangee(),
-            ),
+            child: Vidangee(),
+            create: (BuildContext context) => AddOrEditLogic(
+                mainViewIndex:
+                    Provider.of<Globals>(context, listen: false).mainViewIndex,
+                dateViewIndex:
+                    Provider.of<Globals>(context, listen: false).dateViewIndex,
+                sharedPreferences:
+                    Provider.of<SharedPreferences>(context, listen: false))),
         MainView.route: (_) => ChangeNotifierProvider(
-            create: (BuildContext context) => MainViewLogic(context: context),
+            create: (BuildContext context) => MainViewLogic(
+                  context: context,
+                ),
             child: MainView()),
         DateView.route: (_) => ChangeNotifierProvider(
             create: (BuildContext context) => DateViewLogic(
                 context: context,
                 selectedMainViewElementIndex:
-                    Provider.of<GlobalVariables>(context, listen: false)
-                        .mainViewIndex,
+                    Provider.of<Globals>(context, listen: false).mainViewIndex,
                 sharedPreferences:
                     Provider.of<SharedPreferences>(context, listen: false)),
             child: DateView()),
       },
+*/
       debugShowCheckedModeBanner: false,
     );
   }
