@@ -21,7 +21,8 @@ class VidangeModel {
         'Oil': this.oil,
         'Air': this.air,
         'Fuel': this.fuel,
-        'Clim': this.clim
+        'Clim': this.clim,
+        'Note': this.note
       };
 }
 

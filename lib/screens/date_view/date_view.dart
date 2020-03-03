@@ -23,6 +23,9 @@ class DateView extends StatelessWidget {
     DateViewLogic dateViewLogic =
         Provider.of<DateViewLogic>(context, listen: true);
     Globals globals = Provider.of<Globals>(context, listen: true);
+    SharedPreferences sharedPreferences =
+        Provider.of<SharedPreferences>(context, listen: true);
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(

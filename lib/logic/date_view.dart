@@ -34,6 +34,9 @@ class DateViewLogic extends ChangeNotifier {
 */
     pageRefKey = globals.addOrEditPages[selectedMainViewElementIndex]['refKey'];
     list = sharedPreferences.getStringList(pageRefKey);
+    if (list == null) {
+      sharedPreferences.setStringList(pageRefKey, []);
+    }
   }
 
   void deleteItem({int index}) {

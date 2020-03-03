@@ -8,6 +8,7 @@ import 'package:notes/screens/date_view/date_view.dart';
 import 'package:notes/screens/add_or_edit/vidangee.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'details_view/details_view.dart';
 import 'logic/date_view.dart';
 import 'logic/globals.dart';
 import 'screens/add_or_edit/courroie.dart';
@@ -46,8 +47,9 @@ class _MyAppState extends State<MyApp> {
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
           scaffoldBackgroundColor: Colors.white),
-      initialRoute: MainView.route,
+      initialRoute: DetailsView.route,
       routes: {
+        DetailsView.route: (_) => DetailsView(),
         Batterie.route: (_) => ChangeNotifierProvider(
             child: Batterie(),
             create: (BuildContext context) => AddOrEditLogic(

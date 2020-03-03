@@ -1,49 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:notes/logic/globals.dart';
+import 'package:notes/models/vidange.dart';
+import 'package:notes/screens/add_or_edit/vidangee.dart';
 import 'package:provider/provider.dart';
 
 class DetailsView extends StatelessWidget {
+  var test = VidangeModel(
+    air: VidangeFilterModel(price: 20, excited: true).toJson(),
+    clim: VidangeFilterModel(price: 20, excited: true).toJson(),
+    oil: VidangeFilterModel(price: 20, excited: true).toJson(),
+    fuel: VidangeFilterModel(price: 20, excited: true).toJson(),
+    nextOil: 20,
+    km: 20,
+    note: '@@@',
+    date: '12/12/2020',
+  ).toJson();
+
+  static const route = '/details';
   @override
   Widget build(BuildContext context) {
+/*
     var test = {
-      'Date': 'this.date',
-      'KM': 'this.km',
+      'Date': '12/12/2020',
+      'KM': '55555665',
       'Rear / AV': true,
       'Front / AV': false,
-      'Note': 'this.note',
+      'Note':
+          'this.notethis.notethis.notethis.notethis.notethis.notethis.notethis.notethis.notethis.notethis.notethis.notethis.notethis.notethis.note',
     };
-
+*/
     return SafeArea(
       child: Scaffold(
           floatingActionButton: SpeedDial(
             // both default to 16
-            marginRight: 18,
-            marginBottom: 20,
             animatedIcon: AnimatedIcons.menu_close,
             animatedIconTheme: IconThemeData(size: 22.0),
             closeManually: false,
             curve: Curves.bounceIn,
             overlayColor: Colors.black,
-            overlayOpacity: 0.5,
+            overlayOpacity: 0.8,
             onOpen: () => print('OPENING DIAL'),
             onClose: () => print('DIAL CLOSED'),
-            tooltip: 'Options',
-            heroTag: 'speed-dial-hero-tag',
             backgroundColor: Colors.orange,
             foregroundColor: Colors.white,
             elevation: 8.0,
             shape: CircleBorder(),
             children: [
               SpeedDialChild(
-                child: Icon(Icons.brush),
-                backgroundColor: Colors.blue,
+                child: Icon(
+                  Icons.brush,
+                  color: Colors.white,
+                ),
+                backgroundColor: Colors.green,
                 label: 'Edit',
                 labelStyle: TextStyle(fontSize: 18.0),
                 onTap: () => print('SECOND CHILD'),
               ),
               SpeedDialChild(
-                child: Icon(Icons.remove_circle_outline),
+                child: Icon(
+                  Icons.remove_circle_outline,
+                  color: Colors.white,
+                ),
                 backgroundColor: Colors.red,
                 label: 'Delete',
                 labelStyle: TextStyle(fontSize: 18.0),
@@ -74,22 +92,7 @@ class DetailsView extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.w700),
                       ),
-                      trailing: test.values.toList()[index] is bool
-                          ? Material(
-                              color: test.values.toList()[index]
-                                  ? Colors.green
-                                  : Colors.red,
-                              type: MaterialType.circle,
-                              child: Icon(
-                                test.values.toList()[index]
-                                    ? Icons.check
-                                    : Icons.close,
-                                color: Colors.white,
-                              ),
-                            )
-                          : test.keys.toList()[index] == 'Note'
-                              ? null
-                              : Text(test.values.toList()[index]),
+                      trailing: trailing(index),
                     ),
                     itemCount: test.length,
                   ),
@@ -98,6 +101,32 @@ class DetailsView extends StatelessWidget {
             ),
           )),
     );
+  }
+
+  Widget trailing(int index) {
+    var values = test.values.toList()[index];
+    if (values is bool) {
+      return Material(
+        color: test.values.toList()[index] ? Colors.green : Colors.red,
+        type: MaterialType.circle,
+        child: Icon(
+          test.values.toList()[index] ? Icons.check : Icons.close,
+          color: Colors.white,
+        ),
+      );
+    } else if (values is String ||
+        values is num && test.keys.toList()[index] != 'Note') {
+      return Text(test.values.toList()[index].toString());
+    } else if (values is Map) {
+      return Material(
+        color: values[''] ? Colors.green : Colors.red,
+        type: MaterialType.circle,
+        child: Icon(
+          test.values.toList()[index] ? Icons.check : Icons.close,
+          color: Colors.white,
+        ),
+      );
+    }
   }
 }
 /*

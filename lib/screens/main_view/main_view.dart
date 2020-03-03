@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class MainView extends StatelessWidget {
   static const String route = '/';
-  Widget body() {}
+
   @override
   Widget build(BuildContext context) {
     SharedPreferences sharedPreferences =
@@ -31,100 +31,42 @@ class MainView extends StatelessWidget {
               )
             : ScrollConfiguration(
                 behavior: ScrollBehavior(),
-                child: sharedPreferences.getStringList(Constants.vidangePref) ==
-                        null
-                    ? FutureBuilder(
-                        future: Future.wait([
-                          sharedPreferences
-                              .setStringList(Constants.amortisseurPref, []),
-                          sharedPreferences
-                              .setStringList(Constants.batteriPref, []),
-                          sharedPreferences
-                              .setStringList(Constants.courroiePref, []),
-                          sharedPreferences
-                              .setStringList(Constants.vidangePref, []),
-                          sharedPreferences
-                              .setStringList(Constants.frenagePref, []),
-                        ]),
-                        builder:
-                            (BuildContext context, AsyncSnapshot snapshot) {
-                          return ListView.separated(
-                            itemCount: globals.addOrEditPages.length,
-                            itemBuilder: (BuildContext context, int index) =>
-                                Column(
-                              children: <Widget>[
-                                ListTile(
-                                  contentPadding: EdgeInsets.all(10),
-                                  leading: Image.asset(
-                                    'assets/images/${globals.addOrEditPages[index]['icon']}',
-                                    width: index == 0 ? 50 : 35,
-                                    height: index == 0 ? 50 : 35,
-                                    fit: BoxFit.cover,
-                                  ),
-                                  trailing: Icon(
-                                    Icons.arrow_forward_ios,
-                                    size: 20,
-                                    color: Colors.orange,
-                                  ),
-                                  onTap: () {
-                                    mainViewLogic.navigateToDateView(
-                                      index: index,
-                                      context: context,
-                                    );
-                                  },
-                                  title: Text(
-                                    globals.addOrEditPages[index]['name'],
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            separatorBuilder:
-                                (BuildContext context, int index) => Divider(
-                              indent: 30,
-                            ),
+                child: ListView.separated(
+                  itemCount: globals.addOrEditPages.length,
+                  itemBuilder: (BuildContext context, int index) => Column(
+                    children: <Widget>[
+                      ListTile(
+                        contentPadding: EdgeInsets.all(10),
+                        leading: Image.asset(
+                          'assets/images/${globals.addOrEditPages[index]['icon']}',
+                          width: index == 0 ? 50 : 35,
+                          height: index == 0 ? 50 : 35,
+                          fit: BoxFit.cover,
+                        ),
+                        trailing: Icon(
+                          Icons.arrow_forward_ios,
+                          size: 20,
+                          color: Colors.orange,
+                        ),
+                        onTap: () {
+                          mainViewLogic.navigateToDateView(
+                            index: index,
+                            context: context,
                           );
                         },
-                      )
-                    : ListView.separated(
-                        itemCount: globals.addOrEditPages.length,
-                        itemBuilder: (BuildContext context, int index) =>
-                            Column(
-                          children: <Widget>[
-                            ListTile(
-                              contentPadding: EdgeInsets.all(10),
-                              leading: Image.asset(
-                                'assets/images/${globals.addOrEditPages[index]['icon']}',
-                                width: index == 0 ? 50 : 35,
-                                height: index == 0 ? 50 : 35,
-                                fit: BoxFit.cover,
-                              ),
-                              trailing: Icon(
-                                Icons.arrow_forward_ios,
-                                size: 20,
-                                color: Colors.orange,
-                              ),
-                              onTap: () {
-                                mainViewLogic.navigateToDateView(
-                                  index: index,
-                                  context: context,
-                                );
-                              },
-                              title: Text(
-                                globals.addOrEditPages[index]['name'],
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
-                              ),
-                            ),
-                          ],
-                        ),
-                        separatorBuilder: (BuildContext context, int index) =>
-                            Divider(
-                          indent: 30,
+                        title: Text(
+                          globals.addOrEditPages[index]['name'],
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20),
                         ),
                       ),
+                    ],
+                  ),
+                  separatorBuilder: (BuildContext context, int index) =>
+                      Divider(
+                    indent: 30,
+                  ),
+                ),
               ),
 /*
         body: FutureBuilder<SharedPreferences>(
