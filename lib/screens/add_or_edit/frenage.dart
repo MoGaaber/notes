@@ -178,9 +178,6 @@ class Freinage extends StatelessWidget {
                       Center(
                         child: MyTextField(
                           label: 'KM',
-                          inputFormatters: [
-                            WhitelistingTextInputFormatter.digitsOnly
-                          ],
                           textEditingController: addOrEditLogic.controllers[0],
                         ),
                       ),
@@ -256,9 +253,6 @@ class Freinage extends StatelessWidget {
                       Center(
                         child: MyTextField(
                           label: 'KM',
-                          inputFormatters: [
-                            WhitelistingTextInputFormatter.digitsOnly
-                          ],
                           textEditingController: addOrEditLogic.controllers[1],
                         ),
                       ),

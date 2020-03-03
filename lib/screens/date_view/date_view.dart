@@ -22,9 +22,11 @@ class DateView extends StatelessWidget {
   Widget build(BuildContext context) {
     DateViewLogic dateViewLogic =
         Provider.of<DateViewLogic>(context, listen: true);
-    Globals globals = Provider.of<Globals>(context, listen: true);
-    SharedPreferences sharedPreferences =
-        Provider.of<SharedPreferences>(context, listen: true);
+    Globals globals = Provider.of<Globals>(context, listen: false);
+    double height = globals.screen.height;
+    double width = globals.screen.width;
+    double aspectRatio = globals.screen.aspectRatio;
+    double textScale = globals.screen.textScale;
 
     return SafeArea(
       child: Scaffold(
@@ -41,20 +43,15 @@ class DateView extends StatelessWidget {
           ],
           title: Text(
             globals.addOrEditPages[globals.mainViewIndex]['name'],
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
-          leading: IconButton(
-              icon: Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              }),
         ),
         floatingActionButton: FloatingActionButton(
           child: Icon(
             Icons.add,
+            size: 30 / globals.screen.aspectRatio * globals.screen.aspectRatio,
             color: Colors.white,
           ),
           elevation: 1,
@@ -63,6 +60,7 @@ class DateView extends StatelessWidget {
           },
         ),
         body: dateViewLogic.list.length == 0
+/*
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
@@ -73,19 +71,26 @@ class DateView extends StatelessWidget {
                   Center(
                     child: Icon(
                       Icons.do_not_disturb,
-                      size: 120,
+                      size: 120 /
+                          globals.screen.aspectRatio *
+                          globals.screen.aspectRatio,
                       color: Colors.orange,
                     ),
                   ),
                   Center(
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 10),
+                      padding: EdgeInsets.only(
+                          top: 10 /
+                              globals.screen.height *
+                              globals.screen.height),
                       child: Text(
                         "Not item added yet",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: Colors.black54,
-                            fontSize: 30,
+                            fontSize: 30 /
+                                globals.screen.aspectRatio *
+                                globals.screen.aspectRatio,
                             fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -95,8 +100,17 @@ class DateView extends StatelessWidget {
                   ),
                 ],
               )
+*/
+            ? Center(
+                child: Icon(
+                  Icons.do_not_disturb,
+                  size: 100 / aspectRatio * aspectRatio,
+                  color: Colors.orange,
+                ),
+              )
             : ListView.separated(
-                padding: EdgeInsets.only(top: 1),
+                padding: EdgeInsets.only(
+                    top: 1 / globals.screen.height * globals.screen.height),
                 itemCount: dateViewLogic.list.length,
                 itemBuilder: (BuildContext context, int index) => Dismissible(
                   key: GlobalKey(debugLabel: index.toString()),
@@ -113,7 +127,7 @@ class DateView extends StatelessWidget {
                         title: Text(
                           jsonDecode(dateViewLogic.list[index])['Date'],
                           style: GoogleFonts.cairo(
-                              fontSize: 30,
+                              fontSize: 30 / textScale * textScale,
                               color: Colors.black,
                               fontWeight: FontWeight.w700),
                         ),
@@ -130,7 +144,7 @@ class DateView extends StatelessWidget {
                               type: MaterialType.circle,
                               child: Icon(
                                 Icons.remove,
-                                size: 30,
+                                size: 30 / aspectRatio * aspectRatio,
                                 color: Colors.white,
                               ),
                             ),
@@ -141,7 +155,7 @@ class DateView extends StatelessWidget {
                   ),
                 ),
                 separatorBuilder: (BuildContext context, int index) => Divider(
-                  height: 20,
+                  height: height / 20 * height,
                 ),
               ),
       ),

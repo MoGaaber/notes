@@ -36,18 +36,28 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      color: Colors.orange,
+      title: 'Car Note',
       theme: ThemeData(
           primaryTextTheme: TextTheme(title: TextStyle(color: Colors.white)),
           primaryColor: Colors.orange,
           iconTheme: IconThemeData(color: Colors.white),
           accentColor: Colors.orange,
+          dialogTheme: DialogTheme(
+              titleTextStyle: TextStyle(fontSize: 16, color: Colors.black),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              contentTextStyle: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black)),
           primaryColorLight: Colors.white,
           primaryColorDark: Colors.white,
           accentColorBrightness: Brightness.light,
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
           scaffoldBackgroundColor: Colors.white),
-      initialRoute: DetailsView.route,
+      initialRoute: MainView.route,
       routes: {
         DetailsView.route: (_) => DetailsView(),
         Batterie.route: (_) => ChangeNotifierProvider(
@@ -95,7 +105,7 @@ class _MyAppState extends State<MyApp> {
                 sharedPreferences:
                     Provider.of<SharedPreferences>(context, listen: false))),
         MainView.route: (_) => ChangeNotifierProvider(
-            create: (BuildContext context) => MainViewLogic(),
+            create: (BuildContext context) => MainViewLogic(context),
             child: MainView()),
         DateView.route: (_) => ChangeNotifierProvider.value(
             value: DateViewLogic(

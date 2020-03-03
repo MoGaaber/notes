@@ -101,7 +101,6 @@ class Courroie extends StatelessWidget {
               Center(
                 child: MyTextField(
                   label: 'KM',
-                  inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
                   textEditingController: addOrEditLogic.controllers[0],
                 ),
               ),
@@ -111,7 +110,6 @@ class Courroie extends StatelessWidget {
               Center(
                 child: MyTextField(
                   label: 'Next Km',
-                  inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
                   textEditingController: addOrEditLogic.controllers[1],
                 ),
               ),
@@ -122,7 +120,6 @@ class Courroie extends StatelessWidget {
                 child: MyTextField(
                   label: 'Note',
                   textEditingController: addOrEditLogic.controllers[2],
-                  textInputType: TextInputType.text,
                 ),
               ),
             ],

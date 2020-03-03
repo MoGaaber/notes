@@ -116,21 +116,13 @@ class Armortisseur extends StatelessWidget {
                 Center(
                   child: MyTextField(
                     label: 'KM',
-                    inputFormatters: [
-                      WhitelistingTextInputFormatter.digitsOnly
-                    ],
-                    textEditingController: addOrEditLogic.controllers[0],
                   ),
                 ),
                 SizedBox.fromSize(
                   size: Size.fromHeight(30),
                 ),
                 Center(
-                  child: MyTextField(
-                    textInputType: TextInputType.text,
-                    label: 'Note',
-                    textEditingController: addOrEditLogic.controllers[1],
-                  ),
+                  child: MyTextField(),
                 ),
                 SizedBox.fromSize(
                   size: Size.fromHeight(40),

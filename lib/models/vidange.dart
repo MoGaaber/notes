@@ -1,10 +1,10 @@
 class VidangeModel {
   num km, nextOil;
   String date, note;
-  Map oil;
-  Map air;
-  Map fuel;
-  Map clim;
+  VidangeFilterModel oil;
+  VidangeFilterModel air;
+  VidangeFilterModel fuel;
+  VidangeFilterModel clim;
   VidangeModel(
       {this.km,
       this.nextOil,
@@ -16,12 +16,12 @@ class VidangeModel {
       this.fuel});
   Map<String, dynamic> toJson() => {
         'KM': km,
-        'Next Oil': this.nextOil,
+        'Next Oil Change': this.nextOil,
         'Date': this.date,
-        'Oil': this.oil,
-        'Air': this.air,
-        'Fuel': this.fuel,
-        'Clim': this.clim,
+        'Oil / Huile': this.oil.toJson(),
+        'Air': this.air.toJson(),
+        'Fuel / Carburant': this.fuel.toJson(),
+        'Clim': this.clim.toJson(),
         'Note': this.note
       };
 }

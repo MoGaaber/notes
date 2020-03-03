@@ -105,7 +105,6 @@ class Batterie extends StatelessWidget {
               ),
               Center(
                 child: MyTextField(
-                  inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
                   textEditingController: addOrEditLogic.controllers[0],
                   label: 'Km',
                 ),
@@ -115,7 +114,6 @@ class Batterie extends StatelessWidget {
               ),
               Center(
                 child: MyTextField(
-                  textInputType: TextInputType.text,
                   textEditingController: addOrEditLogic.controllers[1],
                   label: 'Note',
                 ),

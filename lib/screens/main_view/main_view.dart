@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:notes/constants/constants.dart';
 import 'package:notes/logic/globals.dart';
 import 'package:notes/logic/main_view.dart';
+import 'package:notes/models/vidange.dart';
+import 'package:notes/utility/screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,9 +15,13 @@ class MainView extends StatelessWidget {
   Widget build(BuildContext context) {
     SharedPreferences sharedPreferences =
         Provider.of<SharedPreferences>(context, listen: true);
-    Globals globals = Provider.of<Globals>(context, listen: false);
     MainViewLogic mainViewLogic =
         Provider.of<MainViewLogic>(context, listen: false);
+    Globals globals = Provider.of<Globals>(context, listen: false);
+    globals.screen = Screen(
+        size: MediaQuery.of(context).size,
+        textScale: MediaQuery.textScaleFactorOf(context));
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -32,20 +38,33 @@ class MainView extends StatelessWidget {
             : ScrollConfiguration(
                 behavior: ScrollBehavior(),
                 child: ListView.separated(
-                  itemCount: globals.addOrEditPages.length,
+                  itemCount: mainViewLogic.globals.addOrEditPages.length,
                   itemBuilder: (BuildContext context, int index) => Column(
                     children: <Widget>[
                       ListTile(
-                        contentPadding: EdgeInsets.all(10),
+                        contentPadding:
+                            EdgeInsets.all(10 / globals.screen.aspectRatio),
                         leading: Image.asset(
-                          'assets/images/${globals.addOrEditPages[index]['icon']}',
-                          width: index == 0 ? 50 : 35,
-                          height: index == 0 ? 50 : 35,
+                          'assets/images/${mainViewLogic.globals.addOrEditPages[index]['icon']}',
+                          width: index == 0
+                              ? 50 / globals.screen.width * globals.screen.width
+                              : 35 /
+                                  globals.screen.width *
+                                  globals.screen.width,
+                          height: index == 0
+                              ? 50 /
+                                  globals.screen.height *
+                                  globals.screen.height
+                              : 35 /
+                                  globals.screen.height *
+                                  globals.screen.height,
                           fit: BoxFit.cover,
                         ),
                         trailing: Icon(
                           Icons.arrow_forward_ios,
-                          size: 20,
+                          size: 20 /
+                              globals.screen.aspectRatio *
+                              globals.screen.aspectRatio,
                           color: Colors.orange,
                         ),
                         onTap: () {
@@ -55,17 +74,18 @@ class MainView extends StatelessWidget {
                           );
                         },
                         title: Text(
-                          globals.addOrEditPages[index]['name'],
+                          mainViewLogic.globals.addOrEditPages[index]['name'],
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20 /
+                                  globals.screen.textScale *
+                                  globals.screen.textScale),
                         ),
                       ),
                     ],
                   ),
                   separatorBuilder: (BuildContext context, int index) =>
-                      Divider(
-                    indent: 30,
-                  ),
+                      Divider(),
                 ),
               ),
 /*

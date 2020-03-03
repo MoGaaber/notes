@@ -1,21 +1,37 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:notes/logic/globals.dart';
+import 'package:notes/models/amortisseur.dart';
+import 'package:notes/models/frienage.dart';
 import 'package:notes/models/vidange.dart';
 import 'package:notes/screens/add_or_edit/vidangee.dart';
 import 'package:provider/provider.dart';
 
 class DetailsView extends StatelessWidget {
+  var test = ArmortisseurModel(
+          front: true, rear: false, km: 20, date: '!!', note: '!!!!')
+      .toJson();
+/*
   var test = VidangeModel(
-    air: VidangeFilterModel(price: 20, excited: true).toJson(),
-    clim: VidangeFilterModel(price: 20, excited: true).toJson(),
-    oil: VidangeFilterModel(price: 20, excited: true).toJson(),
-    fuel: VidangeFilterModel(price: 20, excited: true).toJson(),
-    nextOil: 20,
-    km: 20,
-    note: '@@@',
-    date: '12/12/2020',
-  ).toJson();
+          note: 'helloo',
+          date: '12/12/1212',
+          km: 20,
+          nextOil: 20,
+          oil: VidangeFilterModel(excited: true, price: 12),
+          air: VidangeFilterModel(excited: false, price: null),
+          fuel: VidangeFilterModel(excited: false, price: 2222),
+          clim: VidangeFilterModel(price: 222, excited: false))
+      .toJson();
+
+  var test = FrienageModel(
+          date: '12/12/2020',
+          secondInnerModel: InnerModel(km: 12, rear: true, front: false),
+          firstInnerModel: InnerModel(km: 12, rear: true, front: false))
+      .toJson();
+
+
+      */
 
   static const route = '/details';
   @override
@@ -32,73 +48,137 @@ class DetailsView extends StatelessWidget {
 */
     return SafeArea(
       child: Scaffold(
-          floatingActionButton: SpeedDial(
-            // both default to 16
-            animatedIcon: AnimatedIcons.menu_close,
-            animatedIconTheme: IconThemeData(size: 22.0),
-            closeManually: false,
-            curve: Curves.bounceIn,
-            overlayColor: Colors.black,
-            overlayOpacity: 0.8,
-            onOpen: () => print('OPENING DIAL'),
-            onClose: () => print('DIAL CLOSED'),
-            backgroundColor: Colors.orange,
-            foregroundColor: Colors.white,
-            elevation: 8.0,
-            shape: CircleBorder(),
-            children: [
-              SpeedDialChild(
-                child: Icon(
-                  Icons.brush,
-                  color: Colors.white,
-                ),
-                backgroundColor: Colors.green,
-                label: 'Edit',
-                labelStyle: TextStyle(fontSize: 18.0),
-                onTap: () => print('SECOND CHILD'),
-              ),
-              SpeedDialChild(
-                child: Icon(
-                  Icons.remove_circle_outline,
-                  color: Colors.white,
-                ),
-                backgroundColor: Colors.red,
-                label: 'Delete',
-                labelStyle: TextStyle(fontSize: 18.0),
-                onTap: () => print('THIRD CHILD'),
-              ),
-            ],
-          ),
           appBar: AppBar(
-            title: Text(' Amortisseur Details'),
+            actions: <Widget>[
+              IconButton(icon: Icon(Icons.brush), onPressed: () {}),
+              IconButton(
+                  icon: Icon(Icons.remove_circle_outline),
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (_) => AlertDialog(
+                              title: Text('Delete confirmation'),
+                              content: Text('Are you sure ?!'),
+                              backgroundColor: Colors.white,
+                              actions: <Widget>[
+                                FlatButton(
+                                    textColor: Colors.orange,
+                                    onPressed: () {},
+                                    child: Text('Yes')),
+                                FlatButton(
+                                  onPressed: () {},
+                                  child: Text('No'),
+                                  textColor: Colors.orange,
+                                )
+                              ],
+                            ));
+                  }),
+            ],
+            iconTheme: IconThemeData(color: Colors.white),
+            title: Text(
+              'Amortisseur Details',
+              style: TextStyle(fontSize: 19.5),
+            ),
           ),
           body: ScrollConfiguration(
             behavior: ScrollBehavior(),
-            child: Column(
+            child: ListView(
+              padding: EdgeInsets.only(top: 5),
               children: <Widget>[
-                Expanded(
-                  child: ListView.separated(
-                    separatorBuilder: (BuildContext context, int index) =>
-                        Divider(
-                      endIndent: 20,
-                      indent: 20,
-                    ),
-                    itemBuilder: (BuildContext context, int index) => ListTile(
-                      subtitle: test.keys.toList()[index] == 'Note'
-                          ? Text(test.values.toList()[index])
-                          : null,
-                      title: Text(
-                        test.keys.toList()[index],
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w700),
-                      ),
-                      trailing: trailing(index),
-                    ),
-                    itemCount: test.length,
-                  ),
-                ),
+                for (var x in test.keys)
+                  test[x] is Map
+                      ? ExpansionTile(
+                          children: <Widget>[
+                            for (var key in test[x].keys)
+                              if (test[x][key] != null)
+                                ListTile(
+                                  trailing: test[x][key] is bool
+                                      ? Material(
+                                          color: test[x][key]
+                                              ? Colors.green
+                                              : Colors.red,
+                                          type: MaterialType.circle,
+                                          child: Icon(
+                                            test[x][key]
+                                                ? Icons.check
+                                                : Icons.close,
+                                            color: Colors.white,
+                                          ),
+                                        )
+                                      : Text(
+                                          test[x][key].toString(),
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.green),
+                                        ),
+                                  title: Text(
+                                    key.toString(),
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                )
+                          ],
+                          title: Text(
+                            x,
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.w700),
+                          ),
+                        )
+                      : ListTile(
+                          trailing: test[x] is bool
+                              ? Material(
+                                  color: test[x] ? Colors.green : Colors.red,
+                                  type: MaterialType.circle,
+                                  child: Icon(
+                                    test[x] ? Icons.check : Icons.close,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : Text(
+                                  test[x].toString(),
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.green),
+                                ),
+                          title: Text(
+                            x,
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.w700),
+                          ),
+                        )
               ],
             ),
+/*
+            child: ListView.separated(
+              separatorBuilder: (BuildContext context, int index) => Divider(
+                endIndent: 20,
+                indent: 20,
+              ),
+              itemBuilder: (BuildContext context, int index) =>
+
+*/
+/*
+                  ListTile(
+                subtitle: test.keys.toList()[index] == 'Note'
+                    ? Text(test.values.toList()[index])
+                    : null,
+                title: Text(
+                  test.keys.toList()[index],
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                ),
+                trailing: trailing(index),
+              ),
+*/ /*
+
+                  Column(
+                children: <Widget>[Text('Disc Frien',)],
+              ),
+              itemCount: test.length,
+            ),
+*/
           )),
     );
   }
@@ -118,6 +198,7 @@ class DetailsView extends StatelessWidget {
         values is num && test.keys.toList()[index] != 'Note') {
       return Text(test.values.toList()[index].toString());
     } else if (values is Map) {
+/*
       return Material(
         color: values[''] ? Colors.green : Colors.red,
         type: MaterialType.circle,
@@ -126,6 +207,7 @@ class DetailsView extends StatelessWidget {
           color: Colors.white,
         ),
       );
+*/
     }
   }
 }

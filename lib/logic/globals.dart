@@ -7,6 +7,8 @@ import 'package:notes/screens/add_or_edit/batterie.dart';
 import 'package:notes/screens/add_or_edit/courroie.dart';
 import 'package:notes/screens/add_or_edit/frenage.dart';
 import 'package:notes/screens/add_or_edit/vidangee.dart';
+import 'package:notes/utility/screen.dart';
+import 'package:notes/widgets/text_field.dart';
 import 'package:provider/provider.dart';
 
 import 'add_or_edit.dart';
@@ -17,9 +19,16 @@ class Globals extends ChangeNotifier {
   List<Map<String, dynamic>> addOrEditPages;
   int controllersLength;
   int yesNoLength;
+  Screen screen;
+
   void initializeAddOrEditPages() {
     addOrEditPages = [
       {
+        'textFields': [
+          {'type': TextFieldType.number, 'label': 'KM / Miles'},
+          {'type': TextFieldType.number, 'label': 'Next Oil Change'},
+          {'type': TextFieldType.text, 'label': 'Note'}
+        ],
         'controllersLength': 7,
         'yesNoLength': 4,
         'route': Vidangee.route,
