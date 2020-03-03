@@ -16,7 +16,6 @@ import 'logic/globals.dart';
 import 'screens/add_or_edit/courroie.dart';
 import 'screens/main_view/main_view.dart';
 
-/*
 void main() => runApp(MultiProvider(
       child: MyApp(),
       providers: [
@@ -25,26 +24,8 @@ void main() => runApp(MultiProvider(
         ChangeNotifierProvider(create: (BuildContext context) => Globals()),
       ],
     ));
-*/
-void main() {
-  runApp(Q());
-}
 
-class Q extends StatefulWidget {
-  @override
-  _QState createState() => _QState();
-}
 
-class _QState extends State<Q> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        floatingActionButton: FloatingActionButton(onPressed: () {}),
-      ),
-    );
-  }
-}
 
 // This widget is the root of your application.
 
