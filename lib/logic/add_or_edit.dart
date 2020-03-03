@@ -6,7 +6,10 @@ import 'package:intl/intl.dart';
 import 'package:notes/constants/constants.dart';
 import 'package:notes/models/vidange.dart';
 import 'package:notes/screens/add_or_edit/vidangee.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'globals.dart';
 
 class AddOrEditLogic extends ChangeNotifier {
   int test = 1;
@@ -16,19 +19,23 @@ class AddOrEditLogic extends ChangeNotifier {
   List<bool> yesOrNo;
   var formKey = GlobalKey<FormState>();
   String date;
-  Color color = Colors.black;
+  Color dateColor = Colors.black;
   int dateViewIndex;
   List<VoidCallback> fetches;
   int mainViewIndex;
   bool front = false;
   bool rear = false;
-
+  bool formIsValid = true;
   AddOrEditLogic(
       {@required this.sharedPreferences,
       @required this.dateViewIndex,
-      @required this.mainViewIndex}) {
-    controllers = List.generate(6, (_) => TextEditingController());
-    yesOrNo = List.filled(6, false);
+      @required this.mainViewIndex,
+      @required List addOrEditPages}) {
+    date = DateFormat.yMd().format(DateTime.now());
+    controllers = List.generate(
+        addOrEditPages[mainViewIndex]['controllersLength'],
+        (_) => TextEditingController());
+    yesOrNo = List.filled(addOrEditPages[mainViewIndex]['yesNoLength'], false);
     fetches = [fetchVidange, fetchCourroie, fetchAmortisseur, fetchBatterie];
     if (dateViewIndex != null) {
       fetches[mainViewIndex]();
@@ -88,25 +95,19 @@ class AddOrEditLogic extends ChangeNotifier {
 
   void saveChanges(
       {BuildContext context, String key, Map<String, dynamic> object}) {
-    bool validate = formKey.currentState.validate();
-    if (date == null) {
-      color = Colors.red;
+    var list = sharedPreferences.getStringList(key);
+    String encodedElement = jsonEncode(object);
+    if (dateViewIndex == null) {
+      list.add(encodedElement);
+    } else {
+      list[dateViewIndex] = jsonEncode(object);
     }
-
-    if (validate && date != null) {
-      var list = sharedPreferences.getStringList(key);
-      String encodedElement = jsonEncode(object);
-      if (dateViewIndex == null) {
-        list.add(encodedElement);
-      } else {
-        list[dateViewIndex] = jsonEncode(object);
-      }
-      sharedPreferences.setStringList(key, list).then((x) {
-        Navigator.pop(context, jsonEncode(object));
-      });
-    }
+    sharedPreferences.setStringList(key, list).then((x) {
+      Navigator.pop(context, jsonEncode(object));
+    });
   }
 
+/*
   void save(BuildContext context) {
     bool validate = formKey.currentState.validate();
     if (date == null) {
@@ -154,6 +155,7 @@ class AddOrEditLogic extends ChangeNotifier {
 
     notifyListeners();
   }
+*/
 
   void showDatePick(BuildContext context) {
     showDatePicker(

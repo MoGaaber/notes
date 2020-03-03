@@ -1,6 +1,6 @@
 class ArmortisseurModel {
   String date, note;
-  double km;
+  num km;
   bool rear, front;
 
   ArmortisseurModel({this.date, this.note, this.km, this.rear, this.front});

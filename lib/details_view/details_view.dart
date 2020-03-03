@@ -3,11 +3,9 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:notes/logic/globals.dart';
 import 'package:provider/provider.dart';
 
-class AmortisseurDetailsView extends StatelessWidget {
+class DetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Globals globals = Provider.of<Globals>(context, listen: false);
-
     var test = {
       'Date': 'this.date',
       'KM': 'this.km',
@@ -58,37 +56,45 @@ class AmortisseurDetailsView extends StatelessWidget {
           ),
           body: ScrollConfiguration(
             behavior: ScrollBehavior(),
-            child: ListView.separated(
-              separatorBuilder: (BuildContext context, int index) => Divider(
-                endIndent: 20,
-                indent: 20,
-              ),
-              itemBuilder: (BuildContext context, int index) => ListTile(
-                subtitle: test.keys.toList()[index] == 'Note'
-                    ? Text(test.values.toList()[index])
-                    : null,
-                title: Text(
-                  test.keys.toList()[index],
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  child: ListView.separated(
+                    separatorBuilder: (BuildContext context, int index) =>
+                        Divider(
+                      endIndent: 20,
+                      indent: 20,
+                    ),
+                    itemBuilder: (BuildContext context, int index) => ListTile(
+                      subtitle: test.keys.toList()[index] == 'Note'
+                          ? Text(test.values.toList()[index])
+                          : null,
+                      title: Text(
+                        test.keys.toList()[index],
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w700),
+                      ),
+                      trailing: test.values.toList()[index] is bool
+                          ? Material(
+                              color: test.values.toList()[index]
+                                  ? Colors.green
+                                  : Colors.red,
+                              type: MaterialType.circle,
+                              child: Icon(
+                                test.values.toList()[index]
+                                    ? Icons.check
+                                    : Icons.close,
+                                color: Colors.white,
+                              ),
+                            )
+                          : test.keys.toList()[index] == 'Note'
+                              ? null
+                              : Text(test.values.toList()[index]),
+                    ),
+                    itemCount: test.length,
+                  ),
                 ),
-                trailing: test.values.toList()[index] is bool
-                    ? Material(
-                        color: test.values.toList()[index]
-                            ? Colors.green
-                            : Colors.red,
-                        type: MaterialType.circle,
-                        child: Icon(
-                          test.values.toList()[index]
-                              ? Icons.check
-                              : Icons.close,
-                          color: Colors.white,
-                        ),
-                      )
-                    : test.keys.toList()[index] == 'Note'
-                        ? null
-                        : Text(test.values.toList()[index]),
-              ),
-              itemCount: test.length,
+              ],
             ),
           )),
     );

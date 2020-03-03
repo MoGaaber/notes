@@ -29,33 +29,46 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Freinage extends StatelessWidget {
-  static const String route = '/armortisseur';
+  static const String route = '/freinage';
 //  controllers = List.generate(2, (_) => TextEditingController());
 
   @override
   Widget build(BuildContext context) {
     AddOrEditLogic addOrEditLogic =
         Provider.of<AddOrEditLogic>(context, listen: true);
-
     return SafeArea(
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            var armortisseurModel = ArmortisseurModel(
-                    date: addOrEditLogic.date,
-                    rear: addOrEditLogic.rear,
-                    front: addOrEditLogic.front,
-                    km: double.parse(addOrEditLogic.controllers[0].text),
-                    note: (addOrEditLogic.controllers[1].text))
-                .toJson();
-            addOrEditLogic.saveChanges(
-                key: Constants.amortisseurPref,
-                object: armortisseurModel,
-                context: context);
-          },
-          child: Icon(Icons.check),
-        ),
         appBar: AppBar(
+          iconTheme: IconThemeData(color: Colors.white),
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(
+                  Icons.check,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  if (addOrEditLogic.formKey.currentState.validate() &&
+                      addOrEditLogic.date != null) {
+                    addOrEditLogic.saveChanges(
+                        key: Constants.frenagePref,
+                        object: FrienageModel(
+                                date: addOrEditLogic.date,
+                                firstInnerModel: InnerModel(
+                                  km: num.parse(
+                                      addOrEditLogic.controllers[0].text),
+                                  front: addOrEditLogic.yesOrNo[0],
+                                  rear: addOrEditLogic.yesOrNo[1],
+                                ),
+                                secondInnerModel: InnerModel(
+                                    km: num.parse(
+                                        addOrEditLogic.controllers[1].text),
+                                    front: addOrEditLogic.yesOrNo[2],
+                                    rear: addOrEditLogic.yesOrNo[3]))
+                            .toJson(),
+                        context: context);
+                  }
+                })
+          ],
           title: Text('Add Armortisseur item'),
         ),
         body: Form(
@@ -65,20 +78,17 @@ class Freinage extends StatelessWidget {
             child: ListView(
               children: <Widget>[
                 SizedBox(
-                  height: 30,
+                  height: 10,
                 ),
+/*
                 ListTile(
-                  subtitle: Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Text(
-                      '01 / 03 / 2020',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
-                    ),
-                  ),
                   title: Text(
-                    'Choose Date',
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
+                    addOrEditLogic.date ??
+                        DateFormat.yMd().format(DateTime.now()),
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                   trailing: Material(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -90,25 +100,65 @@ class Freinage extends StatelessWidget {
                           Icons.date_range,
                           color: Colors.white,
                         ),
-                        onPressed: () {}),
+                        onPressed: () {
+                          addOrEditLogic.showDatePick(context);
+                        }),
                   ),
                 ),
-                Divider(
-                  height: 30,
-                  indent: 30,
-                  endIndent: 30,
+*/
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Container(
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Column(
+                              children: <Widget>[
+                                Text(
+                                  'Date',
+                                  style: TextStyle(
+                                      fontSize: 35,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                Text(
+                                  addOrEditLogic.date,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Material(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                              type: MaterialType.canvas,
+                              color: Colors.orange,
+                              child: IconButton(
+                                  iconSize: 30,
+                                  icon: Icon(
+                                    Icons.date_range,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    addOrEditLogic.showDatePick(context);
+                                  }),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
+                Divider(),
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 15),
+                  margin: EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                            blurRadius: 2,
-                            spreadRadius: 1,
-                            color: Colors.orange.withOpacity(0.8)),
-                      ]),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: Colors.white,
+                  ),
                   child: Column(
                     children: <Widget>[
                       SizedBox.fromSize(
@@ -116,17 +166,14 @@ class Freinage extends StatelessWidget {
                       ),
                       Align(
                         alignment: Alignment.topLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: Text(
-                            'DiscFrien',
-                            style: TextStyle(
-                                fontSize: 35, fontWeight: FontWeight.w700),
-                          ),
+                        child: Text(
+                          'DiscFrien',
+                          style: TextStyle(
+                              fontSize: 35, fontWeight: FontWeight.w700),
                         ),
                       ),
                       SizedBox.fromSize(
-                        size: Size.fromHeight(30),
+                        size: Size.fromHeight(20),
                       ),
                       Center(
                         child: MyTextField(
@@ -149,7 +196,12 @@ class Freinage extends StatelessWidget {
                                 style: TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.w700),
                               ),
-                              Checkbox(value: false, onChanged: (_) {})
+                              Checkbox(
+                                  value: addOrEditLogic.yesOrNo[0],
+                                  onChanged: (x) {
+                                    addOrEditLogic.yesOrNo[0] = x;
+                                    addOrEditLogic.notifyListeners();
+                                  })
                             ],
                           ),
                           Row(
@@ -159,7 +211,12 @@ class Freinage extends StatelessWidget {
                                 style: TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.w700),
                               ),
-                              Checkbox(value: false, onChanged: (_) {})
+                              Checkbox(
+                                  value: addOrEditLogic.yesOrNo[1],
+                                  onChanged: (x) {
+                                    addOrEditLogic.yesOrNo[1] = x;
+                                    addOrEditLogic.notifyListeners();
+                                  })
                             ],
                           )
                         ],
@@ -171,20 +228,15 @@ class Freinage extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 30,
-                ),
+                Divider(
+                    //height: 30,
+                    ),
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 15),
+                  margin: EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                            blurRadius: 2,
-                            spreadRadius: 1,
-                            color: Colors.orange.withOpacity(0.8)),
-                      ]),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: Colors.white,
+                  ),
                   child: Column(
                     children: <Widget>[
                       SizedBox.fromSize(
@@ -192,13 +244,10 @@ class Freinage extends StatelessWidget {
                       ),
                       Align(
                         alignment: Alignment.topLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: Text(
-                            'Plaqweta',
-                            style: TextStyle(
-                                fontSize: 35, fontWeight: FontWeight.w700),
-                          ),
+                        child: Text(
+                          'Plaqweta',
+                          style: TextStyle(
+                              fontSize: 35, fontWeight: FontWeight.w700),
                         ),
                       ),
                       SizedBox.fromSize(
@@ -210,7 +259,7 @@ class Freinage extends StatelessWidget {
                           inputFormatters: [
                             WhitelistingTextInputFormatter.digitsOnly
                           ],
-                          textEditingController: addOrEditLogic.controllers[0],
+                          textEditingController: addOrEditLogic.controllers[1],
                         ),
                       ),
                       SizedBox.fromSize(
@@ -225,7 +274,12 @@ class Freinage extends StatelessWidget {
                                 style: TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.w700),
                               ),
-                              Checkbox(value: false, onChanged: (_) {})
+                              Checkbox(
+                                  value: addOrEditLogic.yesOrNo[2],
+                                  onChanged: (x) {
+                                    addOrEditLogic.yesOrNo[2] = x;
+                                    addOrEditLogic.notifyListeners();
+                                  })
                             ],
                           ),
                           Row(
@@ -235,7 +289,12 @@ class Freinage extends StatelessWidget {
                                 style: TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.w700),
                               ),
-                              Checkbox(value: false, onChanged: (_) {})
+                              Checkbox(
+                                  value: addOrEditLogic.yesOrNo[3],
+                                  onChanged: (x) {
+                                    addOrEditLogic.yesOrNo[3] = x;
+                                    addOrEditLogic.notifyListeners();
+                                  })
                             ],
                           )
                         ],

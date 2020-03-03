@@ -1,15 +1,11 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 import 'package:notes/constants/constants.dart';
 import 'package:notes/logic/add_or_edit.dart';
 import 'package:notes/models/courroie.dart';
 import 'package:notes/widgets/text_field.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Courroie extends StatelessWidget {
   static const String route = '/courroie';
@@ -22,92 +18,113 @@ class Courroie extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(iconTheme: IconThemeData(color: Colors.white), actions: <
+            Widget>[
+          IconButton(
+            onPressed: () {
+              if (addOrEditLogic.formKey.currentState.validate() &&
+                  addOrEditLogic.date != null) {
+                var object = CourroieModel(
+                        date: addOrEditLogic.date,
+                        km: double.parse(addOrEditLogic.controllers[0].text),
+                        nextKm:
+                            double.parse(addOrEditLogic.controllers[1].text),
+                        note: (addOrEditLogic.controllers[2].text))
+                    .toJson();
+
+                addOrEditLogic.saveChanges(
+                    context: context,
+                    object: object,
+                    key: Constants.courroiePref);
+              }
+            },
+            icon: Icon(
+              Icons.check,
+              color: Colors.white,
+            ),
+          )
+        ]),
         body: Form(
           key: addOrEditLogic.formKey,
           child: ListView(
             children: <Widget>[
               SizedBox(
-                height: 50,
+                height: 20,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    'Date',
-                  ),
-                  Text(
-                    addOrEditLogic.date == null ? '' : addOrEditLogic.date,
-                  ),
-                  IconButton(
-                      icon: Icon(Icons.date_range),
-                      onPressed: () {
-                        addOrEditLogic.showDatePick(context);
-                      }),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Text(
-                    'KM',
-                  ),
-                  Flexible(
-                      flex: 2,
-                      child: MyTextField(
-                        inputFormatters: [
-                          WhitelistingTextInputFormatter.digitsOnly
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Container(
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Column(
+                            children: <Widget>[
+                              Text(
+                                'Date',
+                                style: TextStyle(
+                                    fontSize: 35, fontWeight: FontWeight.w700),
+                              ),
+                              Text(
+                                addOrEditLogic.date,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Material(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            type: MaterialType.canvas,
+                            color: Colors.orange,
+                            child: IconButton(
+                                iconSize: 30,
+                                icon: Icon(
+                                  Icons.date_range,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  addOrEditLogic.showDatePick(context);
+                                }),
+                          ),
                         ],
-                        textEditingController: addOrEditLogic.controllers[0],
-                      )),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Text(
-                    'Next KM',
+                      ),
+                    ],
                   ),
-                  Flexible(
-                      flex: 2,
-                      child: MyTextField(
-                        inputFormatters: [
-                          WhitelistingTextInputFormatter.digitsOnly
-                        ],
-                        textEditingController: addOrEditLogic.controllers[1],
-                      )),
-                ],
+                ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Text(
-                    'Note',
-                  ),
-                  Flexible(
-                      flex: 2,
-                      child: MyTextField(
-                        textEditingController: addOrEditLogic.controllers[2],
-                        textInputType: TextInputType.text,
-                      )),
-                ],
+              SizedBox(
+                height: 20,
               ),
-              FlatButton(
-                  onPressed: () {
-                    var object = CourroieModel(
-                            date: addOrEditLogic.date,
-                            km: double.parse(
-                                addOrEditLogic.controllers[0].text),
-                            nextKm: double.parse(
-                                addOrEditLogic.controllers[1].text),
-                            note: (addOrEditLogic.controllers[2].text))
-                        .toJson();
-
-                    addOrEditLogic.saveChanges(
-                        context: context,
-                        object: object,
-                        key: Constants.courroiePref);
-                  },
-                  child: Text('Save')),
+              Center(
+                child: MyTextField(
+                  label: 'KM',
+                  inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+                  textEditingController: addOrEditLogic.controllers[0],
+                ),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Center(
+                child: MyTextField(
+                  label: 'Next Km',
+                  inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+                  textEditingController: addOrEditLogic.controllers[1],
+                ),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Center(
+                child: MyTextField(
+                  label: 'Note',
+                  textEditingController: addOrEditLogic.controllers[2],
+                  textInputType: TextInputType.text,
+                ),
+              ),
             ],
           ),
         ),

@@ -1,13 +1,14 @@
 class VidangeModel {
-  double km, nextOil;
-  String date;
-  VidangeFilterModel oil;
-  VidangeFilterModel air;
-  VidangeFilterModel fuel;
-  VidangeFilterModel clim;
+  num km, nextOil;
+  String date, note;
+  Map oil;
+  Map air;
+  Map fuel;
+  Map clim;
   VidangeModel(
       {this.km,
       this.nextOil,
+      this.note,
       this.date,
       this.oil,
       this.air,
@@ -25,8 +26,9 @@ class VidangeModel {
 }
 
 class VidangeFilterModel {
-  bool yesOrNo;
-  double price;
-  VidangeFilterModel({this.yesOrNo, this.price});
-  Map<String, dynamic> toJson() => {'yesOrNo': yesOrNo, 'price': price};
+  bool excited;
+  num price;
+  VidangeFilterModel({this.excited, this.price});
+  Map<String, dynamic> toJson() =>
+      {'Price': this.price, 'Excited': this.excited};
 }

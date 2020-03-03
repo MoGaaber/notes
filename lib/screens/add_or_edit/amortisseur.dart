@@ -24,23 +24,32 @@ class Armortisseur extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            var armortisseurModel = ArmortisseurModel(
-                    date: addOrEditLogic.date,
-                    rear: addOrEditLogic.rear,
-                    front: addOrEditLogic.front,
-                    km: double.parse(addOrEditLogic.controllers[0].text),
-                    note: (addOrEditLogic.controllers[1].text))
-                .toJson();
-            addOrEditLogic.saveChanges(
-                key: Constants.amortisseurPref,
-                object: armortisseurModel,
-                context: context);
-          },
-          child: Icon(Icons.check),
-        ),
         appBar: AppBar(
+          iconTheme: IconThemeData(color: Colors.white),
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(
+                  Icons.check,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  if (addOrEditLogic.formKey.currentState.validate() &&
+                      addOrEditLogic.date != null) {
+                    var armortisseurModel = ArmortisseurModel(
+                            date: addOrEditLogic.date,
+                            rear: addOrEditLogic.rear,
+                            front: addOrEditLogic.front,
+                            km: double.parse(
+                                addOrEditLogic.controllers[0].text),
+                            note: (addOrEditLogic.controllers[1].text))
+                        .toJson();
+                    addOrEditLogic.saveChanges(
+                        key: Constants.amortisseurPref,
+                        object: armortisseurModel,
+                        context: context);
+                  }
+                })
+          ],
           title: Text('Add Armortisseur item'),
         ),
         body: Form(
@@ -52,34 +61,57 @@ class Armortisseur extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                ListTile(
-                  title: Text(
-                    'Choose Date',
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
-                  ),
-                  trailing: Material(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    type: MaterialType.canvas,
-                    color: Colors.orange,
-                    child: IconButton(
-                        iconSize: 30,
-                        icon: Icon(
-                          Icons.date_range,
-                          color: Colors.white,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Container(
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Column(
+                              children: <Widget>[
+                                Text(
+                                  'Date',
+                                  style: TextStyle(
+                                      fontSize: 35,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                Text(
+                                  addOrEditLogic.date,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Material(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                              type: MaterialType.canvas,
+                              color: Colors.orange,
+                              child: IconButton(
+                                  iconSize: 30,
+                                  icon: Icon(
+                                    Icons.date_range,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    addOrEditLogic.showDatePick(context);
+                                  }),
+                            ),
+                          ],
                         ),
-                        onPressed: () {}),
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox.fromSize(
                   size: Size.fromHeight(20),
                 ),
-                Center(
-                    child: Text(
-                  '01 / 03 / 2020',
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
-                )),
                 SizedBox(
-                  height: 30,
+                  height: 20,
                 ),
                 Center(
                   child: MyTextField(
@@ -95,12 +127,9 @@ class Armortisseur extends StatelessWidget {
                 ),
                 Center(
                   child: MyTextField(
-                    isLong: null,
+                    textInputType: TextInputType.text,
                     label: 'Note',
-                    inputFormatters: [
-                      WhitelistingTextInputFormatter.digitsOnly
-                    ],
-                    textEditingController: addOrEditLogic.controllers[0],
+                    textEditingController: addOrEditLogic.controllers[1],
                   ),
                 ),
                 SizedBox.fromSize(
@@ -117,9 +146,9 @@ class Armortisseur extends StatelessWidget {
                               fontSize: 18, fontWeight: FontWeight.w700),
                         ),
                         Checkbox(
-                            value: addOrEditLogic.front,
-                            onChanged: (front) {
-                              addOrEditLogic.front = front;
+                            value: addOrEditLogic.yesOrNo[0],
+                            onChanged: (x) {
+                              addOrEditLogic.yesOrNo[0] = x;
                               addOrEditLogic.notifyListeners();
                             })
                       ],
@@ -132,9 +161,9 @@ class Armortisseur extends StatelessWidget {
                               fontSize: 18, fontWeight: FontWeight.w700),
                         ),
                         Checkbox(
-                            value: addOrEditLogic.rear,
-                            onChanged: (rear) {
-                              addOrEditLogic.rear = rear;
+                            value: addOrEditLogic.yesOrNo[1],
+                            onChanged: (x) {
+                              addOrEditLogic.yesOrNo[1] = x;
                               addOrEditLogic.notifyListeners();
                             })
                       ],

@@ -1,6 +1,6 @@
 class BatterieModel {
   String date, note;
-  double km;
+  num km;
   BatterieModel({this.date, this.note, this.km});
 
   Map<String, dynamic> toJson() =>

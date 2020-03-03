@@ -1,5 +1,5 @@
 class CourroieModel {
-  double km, nextKm;
+  num km, nextKm;
   String note, date;
 
   CourroieModel({this.km, this.nextKm, this.note, this.date});

@@ -7,9 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MainViewLogic extends ChangeNotifier {
-  List mainViewList = ['VIDANGE', 'COURROIE', 'AMORTISSEUR', 'BATTERIE'];
-
-  MainViewLogic({BuildContext context}) {}
+  var path = 'assets/images';
   void navigateToDateView({BuildContext context, int index}) {
     Provider.of<Globals>(context, listen: false).mainViewIndex = index;
     Navigator.pushNamed(context, DateView.route);

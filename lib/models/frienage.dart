@@ -1,26 +1,16 @@
 class FrienageModel {
-  String date, note;
-  double km, km2;
-  bool rear, front;
-  bool rear2, front2;
-
-  FrienageModel(
-      {this.date,
-      this.note,
-      this.km,
-      this.km2,
-      this.rear,
-      this.front,
-      this.front2,
-      this.rear2});
+  String date;
+  InnerModel firstInnerModel, secondInnerModel;
+  FrienageModel({this.date, this.firstInnerModel, this.secondInnerModel});
   Map<String, dynamic> toJson() => {
-        'Rear': this.rear,
-        'Front': this.front,
-        'Rear2': this.rear2,
-        'Front2': this.front2,
         'Date': this.date,
-        'Note': this.note,
-        'KM': this.km,
-        'KM2': this.km2
+        'Disc Frien': this.firstInnerModel,
+        'Plaqwets': this.secondInnerModel
       };
+}
+
+class InnerModel {
+  num km;
+  bool front, rear;
+  InnerModel({this.km, this.front, this.rear});
 }

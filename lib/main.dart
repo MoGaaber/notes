@@ -7,10 +7,9 @@ import 'package:notes/screens/add_or_edit/batterie.dart';
 import 'package:notes/screens/add_or_edit/frenage.dart';
 import 'package:notes/screens/date_view/date_view.dart';
 import 'package:notes/screens/add_or_edit/vidangee.dart';
-import 'package:notes/temp/amortisseur.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'details_view/amortisseur.dart';
+import 'details_view/details_view.dart';
 import 'details_view/vidange.dart';
 import 'logic/date_view.dart';
 import 'logic/globals.dart';
@@ -27,9 +26,24 @@ void main() => runApp(MultiProvider(
       ],
     ));
 */
-
 void main() {
-  runApp(MyApp());
+  runApp(Q());
+}
+
+class Q extends StatefulWidget {
+  @override
+  _QState createState() => _QState();
+}
+
+class _QState extends State<Q> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        floatingActionButton: FloatingActionButton(onPressed: () {}),
+      ),
+    );
+  }
 }
 
 // This widget is the root of your application.
@@ -45,31 +59,24 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: ChangeNotifierProvider(
-        child: Vidangee(),
-        create: (BuildContext context) => AddOrEditLogic(
-            sharedPreferences: null, dateViewIndex: null, mainViewIndex: null),
-      ),
       theme: ThemeData(
           primaryTextTheme: TextTheme(title: TextStyle(color: Colors.white)),
           primaryColor: Colors.orange,
-          accentColor: Colors.green,
-          popupMenuTheme: PopupMenuThemeData(
-              color: Colors.white,
-              textStyle: TextStyle(
-                color: Colors.black,
-              ),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5)))),
+          iconTheme: IconThemeData(color: Colors.white),
+          accentColor: Colors.orange,
+          primaryColorLight: Colors.white,
+          primaryColorDark: Colors.white,
+          accentColorBrightness: Brightness.light,
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
           scaffoldBackgroundColor: Colors.white),
-
-      /*
-
       initialRoute: MainView.route,
       routes: {
         Batterie.route: (_) => ChangeNotifierProvider(
             child: Batterie(),
             create: (BuildContext context) => AddOrEditLogic(
+                addOrEditPages:
+                    Provider.of<Globals>(context, listen: false).addOrEditPages,
                 mainViewIndex:
                     Provider.of<Globals>(context, listen: false).mainViewIndex,
                 dateViewIndex:
@@ -79,6 +86,8 @@ class _MyAppState extends State<MyApp> {
         Armortisseur.route: (_) => ChangeNotifierProvider(
             child: Armortisseur(),
             create: (BuildContext context) => AddOrEditLogic(
+                addOrEditPages:
+                    Provider.of<Globals>(context, listen: false).addOrEditPages,
                 mainViewIndex:
                     Provider.of<Globals>(context, listen: false).mainViewIndex,
                 dateViewIndex:
@@ -88,6 +97,8 @@ class _MyAppState extends State<MyApp> {
         Courroie.route: (_) => ChangeNotifierProvider(
             child: Courroie(),
             create: (BuildContext context) => AddOrEditLogic(
+                addOrEditPages:
+                    Provider.of<Globals>(context, listen: false).addOrEditPages,
                 mainViewIndex:
                     Provider.of<Globals>(context, listen: false).mainViewIndex,
                 dateViewIndex:
@@ -97,6 +108,8 @@ class _MyAppState extends State<MyApp> {
         Vidangee.route: (_) => ChangeNotifierProvider(
             child: Vidangee(),
             create: (BuildContext context) => AddOrEditLogic(
+                addOrEditPages:
+                    Provider.of<Globals>(context, listen: false).addOrEditPages,
                 mainViewIndex:
                     Provider.of<Globals>(context, listen: false).mainViewIndex,
                 dateViewIndex:
@@ -104,20 +117,28 @@ class _MyAppState extends State<MyApp> {
                 sharedPreferences:
                     Provider.of<SharedPreferences>(context, listen: false))),
         MainView.route: (_) => ChangeNotifierProvider(
-            create: (BuildContext context) => MainViewLogic(
-                  context: context,
-                ),
+            create: (BuildContext context) => MainViewLogic(),
             child: MainView()),
-        DateView.route: (_) => ChangeNotifierProvider(
-            create: (BuildContext context) => DateViewLogic(
+        DateView.route: (_) => ChangeNotifierProvider.value(
+            value: DateViewLogic(
                 context: context,
                 selectedMainViewElementIndex:
                     Provider.of<Globals>(context, listen: false).mainViewIndex,
                 sharedPreferences:
                     Provider.of<SharedPreferences>(context, listen: false)),
             child: DateView()),
+        Freinage.route: (_) => ChangeNotifierProvider(
+            child: Freinage(),
+            create: (BuildContext context) => AddOrEditLogic(
+                addOrEditPages:
+                    Provider.of<Globals>(context, listen: false).addOrEditPages,
+                mainViewIndex:
+                    Provider.of<Globals>(context, listen: false).mainViewIndex,
+                dateViewIndex:
+                    Provider.of<Globals>(context, listen: false).dateViewIndex,
+                sharedPreferences:
+                    Provider.of<SharedPreferences>(context, listen: false)))
       },
-*/
       debugShowCheckedModeBanner: false,
     );
   }
