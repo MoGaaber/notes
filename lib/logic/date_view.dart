@@ -22,14 +22,16 @@ class DateViewLogic extends ChangeNotifier {
   var pushResult;
   Globals globals;
 
-  DateViewLogic(
-      {this.sharedPreferences,
-      this.selectedMainViewElementIndex,
-      BuildContext context,
-      TickerProvider tickerProvider}) {
+  DateViewLogic({
+    this.sharedPreferences,
+    this.selectedMainViewElementIndex,
+    BuildContext context,
+  }) {
     globals = Provider.of(context, listen: false);
+/*
     animationController = AnimationController(vsync: tickerProvider);
     animation = Tween<double>(begin: 0, end: 1).animate(animationController);
+*/
     pageRefKey = globals.addOrEditPages[selectedMainViewElementIndex]['refKey'];
     list = sharedPreferences.getStringList(pageRefKey);
   }

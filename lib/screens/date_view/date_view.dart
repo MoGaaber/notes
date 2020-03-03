@@ -28,11 +28,13 @@ class DateView extends StatelessWidget {
         appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.white),
           actions: <Widget>[
+/*
             RotationTransition(
               child:
                   IconButton(icon: Icon(Icons.arrow_upward), onPressed: () {}),
               turns: dateViewLogic.animation,
             )
+*/
           ],
           title: Text(
             globals.addOrEditPages[globals.mainViewIndex]['name'],

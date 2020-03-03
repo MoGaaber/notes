@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:notes/logic/amortisseur.dart';
 import 'package:notes/logic/main_view.dart';
 import 'package:notes/logic/add_or_edit.dart';
 import 'package:notes/screens/add_or_edit/amortisseur.dart';
@@ -9,8 +8,6 @@ import 'package:notes/screens/date_view/date_view.dart';
 import 'package:notes/screens/add_or_edit/vidangee.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'details_view/details_view.dart';
-import 'details_view/vidange.dart';
 import 'logic/date_view.dart';
 import 'logic/globals.dart';
 import 'screens/add_or_edit/courroie.dart';
@@ -24,8 +21,6 @@ void main() => runApp(MultiProvider(
         ChangeNotifierProvider(create: (BuildContext context) => Globals()),
       ],
     ));
-
-
 
 // This widget is the root of your application.
 
