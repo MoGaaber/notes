@@ -28,7 +28,7 @@ class Vidangee extends StatelessWidget {
     double width = globals.screen.width;
     double aspectRatio = globals.screen.aspectRatio;
     double textScale = globals.screen.textScale;
-
+    print(addOrEditLogic.controllers.length);
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
@@ -81,7 +81,8 @@ class Vidangee extends StatelessWidget {
       body: Form(
         key: addOrEditLogic.formKey,
         child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 10),
+          padding: EdgeInsets.symmetric(
+              horizontal: globals.screen.convert(10, width)),
           children: <Widget>[
             DateChooser(
               addOrEditLogic: addOrEditLogic,
@@ -112,19 +113,19 @@ class Vidangee extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.w700, fontSize: 30),
               ),
             ),
-            for (int i = 0; i < 4; i++)
+            for (int i = 3; i < 7; i++)
               ListTile(
                 title: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Checkbox(
-                        value: addOrEditLogic.yesOrNo[i],
+                        value: addOrEditLogic.yesOrNo[i - 3],
                         onChanged: (x) {
                           addOrEditLogic.yesOrNo[i] = x;
                           addOrEditLogic.notifyListeners();
                         }),
                     Text(
-                      list[i],
+                      list[i - 3],
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                     ),
@@ -134,18 +135,10 @@ class Vidangee extends StatelessWidget {
                   padding: EdgeInsets.only(
                       bottom: globals.screen.convert(10, height)),
                   child: SizedBox.fromSize(
-                    size: Size.fromWidth(80),
-                    child: TextField(
-                      textAlign: TextAlign.center,
-                      inputFormatters: [
-                        WhitelistingTextInputFormatter.digitsOnly
-                      ],
-                      keyboardType: TextInputType.number,
-                      controller: addOrEditLogic.controllers[i + 3],
-                      decoration: InputDecoration(
-                          border: UnderlineInputBorder(),
-                          enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.orange))),
+                    size: Size.fromWidth(globals.screen.convert(80, width)),
+                    child: MyTextField(
+                      textFieldType: TextFieldType.price,
+                      textEditingController: addOrEditLogic.controllers[i],
                     ),
                   ),
                 ),

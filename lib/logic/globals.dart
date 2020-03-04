@@ -37,6 +37,11 @@ class Globals extends ChangeNotifier {
         'name': 'VIDANGE'
       },
       {
+        'textFields': [
+          {'type': TextFieldType.number, 'label': 'KM'},
+          {'type': TextFieldType.number, 'label': 'Next KM'},
+          {'type': TextFieldType.text, 'label': 'Note'}
+        ],
         'controllersLength': 3,
         'yesNoLength': 0,
         'route': Courroie.route,
@@ -45,6 +50,10 @@ class Globals extends ChangeNotifier {
         'name': 'COURROIE'
       },
       {
+        'textFields': [
+          {'type': TextFieldType.number, 'label': 'KM'},
+          {'type': TextFieldType.text, 'label': 'Note'}
+        ],
         'controllersLength': 2,
         'yesNoLength': 2,
         'route': Armortisseur.route,

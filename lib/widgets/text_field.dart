@@ -27,32 +27,41 @@ class MyTextField extends StatelessWidget {
 
     return Padding(
       padding:
-          EdgeInsets.symmetric(vertical: globals.screen.convert(18, height)),
+          EdgeInsets.symmetric(vertical: globals.screen.convert(10, height)),
       child: SizedBox(
         width: 280 / width * width,
         child: TextFormField(
           maxLines: this.textFieldType == TextFieldType.text ? null : 1,
           textAlignVertical: TextAlignVertical.center,
           textAlign: TextAlign.center,
-          decoration: InputDecoration(
-            errorBorder: OutlineInputBorder(
-                borderSide:
-                    BorderSide(color: Colors.red, width: 2 / width * width),
-                borderRadius: BorderRadius.all(Radius.circular(10))),
-            contentPadding: EdgeInsets.all(20 / aspectRatio * aspectRatio),
-            labelText: this.label,
-            focusedBorder: OutlineInputBorder(
-                borderSide:
-                    BorderSide(color: Colors.orange, width: 2 / width * width),
-                borderRadius: BorderRadius.all(Radius.circular(10))),
-            enabledBorder: OutlineInputBorder(
-                borderSide:
-                    BorderSide(color: Colors.orange, width: 2 / width * width),
-                borderRadius: BorderRadius.all(Radius.circular(10))),
-            border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.orange),
-                borderRadius: BorderRadius.all(Radius.circular(10))),
-          ),
+          decoration: textFieldType == TextFieldType.price
+              ? InputDecoration(
+                  border: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Colors.orange, width: 2 / width * width)),
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Colors.orange, width: 2 / width * width)))
+              : InputDecoration(
+                  errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Colors.red, width: 2 / width * width),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  contentPadding:
+                      EdgeInsets.all(20 / aspectRatio * aspectRatio),
+                  labelText: this.label,
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Colors.orange, width: 2 / width * width),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Colors.orange, width: 2 / width * width),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.orange),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                ),
           validator: this.textFieldType != TextFieldType.price
               ? (x) {
                   if (x.isEmpty) {

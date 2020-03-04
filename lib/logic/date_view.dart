@@ -27,16 +27,18 @@ class DateViewLogic extends ChangeNotifier {
     this.selectedMainViewElementIndex,
     BuildContext context,
   }) {
+    if (list == null) {
+      sharedPreferences.setStringList(pageRefKey, []);
+    }
+
     globals = Provider.of(context, listen: false);
 /*
     animationController = AnimationController(vsync: tickerProvider);
     animation = Tween<double>(begin: 0, end: 1).animate(animationController);
 */
     pageRefKey = globals.addOrEditPages[selectedMainViewElementIndex]['refKey'];
+
     list = sharedPreferences.getStringList(pageRefKey);
-    if (list == null) {
-      sharedPreferences.setStringList(pageRefKey, []);
-    }
   }
 
   void deleteItem({int index}) {

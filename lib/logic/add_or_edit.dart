@@ -159,6 +159,18 @@ class AddOrEditLogic extends ChangeNotifier {
 
   void showDatePick(BuildContext context) {
     showDatePicker(
+            builder: (BuildContext context, Widget child) {
+              return Theme(
+                data: ThemeData.light().copyWith(
+                  primaryColor: Colors.orange,
+                  accentColor: Colors.orange,
+                  colorScheme: ColorScheme.light(primary: Colors.orange),
+                  buttonTheme:
+                      ButtonThemeData(textTheme: ButtonTextTheme.primary),
+                ),
+                child: child,
+              );
+            },
             context: context,
             initialDate: DateTime.now(),
             firstDate: DateTime(1500, 1, 1),

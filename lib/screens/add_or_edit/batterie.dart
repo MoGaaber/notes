@@ -6,8 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:notes/constants/constants.dart';
 import 'package:notes/logic/add_or_edit.dart';
+import 'package:notes/logic/globals.dart';
 import 'package:notes/models/batterie.dart';
 import 'package:notes/models/courroie.dart';
+import 'package:notes/widgets/date_chooser.dart';
 import 'package:notes/widgets/text_field.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,6 +23,12 @@ class Batterie extends StatelessWidget {
   Widget build(BuildContext context) {
     AddOrEditLogic addOrEditLogic =
         Provider.of<AddOrEditLogic>(context, listen: true);
+    Globals globals = Provider.of<Globals>(context, listen: false);
+
+    double height = globals.screen.height;
+    double width = globals.screen.width;
+    double aspectRatio = globals.screen.aspectRatio;
+    double textScale = globals.screen.textScale;
 
     return SafeArea(
       child: Scaffold(
@@ -31,6 +39,7 @@ class Batterie extends StatelessWidget {
                 icon: Icon(
                   Icons.check,
                   color: Colors.white,
+                  size: 24 / aspectRatio * aspectRatio,
                 ),
                 onPressed: () {
                   if (addOrEditLogic.formKey.currentState.validate() &&
@@ -52,70 +61,21 @@ class Batterie extends StatelessWidget {
           key: addOrEditLogic.formKey,
           child: ListView(
             children: <Widget>[
-              SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Container(
-                  child: Column(
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Column(
-                            children: <Widget>[
-                              Text(
-                                'Date',
-                                style: TextStyle(
-                                    fontSize: 35, fontWeight: FontWeight.w700),
-                              ),
-                              Text(
-                                addOrEditLogic.date ??
-                                    DateFormat.yMd().format(DateTime.now()),
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Material(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            type: MaterialType.canvas,
-                            color: Colors.orange,
-                            child: IconButton(
-                                iconSize: 30,
-                                icon: Icon(
-                                  Icons.date_range,
-                                  color: Colors.white,
-                                ),
-                                onPressed: () {
-                                  addOrEditLogic.showDatePick(context);
-                                }),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
+              DateChooser(
+                addOrEditLogic: addOrEditLogic,
               ),
               Center(
                 child: MyTextField(
+                  textFieldType: TextFieldType.number,
                   textEditingController: addOrEditLogic.controllers[0],
                   label: 'Km',
                 ),
               ),
-              SizedBox(
-                height: 20,
-              ),
               Center(
                 child: MyTextField(
+                  textFieldType: TextFieldType.number,
                   textEditingController: addOrEditLogic.controllers[1],
-                  label: 'Note',
+                  label: 'Km',
                 ),
               )
             ],
