@@ -97,12 +97,18 @@ class DetailsView extends StatelessWidget {
                     Globals globals = Provider.of(context, listen: false);
                     var list = sharedPreferences.getStringList(globals
                         .addOrEditPages[globals.mainViewIndex]['refKey']);
-                    print(list);
+                    print(globals.mainViewIndex.toString() + '!!!!');
                     list.removeAt(globals.dateViewIndex);
-                    print(list);
                     sharedPreferences
-                        .setStringList(globals.sharedPrefKey, list)
-                        .then((x) {});
+                        .setStringList(
+                            globals.addOrEditPages[globals.mainViewIndex]
+                                ['refKey'],
+                            list)
+                        .then((x) {
+                      Navigator.popUntil(context, (x) {
+                        x.settings.arguments;
+                      });
+                    });
                   }),
             ],
             iconTheme: IconThemeData(color: Colors.white),

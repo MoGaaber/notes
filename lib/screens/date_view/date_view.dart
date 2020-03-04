@@ -31,13 +31,16 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
         Spacer(
           flex: 3,
         ),
-        Center(
-          child: Image.asset(
-            'assets/images/error.png',
-            height: 120,
-            color: Colors.orange,
-            width: 120,
-            fit: BoxFit.cover,
+        SlideTransition(
+          position: slideAnimation,
+          child: Center(
+            child: Image.asset(
+              'assets/images/error.png',
+              height: 120,
+              color: Colors.orange,
+              width: 120,
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         Padding(
@@ -82,14 +85,12 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
     rotateAnimation =
         Tween<double>(begin: 0, end: 0.5).animate(rotateAnimationController);
 */
-/*
     slideAnimationController =
         AnimationController(vsync: this, duration: Duration(seconds: 1));
     slideAnimation = Tween<Offset>(begin: Offset(0, 0), end: Offset(0.0, -0.1))
         .animate(CurvedAnimation(
             parent: slideAnimationController, curve: Curves.easeInToLinear));
-*/
-//    slideAnimationController.repeat(reverse: true);
+    slideAnimationController.repeat(reverse: true);
   }
 
   @override
@@ -186,11 +187,11 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                             ListTile(
                               onTap: () {
                                 globals.dateViewIndex = index;
-                                Navigator.pushNamed(context, DetailsView.route,
+                                var result = Navigator.pushNamed(
+                                    context, DetailsView.route,
                                     arguments: DetailsViewModelArgs(
                                         jsonDecode(dateViewLogic.list[index]),
                                         index));
-                                print(index);
                               },
                               title: Text(
                                 jsonDecode(dateViewLogic.list[index])['Date'],
