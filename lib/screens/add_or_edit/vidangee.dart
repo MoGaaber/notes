@@ -23,7 +23,7 @@ class Vidangee extends StatelessWidget {
     AddOrEditLogic addOrEditLogic =
         Provider.of<AddOrEditLogic>(context, listen: true);
     Globals globals = Provider.of<Globals>(context, listen: false);
-
+    var screen = globals.screen;
     double height = globals.screen.height;
     double width = globals.screen.width;
     double aspectRatio = globals.screen.aspectRatio;
@@ -32,7 +32,6 @@ class Vidangee extends StatelessWidget {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
         actions: <Widget>[
           IconButton(
               icon: Icon(
@@ -73,7 +72,7 @@ class Vidangee extends StatelessWidget {
                   addOrEditLogic.saveChanges(
                       context: context,
                       object: vidangeModel.toJson(),
-                      key: Constants.vidangePref);
+                      key: SharedPrefKeys.vidangePref);
                 }
               })
         ],
@@ -98,23 +97,17 @@ class Vidangee extends StatelessWidget {
                   label: globals.addOrEditPages[0]['textFields'][i]['label'],
                 ),
               ),
-            Divider(
-              indent: 30,
-              endIndent: 30,
-            ),
+            Divider(),
             ListTile(
-              subtitle: Text(addOrEditLogic.date,
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,
-                  )),
+              contentPadding: EdgeInsets.symmetric(horizontal: 2),
               title: Text(
                 'Filtres ',
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 30),
+                style: Theme.of(context).textTheme.display2,
               ),
             ),
             for (int i = 3; i < 7; i++)
               ListTile(
+                contentPadding: EdgeInsets.symmetric(horizontal: 0),
                 title: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[

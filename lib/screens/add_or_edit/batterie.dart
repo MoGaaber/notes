@@ -49,7 +49,7 @@ class Batterie extends StatelessWidget {
                         km: num.parse(addOrEditLogic.controllers[0].text),
                         note: (addOrEditLogic.controllers[1].text));
                     addOrEditLogic.saveChanges(
-                        key: Constants.batteriPref,
+                        key: SharedPrefKeys.batteriPref,
                         object: batteriModel.toJson(),
                         context: context);
                   }
@@ -60,24 +60,21 @@ class Batterie extends StatelessWidget {
         body: Form(
           key: addOrEditLogic.formKey,
           child: ListView(
+            padding: EdgeInsets.symmetric(
+                horizontal: globals.screen.convert(10, width)),
             children: <Widget>[
               DateChooser(
                 addOrEditLogic: addOrEditLogic,
               ),
-              Center(
-                child: MyTextField(
-                  textFieldType: TextFieldType.number,
-                  textEditingController: addOrEditLogic.controllers[0],
-                  label: 'Km',
+              for (int i = 0; i < 2; i++)
+                Center(
+                  child: MyTextField(
+                    textFieldType: globals.addOrEditPages[1]['textFields'][i]
+                        ['type'],
+                    textEditingController: addOrEditLogic.controllers[i],
+                    label: globals.addOrEditPages[1]['textFields'][i]['label'],
+                  ),
                 ),
-              ),
-              Center(
-                child: MyTextField(
-                  textFieldType: TextFieldType.number,
-                  textEditingController: addOrEditLogic.controllers[1],
-                  label: 'Km',
-                ),
-              )
             ],
           ),
         ),

@@ -52,28 +52,26 @@ class Armortisseur extends StatelessWidget {
                                 addOrEditLogic.controllers[0].text),
                             note: (addOrEditLogic.controllers[1].text))
                         .toJson();
+
                     addOrEditLogic.saveChanges(
-                        key: Constants.amortisseurPref,
+                        key: SharedPrefKeys.amortisseurPref,
                         object: armortisseurModel,
                         context: context);
                   }
                 })
           ],
-          title: Text('Add Armortisseur item'),
         ),
         body: Form(
           key: addOrEditLogic.formKey,
           child: ScrollConfiguration(
             behavior: ScrollBehavior(),
             child: ListView(
+              padding: EdgeInsets.symmetric(
+                  horizontal: globals.screen.convert(10, width)),
               children: <Widget>[
                 DateChooser(
                   addOrEditLogic: addOrEditLogic,
                 ),
-                Padding(
-                    padding: EdgeInsets.only(
-                        top:
-                            globals.screen.convert(30, globals.screen.height))),
                 for (int i = 0; i < 2; i++)
                   Center(
                     child: MyTextField(
@@ -84,7 +82,10 @@ class Armortisseur extends StatelessWidget {
                           ['label'],
                     ),
                   ),
-                Padding(padding: EdgeInsets.only(top: 30)),
+                Padding(
+                    padding: EdgeInsets.only(
+                        top:
+                            globals.screen.convert(30, globals.screen.height))),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[

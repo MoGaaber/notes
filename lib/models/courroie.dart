@@ -4,6 +4,10 @@ class CourroieModel {
 
   CourroieModel({this.km, this.nextKm, this.note, this.date});
 
-  Map<String, dynamic> toJson() =>
-      {'KM': km, 'Next Km': this.nextKm, 'Note': this.note, 'Date': this.date};
+  Map<String, dynamic> toJson() => {
+        'Date': this.date,
+        'KM': km,
+        'Next Km': this.nextKm,
+        'Note': this.note,
+      };
 }

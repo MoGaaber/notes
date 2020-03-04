@@ -60,7 +60,7 @@ class Freinage extends StatelessWidget {
                   if (addOrEditLogic.formKey.currentState.validate() &&
                       addOrEditLogic.date != null) {
                     addOrEditLogic.saveChanges(
-                        key: Constants.frenagePref,
+                        key: SharedPrefKeys.frenagePref,
                         object: FrienageModel(
                                 date: addOrEditLogic.date,
                                 firstInnerModel: InnerModel(
@@ -92,16 +92,13 @@ class Freinage extends StatelessWidget {
                 DateChooser(
                   addOrEditLogic: addOrEditLogic,
                 ),
-                Divider(
-                  height: globals.screen.convert(30, height),
-                ),
                 Column(
                   children: <Widget>[
                     ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 2),
                       title: Text(
                         'DiscFrien',
-                        style: TextStyle(
-                            fontSize: 35, fontWeight: FontWeight.w700),
+                        style: Theme.of(context).textTheme.display2,
                       ),
                     ),
                     Center(
@@ -154,10 +151,10 @@ class Freinage extends StatelessWidget {
                 Column(
                   children: <Widget>[
                     ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 2),
                       title: Text(
                         'Plaqweta',
-                        style: TextStyle(
-                            fontSize: 35, fontWeight: FontWeight.w700),
+                        style: Theme.of(context).textTheme.display2,
                       ),
                     ),
                     Center(

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:notes/logic/globals.dart';
 import 'package:provider/provider.dart';
 
@@ -36,12 +37,19 @@ class MyTextField extends StatelessWidget {
           textAlign: TextAlign.center,
           decoration: textFieldType == TextFieldType.price
               ? InputDecoration(
-                  border: UnderlineInputBorder(
+                  focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
-                          color: Colors.orange, width: 2 / width * width)),
+                          color: Colors.orange, width: 3 / width * width),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
                   enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
-                          color: Colors.orange, width: 2 / width * width)))
+                          style: BorderStyle.solid,
+                          color: Colors.orange.withOpacity(0.8),
+                          width: 2 / width * width),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  border: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.orange),
+                      borderRadius: BorderRadius.all(Radius.circular(10))))
               : InputDecoration(
                   errorBorder: OutlineInputBorder(
                       borderSide: BorderSide(
@@ -52,11 +60,13 @@ class MyTextField extends StatelessWidget {
                   labelText: this.label,
                   focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                          color: Colors.orange, width: 2 / width * width),
+                          color: Colors.orange, width: 3 / width * width),
                       borderRadius: BorderRadius.all(Radius.circular(10))),
                   enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                          color: Colors.orange, width: 2 / width * width),
+                          style: BorderStyle.solid,
+                          color: Colors.orange.withOpacity(0.8),
+                          width: 2 / width * width),
                       borderRadius: BorderRadius.all(Radius.circular(10))),
                   border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.orange),
@@ -69,13 +79,13 @@ class MyTextField extends StatelessWidget {
                   }
                 }
               : null,
-          inputFormatters: textFieldType == TextFieldType.number
-              ? [WhitelistingTextInputFormatter.digitsOnly]
-              : null,
+          inputFormatters: textFieldType == TextFieldType.text
+              ? null
+              : [WhitelistingTextInputFormatter.digitsOnly],
           controller: this.textEditingController,
-          keyboardType: textFieldType == TextFieldType.number
-              ? TextInputType.number
-              : TextInputType.text,
+          keyboardType: textFieldType == TextFieldType.text
+              ? TextInputType.text
+              : TextInputType.number,
         ),
       ),
     );

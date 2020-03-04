@@ -33,7 +33,7 @@ class MainView extends StatelessWidget {
         ),
         body: sharedPreferences == null
             ? Center(
-                child: Text('Loading'),
+                child: CircularProgressIndicator(),
               )
             : ScrollConfiguration(
                 behavior: ScrollBehavior(),
@@ -42,23 +42,32 @@ class MainView extends StatelessWidget {
                   itemBuilder: (BuildContext context, int index) => Column(
                     children: <Widget>[
                       ListTile(
-                        contentPadding:
-                            EdgeInsets.all(10 / globals.screen.aspectRatio),
-                        leading: Image.asset(
-                          'assets/images/${mainViewLogic.globals.addOrEditPages[index]['icon']}',
-                          width: index == 0
-                              ? 50 / globals.screen.width * globals.screen.width
-                              : 35 /
+                        contentPadding: EdgeInsets.all(10 /
+                            globals.screen.aspectRatio *
+                            globals.screen.aspectRatio),
+                        leading: Stack(
+                          alignment: Alignment.center,
+                          children: <Widget>[
+                            SizedBox(
+                                height: 80,
+                                width: 50,
+                                child: Material(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                  color: Colors.orange.withOpacity(0.8),
+                                )),
+                            Image.asset(
+                              'assets/images/${mainViewLogic.globals.addOrEditPages[index]['icon']}',
+                              width: 35 /
                                   globals.screen.width *
                                   globals.screen.width,
-                          height: index == 0
-                              ? 50 /
-                                  globals.screen.height *
-                                  globals.screen.height
-                              : 35 /
+                              color: Colors.white,
+                              height: 35 /
                                   globals.screen.height *
                                   globals.screen.height,
-                          fit: BoxFit.cover,
+                              fit: BoxFit.cover,
+                            ),
+                          ],
                         ),
                         trailing: Icon(
                           Icons.arrow_forward_ios,

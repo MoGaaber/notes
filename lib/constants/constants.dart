@@ -1,4 +1,4 @@
-class Constants {
+class SharedPrefKeys {
   static const batteriPref = 'batterie';
   static const amortisseurPref = 'amortisseur';
   static const courroiePref = 'courroie';

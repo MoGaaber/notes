@@ -42,8 +42,8 @@ class AddOrEditLogic extends ChangeNotifier {
     }
   }
   void fetchVidange() {
-    decodedelement = jsonDecode(
-        sharedPreferences.getStringList(Constants.vidangePref)[dateViewIndex]);
+    decodedelement = jsonDecode(sharedPreferences
+        .getStringList(SharedPrefKeys.vidangePref)[dateViewIndex]);
 
     date = decodedelement['date'];
     controllers[0].text = decodedelement['km'].toString();
@@ -67,16 +67,16 @@ class AddOrEditLogic extends ChangeNotifier {
   }
 
   void fetchBatterie() {
-    decodedelement = jsonDecode(
-        sharedPreferences.getStringList(Constants.batteriPref)[dateViewIndex]);
+    decodedelement = jsonDecode(sharedPreferences
+        .getStringList(SharedPrefKeys.batteriPref)[dateViewIndex]);
     controllers[0].text = decodedelement['date'];
     controllers[1].text = decodedelement['km'];
     controllers[2].text = decodedelement['note'];
   }
 
   void fetchCourroie() {
-    decodedelement = jsonDecode(
-        sharedPreferences.getStringList(Constants.courroiePref)[dateViewIndex]);
+    decodedelement = jsonDecode(sharedPreferences
+        .getStringList(SharedPrefKeys.courroiePref)[dateViewIndex]);
     date = decodedelement['date'];
     controllers[0].text = decodedelement['km'].toString();
     controllers[1].text = decodedelement['nextKm'].toString();
@@ -85,7 +85,7 @@ class AddOrEditLogic extends ChangeNotifier {
 
   void fetchAmortisseur() {
     decodedelement = jsonDecode(sharedPreferences
-        .getStringList(Constants.amortisseurPref)[dateViewIndex]);
+        .getStringList(SharedPrefKeys.amortisseurPref)[dateViewIndex]);
     controllers[0].text = decodedelement['date'];
     controllers[1].text = decodedelement['km'].toString();
     controllers[2].text = decodedelement['note'];
@@ -95,7 +95,9 @@ class AddOrEditLogic extends ChangeNotifier {
 
   void saveChanges(
       {BuildContext context, String key, Map<String, dynamic> object}) {
+    print(object);
     var list = sharedPreferences.getStringList(key);
+
     String encodedElement = jsonEncode(object);
     if (dateViewIndex == null) {
       list.add(encodedElement);

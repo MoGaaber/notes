@@ -32,7 +32,7 @@ class Globals extends ChangeNotifier {
         'controllersLength': 7,
         'yesNoLength': 4,
         'route': Vidangee.route,
-        'refKey': Constants.vidangePref,
+        'refKey': SharedPrefKeys.vidangePref,
         'icon': 'oil.png',
         'name': 'VIDANGE'
       },
@@ -46,7 +46,7 @@ class Globals extends ChangeNotifier {
         'yesNoLength': 0,
         'route': Courroie.route,
         'icon': 'motor.png',
-        'refKey': Constants.courroiePref,
+        'refKey': SharedPrefKeys.courroiePref,
         'name': 'COURROIE'
       },
       {
@@ -58,15 +58,19 @@ class Globals extends ChangeNotifier {
         'yesNoLength': 2,
         'route': Armortisseur.route,
         'icon': 'damper.png',
-        'refKey': Constants.amortisseurPref,
+        'refKey': SharedPrefKeys.amortisseurPref,
         'name': 'ARMORTISSEUR'
       },
       {
+        'textFields': [
+          {'type': TextFieldType.number, 'label': 'KM'},
+          {'type': TextFieldType.text, 'label': 'Note'}
+        ],
         'controllersLength': 2,
         'yesNoLength': 0,
         'route': Batterie.route,
         'icon': 'battery.png',
-        'refKey': Constants.batteriPref,
+        'refKey': SharedPrefKeys.batteriPref,
         'name': 'BATTERIE'
       },
       {
@@ -74,7 +78,7 @@ class Globals extends ChangeNotifier {
         'yesNoLength': 4,
         'route': Freinage.route,
         'icon': 'brake.png',
-        'refKey': Constants.frenagePref,
+        'refKey': SharedPrefKeys.frenagePref,
         'name': 'FREINAGE'
       },
     ];

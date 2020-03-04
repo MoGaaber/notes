@@ -43,7 +43,7 @@ class Courroie extends StatelessWidget {
                 addOrEditLogic.saveChanges(
                     context: context,
                     object: object,
-                    key: Constants.courroiePref);
+                    key: SharedPrefKeys.courroiePref);
               }
             },
             icon: Icon(
@@ -56,14 +56,12 @@ class Courroie extends StatelessWidget {
         body: Form(
           key: addOrEditLogic.formKey,
           child: ListView(
+            padding: EdgeInsets.symmetric(
+                horizontal: globals.screen.convert(10, width)),
             children: <Widget>[
               DateChooser(
                 addOrEditLogic: addOrEditLogic,
               ),
-              Padding(
-                  padding: EdgeInsets.only(
-                      bottom:
-                          globals.screen.convert(20, globals.screen.height))),
               for (int i = 0; i < 3; i++)
                 Center(
                   child: MyTextField(

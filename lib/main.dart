@@ -6,9 +6,9 @@ import 'package:notes/screens/add_or_edit/batterie.dart';
 import 'package:notes/screens/add_or_edit/frenage.dart';
 import 'package:notes/screens/date_view/date_view.dart';
 import 'package:notes/screens/add_or_edit/vidangee.dart';
+import 'package:notes/screens/details_view/details_view.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'details_view/details_view.dart';
 import 'logic/date_view.dart';
 import 'logic/globals.dart';
 import 'screens/add_or_edit/courroie.dart';
@@ -39,6 +39,15 @@ class _MyAppState extends State<MyApp> {
       color: Colors.orange,
       title: 'Car Note',
       theme: ThemeData(
+          textTheme: TextTheme(
+            display2:
+                TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
+          ),
+          appBarTheme: AppBarTheme(
+              iconTheme: IconThemeData(color: Colors.white),
+              actionsIconTheme: IconThemeData(
+                color: Colors.white,
+              )),
           primaryTextTheme: TextTheme(title: TextStyle(color: Colors.white)),
           primaryColor: Colors.orange,
           iconTheme: IconThemeData(color: Colors.white),
@@ -107,8 +116,8 @@ class _MyAppState extends State<MyApp> {
         MainView.route: (_) => ChangeNotifierProvider(
             create: (BuildContext context) => MainViewLogic(context),
             child: MainView()),
-        DateView.route: (_) => ChangeNotifierProvider.value(
-            value: DateViewLogic(
+        DateView.route: (_) => ChangeNotifierProvider(
+            create: (context) => DateViewLogic(
                 context: context,
                 selectedMainViewElementIndex:
                     Provider.of<Globals>(context, listen: false).mainViewIndex,

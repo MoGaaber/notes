@@ -14,51 +14,53 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class DateViewLogic extends ChangeNotifier {
   int index, selectedMainViewElementIndex, itemIndex;
-  String pageRefKey;
+  String mKey;
   Animation<double> animation;
   AnimationController animationController;
   SharedPreferences sharedPreferences;
-  List list;
+  List<String> list;
   var pushResult;
   Globals globals;
-
+  Map mPage;
+  String mRoute;
   DateViewLogic({
     this.sharedPreferences,
     this.selectedMainViewElementIndex,
     BuildContext context,
   }) {
-    if (list == null) {
-      sharedPreferences.setStringList(pageRefKey, []);
-    }
-
     globals = Provider.of(context, listen: false);
-/*
-    animationController = AnimationController(vsync: tickerProvider);
-    animation = Tween<double>(begin: 0, end: 1).animate(animationController);
-*/
-    pageRefKey = globals.addOrEditPages[selectedMainViewElementIndex]['refKey'];
-
-    list = sharedPreferences.getStringList(pageRefKey);
+    mPage = globals.addOrEditPages[selectedMainViewElementIndex];
+    mKey = mPage['refKey'];
+    mRoute = mPage['route'];
+    list = sharedPreferences.getStringList(mKey);
   }
 
   void deleteItem({int index}) {
     list.removeAt(index);
-    sharedPreferences.setStringList(pageRefKey, list);
+    sharedPreferences.setStringList(mKey, list);
     notifyListeners();
   }
 
   void navigateToSave({int index, BuildContext context}) async {
     globals.dateViewIndex = index;
-    pushResult = await navigateToAddOrEditPage(
-      context: context,
+    pushResult = await Navigator.pushNamed(
+      context,
+      mRoute,
     );
+    print(pushResult);
 
     if (pushResult != null) {
+      if (list == null) list = [];
+
       if (index == null) {
         list.add(pushResult);
+
+        print('1555555');
       } else {
         list[index] = pushResult;
       }
+
+      notifyListeners();
     }
   }
 

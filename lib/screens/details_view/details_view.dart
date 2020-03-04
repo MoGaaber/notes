@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:notes/logic/globals.dart';
 import 'package:notes/models/amortisseur.dart';
+import 'package:notes/models/details_view_args.dart';
 import 'package:notes/models/frienage.dart';
 import 'package:notes/models/vidange.dart';
 import 'package:notes/screens/add_or_edit/vidangee.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DetailsView extends StatelessWidget {
-  var test = ArmortisseurModel(
-          front: true, rear: false, km: 20, date: '!!', note: '!!!!')
-      .toJson();
+  Map<String, dynamic> data;
 /*
   var test = VidangeModel(
           note: 'helloo',
@@ -46,6 +46,11 @@ class DetailsView extends StatelessWidget {
           'this.notethis.notethis.notethis.notethis.notethis.notethis.notethis.notethis.notethis.notethis.notethis.notethis.notethis.notethis.note',
     };
 */
+    final DetailsViewModelArgs args = ModalRoute.of(context).settings.arguments;
+    SharedPreferences sharedPreferences =
+        Provider.of<SharedPreferences>(context);
+    this.data = args.data;
+    print(data);
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
@@ -54,6 +59,7 @@ class DetailsView extends StatelessWidget {
               IconButton(
                   icon: Icon(Icons.remove_circle_outline),
                   onPressed: () {
+/*
                     showDialog(
                         context: context,
                         builder: (_) => AlertDialog(
@@ -63,15 +69,40 @@ class DetailsView extends StatelessWidget {
                               actions: <Widget>[
                                 FlatButton(
                                     textColor: Colors.orange,
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Globals globals =
+                                          Provider.of(context, listen: false);
+                                      var list = sharedPreferences
+                                          .getStringList(globals.addOrEditPages[
+                                              globals.mainViewIndex]['refKey']);
+                                      print(list);
+                                      list.removeAt(globals.dateViewIndex);
+                                      print(list);
+                                      sharedPreferences
+                                          .setStringList(
+                                              globals.sharedPrefKey, list)
+                                          .then((x) {});
+                                    },
                                     child: Text('Yes')),
                                 FlatButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
                                   child: Text('No'),
                                   textColor: Colors.orange,
                                 )
                               ],
                             ));
+*/
+                    Globals globals = Provider.of(context, listen: false);
+                    var list = sharedPreferences.getStringList(globals
+                        .addOrEditPages[globals.mainViewIndex]['refKey']);
+                    print(list);
+                    list.removeAt(globals.dateViewIndex);
+                    print(list);
+                    sharedPreferences
+                        .setStringList(globals.sharedPrefKey, list)
+                        .then((x) {});
                   }),
             ],
             iconTheme: IconThemeData(color: Colors.white),
@@ -85,28 +116,28 @@ class DetailsView extends StatelessWidget {
             child: ListView(
               padding: EdgeInsets.only(top: 5),
               children: <Widget>[
-                for (var x in test.keys)
-                  test[x] is Map
+                for (var x in data.keys)
+                  data[x] is Map
                       ? ExpansionTile(
                           children: <Widget>[
-                            for (var key in test[x].keys)
-                              if (test[x][key] != null)
+                            for (var key in data[x].keys)
+                              if (data[x][key] != null)
                                 ListTile(
-                                  trailing: test[x][key] is bool
+                                  trailing: data[x][key] is bool
                                       ? Material(
-                                          color: test[x][key]
+                                          color: data[x][key]
                                               ? Colors.green
                                               : Colors.red,
                                           type: MaterialType.circle,
                                           child: Icon(
-                                            test[x][key]
+                                            data[x][key]
                                                 ? Icons.check
                                                 : Icons.close,
                                             color: Colors.white,
                                           ),
                                         )
                                       : Text(
-                                          test[x][key].toString(),
+                                          data[x][key].toString(),
                                           style: TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.w700,
@@ -127,88 +158,35 @@ class DetailsView extends StatelessWidget {
                           ),
                         )
                       : ListTile(
-                          trailing: test[x] is bool
+                          trailing: data[x] is bool
                               ? Material(
-                                  color: test[x] ? Colors.green : Colors.red,
+                                  color: data[x] ? Colors.green : Colors.red,
                                   type: MaterialType.circle,
                                   child: Icon(
-                                    test[x] ? Icons.check : Icons.close,
+                                    data[x] ? Icons.check : Icons.close,
                                     color: Colors.white,
                                   ),
                                 )
-                              : Text(
-                                  test[x].toString(),
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.green),
-                                ),
+                              : x == 'Note'
+                                  ? null
+                                  : Text(
+                                      data[x].toString(),
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.green),
+                                    ),
                           title: Text(
                             x,
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.w700),
                           ),
+                          subtitle: x == 'Note' ? Text(data[x]) : null,
                         )
               ],
             ),
-/*
-            child: ListView.separated(
-              separatorBuilder: (BuildContext context, int index) => Divider(
-                endIndent: 20,
-                indent: 20,
-              ),
-              itemBuilder: (BuildContext context, int index) =>
-
-*/
-/*
-                  ListTile(
-                subtitle: test.keys.toList()[index] == 'Note'
-                    ? Text(test.values.toList()[index])
-                    : null,
-                title: Text(
-                  test.keys.toList()[index],
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-                ),
-                trailing: trailing(index),
-              ),
-*/ /*
-
-                  Column(
-                children: <Widget>[Text('Disc Frien',)],
-              ),
-              itemCount: test.length,
-            ),
-*/
           )),
     );
-  }
-
-  Widget trailing(int index) {
-    var values = test.values.toList()[index];
-    if (values is bool) {
-      return Material(
-        color: test.values.toList()[index] ? Colors.green : Colors.red,
-        type: MaterialType.circle,
-        child: Icon(
-          test.values.toList()[index] ? Icons.check : Icons.close,
-          color: Colors.white,
-        ),
-      );
-    } else if (values is String ||
-        values is num && test.keys.toList()[index] != 'Note') {
-      return Text(test.values.toList()[index].toString());
-    } else if (values is Map) {
-/*
-      return Material(
-        color: values[''] ? Colors.green : Colors.red,
-        type: MaterialType.circle,
-        child: Icon(
-          test.values.toList()[index] ? Icons.check : Icons.close,
-          color: Colors.white,
-        ),
-      );
-*/
-    }
   }
 }
 /*

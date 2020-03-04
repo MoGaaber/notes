@@ -18,36 +18,44 @@ class DateChooser extends StatelessWidget {
 
     var screen = globals.screen;
     return Padding(
-      padding: EdgeInsets.only(top: screen.convert(15, height)),
-      child: ListTile(
-        trailing: Material(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          type: MaterialType.canvas,
-          color: Colors.orange,
-          child: IconButton(
-              iconSize: screen.convert(30, screen.aspectRatio),
-              icon: Icon(
-                Icons.date_range,
-                color: Colors.white,
-                size: screen.convert(25, screen.aspectRatio),
+      padding: EdgeInsets.only(top: screen.convert(14, height)),
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            trailing: SizedBox(
+              width: screen.convert(100, width),
+              child: Material(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                type: MaterialType.canvas,
+                color: Colors.orangeAccent,
+                child: IconButton(
+                    iconSize: screen.convert(35, screen.aspectRatio),
+                    icon: Icon(
+                      Icons.date_range,
+                      color: Colors.white,
+                      size: screen.convert(30, screen.aspectRatio),
+                    ),
+                    onPressed: () {
+                      addOrEditLogic.showDatePick(context);
+                    }),
               ),
-              onPressed: () {
-                addOrEditLogic.showDatePick(context);
-              }),
-        ),
-        subtitle: Text(
-          addOrEditLogic.date,
-          style: TextStyle(
-            fontSize: screen.convert(15, screen.textScale),
-            fontWeight: FontWeight.w400,
+            ),
+            subtitle: Text(
+              addOrEditLogic.date,
+              style: Theme.of(context).textTheme.body2,
+            ),
+            title: Text(
+              'Date',
+              style: TextStyle(
+                  fontSize: screen.convert(50, screen.textScale),
+                  fontWeight: FontWeight.w700),
+            ),
           ),
-        ),
-        title: Text(
-          'Date',
-          style: TextStyle(
-              fontSize: screen.convert(35, screen.textScale),
-              fontWeight: FontWeight.w700),
-        ),
+          Divider(
+            height: globals.screen.convert(30, height),
+          ),
+        ],
       ),
     );
   }
