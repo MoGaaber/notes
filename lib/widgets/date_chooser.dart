@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:notes/logic/add_or_edit.dart';
 import 'package:notes/logic/globals.dart';
@@ -21,10 +22,20 @@ class DateChooser extends StatelessWidget {
       padding: EdgeInsets.only(top: screen.convert(14, height)),
       child: Column(
         children: <Widget>[
+          Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              'Date',
+              style: TextStyle(
+                  fontSize: screen.convert(50, screen.textScale),
+                  fontWeight: FontWeight.w700),
+            ),
+          ),
           ListTile(
-            contentPadding: EdgeInsets.zero,
+            contentPadding:
+                EdgeInsets.only(left: screen.convert(8, screen.width)),
             trailing: SizedBox(
-              width: screen.convert(100, width),
+              width: screen.convert(80, width),
               child: Material(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
                 type: MaterialType.canvas,
@@ -41,14 +52,11 @@ class DateChooser extends StatelessWidget {
                     }),
               ),
             ),
-            subtitle: Text(
-              addOrEditLogic.date,
-              style: Theme.of(context).textTheme.body2,
-            ),
             title: Text(
-              'Date',
+              addOrEditLogic.date,
               style: TextStyle(
-                  fontSize: screen.convert(50, screen.textScale),
+                  fontSize:
+                      globals.screen.convert(20, globals.screen.textScale),
                   fontWeight: FontWeight.w700),
             ),
           ),

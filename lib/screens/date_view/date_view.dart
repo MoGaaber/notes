@@ -90,14 +90,12 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
     slideAnimation = Tween<Offset>(begin: Offset(0, 0), end: Offset(0.0, -0.1))
         .animate(CurvedAnimation(
             parent: slideAnimationController, curve: Curves.easeInToLinear));
-    slideAnimationController.repeat(reverse: true);
+    //  slideAnimationController.repeat(reverse: true);
   }
 
   @override
   void dispose() {
-    scaleAnimationController.dispose();
     slideAnimationController.dispose();
-    rotateAnimationController.dispose();
     super.dispose();
   }
 

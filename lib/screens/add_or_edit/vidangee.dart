@@ -79,67 +79,70 @@ class Vidangee extends StatelessWidget {
       ),
       body: Form(
         key: addOrEditLogic.formKey,
-        child: ListView(
-          padding: EdgeInsets.symmetric(
-              horizontal: globals.screen.convert(10, width)),
-          children: <Widget>[
-            DateChooser(
-              addOrEditLogic: addOrEditLogic,
-            ),
-            for (int i = 0;
-                i < globals.addOrEditPages[0]['textFields'].length;
-                i++)
-              Center(
-                child: MyTextField(
-                  textFieldType: globals.addOrEditPages[0]['textFields'][i]
-                      ['type'],
-                  textEditingController: addOrEditLogic.controllers[i],
-                  label: globals.addOrEditPages[0]['textFields'][i]['label'],
+        child: ScrollConfiguration(
+          behavior: ScrollBehavior(),
+          child: ListView(
+            padding: EdgeInsets.symmetric(
+                horizontal: globals.screen.convert(10, width)),
+            children: <Widget>[
+              DateChooser(
+                addOrEditLogic: addOrEditLogic,
+              ),
+              for (int i = 0;
+                  i < globals.addOrEditPages[0]['textFields'].length;
+                  i++)
+                Center(
+                  child: MyTextField(
+                    textFieldType: globals.addOrEditPages[0]['textFields'][i]
+                        ['type'],
+                    textEditingController: addOrEditLogic.controllers[i],
+                    label: globals.addOrEditPages[0]['textFields'][i]['label'],
+                  ),
                 ),
-              ),
-            Divider(),
-            ListTile(
-              contentPadding: EdgeInsets.symmetric(horizontal: 2),
-              title: Text(
-                'Filtres ',
-                style: Theme.of(context).textTheme.display2,
-              ),
-            ),
-            for (int i = 3; i < 7; i++)
+              Divider(),
               ListTile(
-                contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                title: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Checkbox(
-                        value: addOrEditLogic.yesOrNo[i - 3],
-                        onChanged: (x) {
-                          addOrEditLogic.yesOrNo[i] = x;
-                          addOrEditLogic.notifyListeners();
-                        }),
-                    Text(
-                      list[i - 3],
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-                    ),
-                  ],
+                contentPadding: EdgeInsets.symmetric(horizontal: 2),
+                title: Text(
+                  'Filtres ',
+                  style: Theme.of(context).textTheme.display2,
                 ),
-                trailing: Padding(
-                  padding: EdgeInsets.only(
-                      bottom: globals.screen.convert(10, height)),
-                  child: SizedBox.fromSize(
-                    size: Size.fromWidth(globals.screen.convert(80, width)),
-                    child: MyTextField(
-                      textFieldType: TextFieldType.price,
-                      textEditingController: addOrEditLogic.controllers[i],
+              ),
+              for (int i = 3; i < 7; i++)
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                  title: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Checkbox(
+                          value: addOrEditLogic.yesOrNo[i - 3],
+                          onChanged: (x) {
+                            addOrEditLogic.yesOrNo[i] = x;
+                            addOrEditLogic.notifyListeners();
+                          }),
+                      Text(
+                        list[i - 3],
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w700),
+                      ),
+                    ],
+                  ),
+                  trailing: Padding(
+                    padding: EdgeInsets.only(
+                        bottom: globals.screen.convert(10, height)),
+                    child: SizedBox.fromSize(
+                      size: Size.fromWidth(globals.screen.convert(80, width)),
+                      child: MyTextField(
+                        textFieldType: TextFieldType.price,
+                        textEditingController: addOrEditLogic.controllers[i],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            Padding(
-                padding:
-                    EdgeInsets.only(top: globals.screen.convert(10, height)))
-          ],
+              Padding(
+                  padding:
+                      EdgeInsets.only(top: globals.screen.convert(10, height)))
+            ],
+          ),
         ),
       ),
     ));

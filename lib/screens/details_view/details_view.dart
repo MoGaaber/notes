@@ -7,33 +7,23 @@ import 'package:notes/models/details_view_args.dart';
 import 'package:notes/models/frienage.dart';
 import 'package:notes/models/vidange.dart';
 import 'package:notes/screens/add_or_edit/vidangee.dart';
+import 'package:notes/utility/screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class DetailsView extends StatelessWidget {
-  Map<String, dynamic> data;
-/*
-  var test = VidangeModel(
-          note: 'helloo',
-          date: '12/12/1212',
-          km: 20,
-          nextOil: 20,
-          oil: VidangeFilterModel(excited: true, price: 12),
-          air: VidangeFilterModel(excited: false, price: null),
-          fuel: VidangeFilterModel(excited: false, price: 2222),
-          clim: VidangeFilterModel(price: 222, excited: false))
-      .toJson();
-
-  var test = FrienageModel(
-          date: '12/12/2020',
-          secondInnerModel: InnerModel(km: 12, rear: true, front: false),
-          firstInnerModel: InnerModel(km: 12, rear: true, front: false))
-      .toJson();
-
-
-      */
-
+class DetailsView extends StatefulWidget {
   static const route = '/details';
+
+  @override
+  _DetailsViewState createState() => _DetailsViewState();
+}
+
+class _DetailsViewState extends State<DetailsView> {
+  Map<String, dynamic> data;
+
+  bool expanded = false;
+  int expandedIndex;
+
   @override
   Widget build(BuildContext context) {
 /*
@@ -50,7 +40,15 @@ class DetailsView extends StatelessWidget {
     SharedPreferences sharedPreferences =
         Provider.of<SharedPreferences>(context);
     this.data = args.data;
+
     print(data);
+    Globals globals = Provider.of<Globals>(context, listen: false);
+
+    double height = globals.screen.height;
+    double width = globals.screen.width;
+    double aspectRatio = globals.screen.aspectRatio;
+    double textScale = globals.screen.textScale;
+    Screen screen = globals.screen;
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
@@ -94,6 +92,7 @@ class DetailsView extends StatelessWidget {
                               ],
                             ));
 */
+/*
                     Globals globals = Provider.of(context, listen: false);
                     var list = sharedPreferences.getStringList(globals
                         .addOrEditPages[globals.mainViewIndex]['refKey']);
@@ -105,91 +104,113 @@ class DetailsView extends StatelessWidget {
                                 ['refKey'],
                             list)
                         .then((x) {
-                      Navigator.popUntil(context, (x) {
-                        x.settings.arguments;
-                      });
+                      Navigator.pop(context);
                     });
+*/
                   }),
             ],
             iconTheme: IconThemeData(color: Colors.white),
-            title: Text(
-              'Amortisseur Details',
-              style: TextStyle(fontSize: 19.5),
+            centerTitle: true,
+            title: Image.asset(
+              'assets/images/fuel.png',
+              color: Colors.white,
+              width: screen.convert(50, width),
+              height: screen.convert(30, height),
+              fit: BoxFit.fitHeight,
             ),
           ),
           body: ScrollConfiguration(
             behavior: ScrollBehavior(),
-            child: ListView(
-              padding: EdgeInsets.only(top: 5),
-              children: <Widget>[
-                for (var x in data.keys)
-                  data[x] is Map
-                      ? ExpansionTile(
-                          children: <Widget>[
-                            for (var key in data[x].keys)
-                              if (data[x][key] != null)
-                                ListTile(
-                                  trailing: data[x][key] is bool
-                                      ? Material(
-                                          color: data[x][key]
-                                              ? Colors.green
-                                              : Colors.red,
-                                          type: MaterialType.circle,
-                                          child: Icon(
-                                            data[x][key]
-                                                ? Icons.check
-                                                : Icons.close,
-                                            color: Colors.white,
-                                          ),
-                                        )
-                                      : Text(
-                                          data[x][key].toString(),
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.green),
+            child: ListView.separated(
+              itemCount: data.keys.toList().length,
+              padding: EdgeInsets.only(top: screen.convert(5, height)),
+              itemBuilder: (BuildContext context, int x) {
+                return data[data.keys.toList()[x]] is Map
+                    ? ExpansionTile(
+                        onExpansionChanged: (expanded) {
+                          expandedIndex = x;
+
+                          print(expandedIndex);
+                          this.expanded = expanded;
+                          setState(() {});
+                        },
+                        children: <Widget>[
+                          for (var key in data[data.keys.toList()[x]].keys)
+                            if (data[data.keys.toList()[x]][key] != null)
+                              ListTile(
+                                trailing: data[data.keys.toList()[x]][key]
+                                        is bool
+                                    ? Material(
+                                        color: data[data.keys.toList()[x]][key]
+                                            ? Colors.green
+                                            : Colors.red,
+                                        type: MaterialType.circle,
+                                        child: Icon(
+                                          data[data.keys.toList()[x]][key]
+                                              ? Icons.check
+                                              : Icons.close,
+                                          color: Colors.white,
+                                          size: screen.convert(24, aspectRatio),
                                         ),
-                                  title: Text(
-                                    key.toString(),
+                                      )
+                                    : Text(
+                                        data[data.keys.toList()[x]][key]
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontSize:
+                                                screen.convert(18, textScale),
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.green),
+                                      ),
+                                title: Text(
+                                  key.toString(),
+                                  style: TextStyle(
+                                      fontSize: screen.convert(17, textScale),
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              )
+                        ],
+                        title: Text(
+                          data.keys.toList()[x],
+                          style: TextStyle(
+                              fontSize: screen.convert(20, textScale),
+                              fontWeight: FontWeight.w700),
+                        ),
+                      )
+                    : ListTile(
+                        trailing: data[x] is bool
+                            ? Material(
+                                color: data[x] ? Colors.green : Colors.red,
+                                type: MaterialType.circle,
+                                child: Icon(
+                                  data[x] ? Icons.check : Icons.close,
+                                  color: Colors.white,
+                                  size: screen.convert(24, aspectRatio),
+                                ),
+                              )
+                            : data.keys.toList()[x] == 'Note'
+                                ? null
+                                : Text(
+                                    data[x].toString(),
                                     style: TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w500),
+                                        fontSize: screen.convert(20, textScale),
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.green),
                                   ),
-                                )
-                          ],
-                          title: Text(
-                            x,
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w700),
-                          ),
-                        )
-                      : ListTile(
-                          trailing: data[x] is bool
-                              ? Material(
-                                  color: data[x] ? Colors.green : Colors.red,
-                                  type: MaterialType.circle,
-                                  child: Icon(
-                                    data[x] ? Icons.check : Icons.close,
-                                    color: Colors.white,
-                                  ),
-                                )
-                              : x == 'Note'
-                                  ? null
-                                  : Text(
-                                      data[x].toString(),
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.green),
-                                    ),
-                          title: Text(
-                            x,
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w700),
-                          ),
-                          subtitle: x == 'Note' ? Text(data[x]) : null,
-                        )
-              ],
+                        title: Text(
+                          data.keys.toList()[x],
+                          style: TextStyle(
+                              fontSize: screen.convert(25, textScale),
+                              fontWeight: FontWeight.w700),
+                        ),
+                        subtitle: data.keys.toList()[x] == 'Note'
+                            ? Text(
+                                data.keys.toList()[x],
+                              )
+                            : null,
+                      );
+              },
+              separatorBuilder: (BuildContext context, int index) => Divider(),
             ),
           )),
     );
