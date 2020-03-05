@@ -32,6 +32,7 @@ class DateViewLogic extends ChangeNotifier {
     mPage = globals.addOrEditPages[selectedMainViewElementIndex];
     mKey = mPage['refKey'];
     mRoute = mPage['route'];
+    print('date view construcot');
     list = sharedPreferences.getStringList(mKey);
   }
 
@@ -62,14 +63,6 @@ class DateViewLogic extends ChangeNotifier {
 
       notifyListeners();
     }
-  }
-
-  Future navigateToAddOrEditPage({BuildContext context}) {
-    print(selectedMainViewElementIndex);
-    return Navigator.pushNamed(
-      context,
-      globals.addOrEditPages[this.selectedMainViewElementIndex]['route'],
-    );
   }
 }
 //AddOrEditModelArgs(index: index)

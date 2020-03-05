@@ -40,6 +40,11 @@ class _MyAppState extends State<MyApp> {
       title: 'Car Note',
       theme: ThemeData(
           textTheme: TextTheme(
+            subhead: TextStyle(
+                fontSize: (25 / MediaQuery.textScaleFactorOf(context)) *
+                    MediaQuery.textScaleFactorOf(context),
+                color: Colors.black,
+                fontWeight: FontWeight.w700),
             display2:
                 TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
           ),
@@ -63,8 +68,8 @@ class _MyAppState extends State<MyApp> {
           primaryColorLight: Colors.white,
           primaryColorDark: Colors.white,
           accentColorBrightness: Brightness.light,
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
+//          splashColor: Colors.transparent,
+//          highlightColor: Colors.transparent,
           scaffoldBackgroundColor: Colors.white),
       initialRoute: MainView.route,
       routes: {

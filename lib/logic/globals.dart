@@ -15,10 +15,9 @@ import 'add_or_edit.dart';
 
 class Globals extends ChangeNotifier {
   int mainViewIndex, dateViewIndex;
+
   String sharedPrefKey;
   List<Map<String, dynamic>> addOrEditPages;
-  int controllersLength;
-  int yesNoLength;
   Screen screen;
 
   void initializeAddOrEditPages() {
@@ -27,7 +26,7 @@ class Globals extends ChangeNotifier {
         'textFields': [
           {'type': TextFieldType.number, 'label': 'KM / Miles'},
           {'type': TextFieldType.number, 'label': 'Next Oil Change'},
-          {'type': TextFieldType.text, 'label': 'Note'}
+          {'type': TextFieldType.text, 'label': 'Note'},
         ],
         'controllersLength': 7,
         'yesNoLength': 4,
@@ -78,7 +77,7 @@ class Globals extends ChangeNotifier {
         'yesNoLength': 4,
         'route': Freinage.route,
         'icon': 'brake.png',
-        'refKey': SharedPrefKeys.frenagePref,
+        'refKey': SharedPrefKeys.freinagePref,
         'name': 'FREINAGE'
       },
     ];

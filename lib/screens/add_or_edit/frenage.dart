@@ -10,6 +10,7 @@ import 'package:notes/models/amortisseur.dart';
 import 'package:notes/models/batterie.dart';
 import 'package:notes/models/courroie.dart';
 import 'package:notes/models/frienage.dart';
+import 'package:notes/utility/screen.dart';
 import 'package:notes/widgets/date_chooser.dart';
 import 'package:notes/widgets/text_field.dart';
 import 'package:provider/provider.dart';
@@ -45,10 +46,28 @@ class Freinage extends StatelessWidget {
     double aspectRatio = globals.screen.aspectRatio;
     double textScale = globals.screen.textScale;
     print(addOrEditLogic.controllers.length);
+    Screen screen = globals.screen;
 
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
+          title: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Image.asset(
+                'assets/images/${globals.addOrEditPages[globals.mainViewIndex]['icon']}',
+                color: Colors.white,
+                width: screen.convert(50, width),
+                height: screen.convert(30, height),
+                fit: BoxFit.fitHeight,
+              ),
+              Text(globals.addOrEditPages[globals.mainViewIndex]['name'],
+                  style: TextStyle(
+                    color: Colors.white,
+                  )),
+            ],
+          ),
           iconTheme: IconThemeData(color: Colors.white),
           actions: <Widget>[
             IconButton(
@@ -60,7 +79,7 @@ class Freinage extends StatelessWidget {
                   if (addOrEditLogic.formKey.currentState.validate() &&
                       addOrEditLogic.date != null) {
                     addOrEditLogic.saveChanges(
-                        key: SharedPrefKeys.frenagePref,
+                        key: SharedPrefKeys.freinagePref,
                         object: FrienageModel(
                                 date: addOrEditLogic.date,
                                 firstInnerModel: InnerModel(
@@ -79,7 +98,6 @@ class Freinage extends StatelessWidget {
                   }
                 })
           ],
-          title: Text('Add Armortisseur item'),
         ),
         body: Form(
           key: addOrEditLogic.formKey,

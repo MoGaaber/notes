@@ -13,6 +13,7 @@ import 'package:notes/screens/add_or_edit/batterie.dart';
 import 'package:notes/screens/add_or_edit/courroie.dart';
 import 'package:notes/screens/add_or_edit/vidangee.dart';
 import 'package:notes/screens/details_view/details_view.dart';
+import 'package:notes/utility/screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -108,27 +109,13 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
     double width = globals.screen.width;
     double aspectRatio = globals.screen.aspectRatio;
     double textScale = globals.screen.textScale;
+    Screen screen = globals.screen;
+    print(globals.addOrEditPages[globals.mainViewIndex]['icon']);
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           actions: <Widget>[
-/*
-            RotationTransition(
-              child: IconButton(
-                  icon: Icon(Icons.arrow_upward),
-                  onPressed: () {
-                    if (rotateAnimation.isCompleted) {
-                      rotateAnimationController.reverse();
-                      dateViewLogic.list = dateViewLogic.list.reversed.toList();
-                    } else {
-                      rotateAnimationController.forward();
-                      dateViewLogic.list = dateViewLogic.list.reversed.toList();
-                    }
-                    dateViewLogic.notifyListeners();
-                  }),
-              turns: rotateAnimation,
-            ),
-*/
             IconButton(
               icon: Icon(
                 Icons.add,
@@ -142,11 +129,22 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
               },
             )
           ],
-          title: Text(
-            globals.addOrEditPages[globals.mainViewIndex]['name'],
-            style: TextStyle(
-              color: Colors.white,
-            ),
+          centerTitle: true,
+          title: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Image.asset(
+                'assets/images/${globals.addOrEditPages[globals.mainViewIndex]['icon']}',
+                color: Colors.white,
+                width: screen.convert(50, width),
+                height: screen.convert(30, height),
+                fit: BoxFit.fitHeight,
+              ),
+              Text(globals.addOrEditPages[globals.mainViewIndex]['name'],
+                  style: TextStyle(
+                    color: Colors.white,
+                  )),
+            ],
           ),
         ),
         body: dateViewLogic.list == null
@@ -180,44 +178,103 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                         onDismissed: (x) {
                           dateViewLogic.deleteItem(index: index);
                         },
-                        child: Stack(
+                        child: Column(
                           children: <Widget>[
                             ListTile(
-                              onTap: () {
-                                globals.dateViewIndex = index;
-                                var result = Navigator.pushNamed(
-                                    context, DetailsView.route,
-                                    arguments: DetailsViewModelArgs(
-                                        jsonDecode(dateViewLogic.list[index]),
-                                        index));
-                              },
-                              title: Text(
-                                jsonDecode(dateViewLogic.list[index])['Date'],
-                                style: TextStyle(
-                                    fontSize: 30 / textScale * textScale,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w700),
+                              contentPadding: EdgeInsets.all(
+                                screen.convert(10, aspectRatio),
                               ),
-                            ),
-                            Positioned.fill(
-                              child: Align(
-                                alignment: Alignment(0.9, 0),
-                                child: InkWell(
-                                  onTap: () {
-                                    dateViewLogic.deleteItem(index: index);
-                                  },
-                                  child: Material(
-                                    color: Colors.red,
-                                    type: MaterialType.circle,
-                                    child: Icon(
-                                      Icons.remove,
-                                      size: 30 / aspectRatio * aspectRatio,
-                                      color: Colors.white,
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  InkWell(
+                                    onTap: () async {
+                                      var result = await Navigator.pushNamed(
+                                          context,
+                                          globals.addOrEditPages[
+                                              globals.mainViewIndex]['route']);
+                                      if (result != null) {
+                                        dateViewLogic.list[index] = result;
+                                        dateViewLogic.notifyListeners();
+                                      }
+                                    },
+                                    child: SizedBox(
+                                      height: screen.convert(50, height),
+                                      width: screen.convert(50, width),
+                                      child: Material(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20)),
+                                        color: Colors.green,
+                                        type: MaterialType.canvas,
+                                        child: Icon(
+                                          Icons.mode_edit,
+                                          size: 30 / aspectRatio * aspectRatio,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ),
+                                  ),
+                                  Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal:
+                                              screen.convert(5, screen.width))),
+                                  InkWell(
+                                    onTap: () async {
+                                      globals.dateViewIndex = index;
+                                      var result = await Navigator.pushNamed(
+                                          context, DetailsView.route,
+                                          arguments: DetailsViewModelArgs(
+                                              jsonDecode(
+                                                  dateViewLogic.list[index]),
+                                              index));
+                                      print(result.toString() + 'hello');
+                                      if (result != null) {
+                                        dateViewLogic.list[index] =
+                                            jsonEncode(result);
+                                        dateViewLogic.notifyListeners();
+                                      }
+                                    },
+                                    child: SizedBox(
+                                      height: screen.convert(50, height),
+                                      width: screen.convert(50, width),
+                                      child: Material(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20)),
+                                        color: Colors.orange,
+                                        type: MaterialType.canvas,
+                                        child: Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 30 / aspectRatio * aspectRatio,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              leading: InkWell(
+                                onTap: () {
+                                  dateViewLogic.deleteItem(index: index);
+                                },
+                                child: Material(
+                                  color: Colors.red,
+                                  type: MaterialType.circle,
+                                  child: Icon(
+                                    Icons.remove,
+                                    size: 40 / aspectRatio * aspectRatio,
+                                    color: Colors.white,
                                   ),
                                 ),
                               ),
+                              title: Text(
+                                jsonDecode(dateViewLogic.list[index])['Date'],
+                              ),
                             ),
+                            index == 0
+                                ? Divider(
+                                    height: 20 / height * height,
+                                  )
+                                : SizedBox(),
                           ],
                         ),
                       ),
@@ -231,3 +288,22 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
     );
   }
 }
+/*
+/*
+            RotationTransition(
+              child: IconButton(
+                  icon: Icon(Icons.arrow_upward),
+                  onPressed: () {
+                    if (rotateAnimation.isCompleted) {
+                      rotateAnimationController.reverse();
+                      dateViewLogic.list = dateViewLogic.list.reversed.toList();
+                    } else {
+                      rotateAnimationController.forward();
+                      dateViewLogic.list = dateViewLogic.list.reversed.toList();
+                    }
+                    dateViewLogic.notifyListeners();
+                  }),
+              turns: rotateAnimation,
+            ),
+*/
+ */

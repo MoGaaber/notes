@@ -10,6 +10,7 @@ import 'package:notes/logic/globals.dart';
 import 'package:notes/models/amortisseur.dart';
 import 'package:notes/models/batterie.dart';
 import 'package:notes/models/courroie.dart';
+import 'package:notes/utility/screen.dart';
 import 'package:notes/widgets/date_chooser.dart';
 import 'package:notes/widgets/text_field.dart';
 import 'package:provider/provider.dart';
@@ -29,10 +30,28 @@ class Armortisseur extends StatelessWidget {
     double width = globals.screen.width;
     double aspectRatio = globals.screen.aspectRatio;
     double textScale = globals.screen.textScale;
+    Screen screen = globals.screen;
 
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
+          title: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Image.asset(
+                'assets/images/${globals.addOrEditPages[globals.mainViewIndex]['icon']}',
+                color: Colors.white,
+                width: screen.convert(50, width),
+                height: screen.convert(30, height),
+                fit: BoxFit.fitHeight,
+              ),
+              Text(globals.addOrEditPages[globals.mainViewIndex]['name'],
+                  style: TextStyle(
+                    color: Colors.white,
+                  )),
+            ],
+          ),
           iconTheme: IconThemeData(color: Colors.white),
           actions: <Widget>[
             IconButton(
@@ -46,8 +65,8 @@ class Armortisseur extends StatelessWidget {
                       addOrEditLogic.date != null) {
                     var armortisseurModel = ArmortisseurModel(
                             date: addOrEditLogic.date,
-                            rear: addOrEditLogic.rear,
-                            front: addOrEditLogic.front,
+                            rear: addOrEditLogic.yesOrNo[1],
+                            front: addOrEditLogic.yesOrNo[0],
                             km: double.parse(
                                 addOrEditLogic.controllers[0].text),
                             note: (addOrEditLogic.controllers[1].text))

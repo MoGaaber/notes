@@ -19,18 +19,52 @@ class DateChooser extends StatelessWidget {
 
     var screen = globals.screen;
     return Padding(
-      padding: EdgeInsets.only(top: screen.convert(14, height)),
+      padding: EdgeInsets.only(top: screen.convert(10, height)),
       child: Column(
         children: <Widget>[
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              'Date',
-              style: TextStyle(
-                  fontSize: screen.convert(50, screen.textScale),
-                  fontWeight: FontWeight.w700),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                'Date',
+                style: TextStyle(
+                    fontSize: screen.convert(50, screen.textScale),
+                    fontWeight: FontWeight.w700),
+              ),
+              SizedBox(
+                  width: screen.convert(80, width),
+                  child: Material(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    type: MaterialType.canvas,
+                    color: Colors.orangeAccent,
+                    child: IconButton(
+                        iconSize: screen.convert(35, screen.aspectRatio),
+                        icon: Icon(
+                          Icons.date_range,
+                          color: Colors.white,
+                          size: screen.convert(30, screen.aspectRatio),
+                        ),
+                        onPressed: () {
+                          addOrEditLogic.showDatePick(context);
+                        }),
+                  )),
+            ],
           ),
+          Text(
+            addOrEditLogic.date,
+            style: TextStyle(
+                fontSize: globals.screen.convert(22, globals.screen.textScale),
+                fontWeight: FontWeight.w700),
+          ),
+          Divider(
+            height: globals.screen.convert(30, height),
+          ),
+        ],
+      ),
+    );
+  }
+}
+/*
           ListTile(
             contentPadding:
                 EdgeInsets.only(left: screen.convert(8, screen.width)),
@@ -60,11 +94,5 @@ class DateChooser extends StatelessWidget {
                   fontWeight: FontWeight.w700),
             ),
           ),
-          Divider(
-            height: globals.screen.convert(30, height),
-          ),
-        ],
-      ),
-    );
-  }
-}
+
+ */

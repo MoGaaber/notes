@@ -9,6 +9,7 @@ import 'package:notes/logic/add_or_edit.dart';
 import 'package:notes/logic/globals.dart';
 import 'package:notes/models/batterie.dart';
 import 'package:notes/models/courroie.dart';
+import 'package:notes/utility/screen.dart';
 import 'package:notes/widgets/date_chooser.dart';
 import 'package:notes/widgets/text_field.dart';
 import 'package:provider/provider.dart';
@@ -29,6 +30,7 @@ class Batterie extends StatelessWidget {
     double width = globals.screen.width;
     double aspectRatio = globals.screen.aspectRatio;
     double textScale = globals.screen.textScale;
+    Screen screen = globals.screen;
 
     return SafeArea(
       child: Scaffold(
@@ -55,7 +57,23 @@ class Batterie extends StatelessWidget {
                   }
                 })
           ],
-          title: Text('Add Armortisseur item'),
+          centerTitle: true,
+          title: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Image.asset(
+                'assets/images/${globals.addOrEditPages[globals.mainViewIndex]['icon']}',
+                color: Colors.white,
+                width: screen.convert(50, width),
+                height: screen.convert(30, height),
+                fit: BoxFit.fitHeight,
+              ),
+              Text(globals.addOrEditPages[globals.mainViewIndex]['name'],
+                  style: TextStyle(
+                    color: Colors.white,
+                  )),
+            ],
+          ),
         ),
         body: Form(
           key: addOrEditLogic.formKey,
@@ -69,10 +87,10 @@ class Batterie extends StatelessWidget {
               for (int i = 0; i < 2; i++)
                 Center(
                   child: MyTextField(
-                    textFieldType: globals.addOrEditPages[1]['textFields'][i]
+                    textFieldType: globals.addOrEditPages[3]['textFields'][i]
                         ['type'],
                     textEditingController: addOrEditLogic.controllers[i],
-                    label: globals.addOrEditPages[1]['textFields'][i]['label'],
+                    label: globals.addOrEditPages[3]['textFields'][i]['label'],
                   ),
                 ),
             ],

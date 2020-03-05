@@ -36,7 +36,13 @@ class AddOrEditLogic extends ChangeNotifier {
         addOrEditPages[mainViewIndex]['controllersLength'],
         (_) => TextEditingController());
     yesOrNo = List.filled(addOrEditPages[mainViewIndex]['yesNoLength'], false);
-    fetches = [fetchVidange, fetchCourroie, fetchAmortisseur, fetchBatterie];
+    fetches = [
+      fetchVidange,
+      fetchCourroie,
+      fetchAmortisseur,
+      fetchBatterie,
+      fetchFreinage
+    ];
     if (dateViewIndex != null) {
       fetches[mainViewIndex]();
     }
@@ -45,52 +51,64 @@ class AddOrEditLogic extends ChangeNotifier {
     decodedelement = jsonDecode(sharedPreferences
         .getStringList(SharedPrefKeys.vidangePref)[dateViewIndex]);
 
-    date = decodedelement['date'];
-    controllers[0].text = decodedelement['km'].toString();
-    controllers[1].text = decodedelement['nextOil'].toString();
-    controllers[2].text = decodedelement['oil']['price'] == null
+    date = decodedelement['Date'];
+    controllers[0].text = decodedelement['KM'].toString();
+    controllers[1].text = decodedelement['Next Oil Change'].toString();
+    controllers[2].text = decodedelement['Oil / Huile']['Price'] == null
         ? ''
-        : decodedelement['oil']['price'].toString();
-    controllers[3].text = decodedelement['air']['price'] == null
+        : decodedelement['Oil / Huile']['Price'].toString();
+    controllers[3].text = decodedelement['Air']['Price'] == null
         ? ''
-        : decodedelement['air']['price'].toString();
-    controllers[4].text = decodedelement['fuel']['price'] == null
+        : decodedelement['Air']['Price'].toString();
+    controllers[4].text = decodedelement['Fuel / Carburant']['Price'] == null
         ? ''
-        : decodedelement['fuel']['price'].toString();
-    controllers[5].text = decodedelement['clim']['price'] == null
+        : decodedelement['Fuel / Carburant']['Price'].toString();
+    controllers[5].text = decodedelement['Clim']['Price'] == null
         ? ''
-        : decodedelement['clim']['price'].toString();
-    yesOrNo[0] = decodedelement['oil']['yesOrNo'];
-    yesOrNo[1] = decodedelement['air']['yesOrNo'];
-    yesOrNo[2] = decodedelement['fuel']['yesOrNo'];
-    yesOrNo[3] = decodedelement['clim']['yesOrNo'];
+        : decodedelement['Clim']['Price'].toString();
+    yesOrNo[0] = decodedelement['Oil / Huile']['Excited'];
+    yesOrNo[1] = decodedelement['Air']['Excited'];
+    yesOrNo[2] = decodedelement['Fuel / Carburant']['Excited'];
+    yesOrNo[3] = decodedelement['Clim']['Excited'];
   }
 
   void fetchBatterie() {
     decodedelement = jsonDecode(sharedPreferences
         .getStringList(SharedPrefKeys.batteriPref)[dateViewIndex]);
-    controllers[0].text = decodedelement['date'];
-    controllers[1].text = decodedelement['km'];
-    controllers[2].text = decodedelement['note'];
+    this.date = decodedelement['Date'];
+    controllers[0].text = decodedelement['KM'].toString();
+    controllers[1].text = decodedelement['Note'].toString();
   }
 
   void fetchCourroie() {
     decodedelement = jsonDecode(sharedPreferences
         .getStringList(SharedPrefKeys.courroiePref)[dateViewIndex]);
-    date = decodedelement['date'];
-    controllers[0].text = decodedelement['km'].toString();
-    controllers[1].text = decodedelement['nextKm'].toString();
-    controllers[2].text = decodedelement['note'].toString();
+    date = decodedelement['Date'];
+    controllers[0].text = decodedelement['KM'].toString();
+    controllers[1].text = decodedelement['Next Km'].toString();
+    controllers[2].text = decodedelement['Note'].toString();
   }
 
   void fetchAmortisseur() {
     decodedelement = jsonDecode(sharedPreferences
         .getStringList(SharedPrefKeys.amortisseurPref)[dateViewIndex]);
-    controllers[0].text = decodedelement['date'];
-    controllers[1].text = decodedelement['km'].toString();
-    controllers[2].text = decodedelement['note'];
-    yesOrNo[0] = decodedelement['front'];
-    yesOrNo[1] = decodedelement['rear'];
+    this.date = decodedelement['Date'];
+    controllers[0].text = decodedelement['KM'].toString();
+    controllers[1].text = decodedelement['Note'];
+    yesOrNo[0] = decodedelement['Front / AV'];
+    yesOrNo[1] = decodedelement['Rear / AV'];
+  }
+
+  void fetchFreinage() {
+    decodedelement = jsonDecode(sharedPreferences
+        .getStringList(SharedPrefKeys.freinagePref)[dateViewIndex]);
+    this.date = decodedelement['Date'];
+    this.controllers[0].text = decodedelement['Disc Frien']['KM'].toString();
+    this.controllers[1].text = decodedelement['Plaqwets']['KM'].toString();
+    this.yesOrNo[0] = decodedelement['Disc Frien']['Front / AV'];
+    this.yesOrNo[1] = decodedelement['Disc Frien']['Rear / AV'];
+    this.yesOrNo[2] = decodedelement['Plaqwets']['Front / AV'];
+    this.yesOrNo[3] = decodedelement['Plaqwets']['Rear / AV'];
   }
 
   void saveChanges(

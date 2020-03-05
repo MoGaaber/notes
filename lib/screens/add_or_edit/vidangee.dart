@@ -9,6 +9,7 @@ import 'package:notes/logic/add_or_edit.dart';
 import 'package:notes/logic/globals.dart';
 import 'package:notes/models/courroie.dart';
 import 'package:notes/models/vidange.dart';
+import 'package:notes/utility/screen.dart';
 import 'package:notes/widgets/date_chooser.dart';
 import 'package:notes/widgets/text_field.dart';
 import 'package:provider/provider.dart';
@@ -28,10 +29,27 @@ class Vidangee extends StatelessWidget {
     double width = globals.screen.width;
     double aspectRatio = globals.screen.aspectRatio;
     double textScale = globals.screen.textScale;
-    print(addOrEditLogic.controllers.length);
+
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
+        centerTitle: true,
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Image.asset(
+              'assets/images/${globals.addOrEditPages[globals.mainViewIndex]['icon']}',
+              color: Colors.white,
+              width: screen.convert(50, width),
+              height: screen.convert(30, height),
+              fit: BoxFit.fitHeight,
+            ),
+            Text(globals.addOrEditPages[globals.mainViewIndex]['name'],
+                style: TextStyle(
+                  color: Colors.white,
+                )),
+          ],
+        ),
         actions: <Widget>[
           IconButton(
               icon: Icon(
@@ -51,23 +69,23 @@ class Vidangee extends StatelessWidget {
                           excited: addOrEditLogic.yesOrNo[0],
                           price: addOrEditLogic.controllers[3].text.isEmpty
                               ? null
-                              : num.parse(addOrEditLogic.controllers[2].text)),
+                              : num.parse(addOrEditLogic.controllers[3].text)),
                       air: VidangeFilterModel(
                         excited: addOrEditLogic.yesOrNo[1],
                         price: addOrEditLogic.controllers[4].text.isEmpty
                             ? null
-                            : num.parse(addOrEditLogic.controllers[3].text),
+                            : num.parse(addOrEditLogic.controllers[4].text),
                       ),
                       fuel: VidangeFilterModel(
                           excited: addOrEditLogic.yesOrNo[2],
                           price: addOrEditLogic.controllers[5].text.isEmpty
                               ? null
-                              : num.parse(addOrEditLogic.controllers[4].text)),
+                              : num.parse(addOrEditLogic.controllers[5].text)),
                       clim: VidangeFilterModel(
                           excited: addOrEditLogic.yesOrNo[3],
                           price: addOrEditLogic.controllers[6].text.isEmpty
                               ? null
-                              : num.parse(addOrEditLogic.controllers[5].text)));
+                              : num.parse(addOrEditLogic.controllers[6].text)));
                   print(vidangeModel.toJson());
                   addOrEditLogic.saveChanges(
                       context: context,
@@ -116,7 +134,7 @@ class Vidangee extends StatelessWidget {
                       Checkbox(
                           value: addOrEditLogic.yesOrNo[i - 3],
                           onChanged: (x) {
-                            addOrEditLogic.yesOrNo[i] = x;
+                            addOrEditLogic.yesOrNo[i - 3] = x;
                             addOrEditLogic.notifyListeners();
                           }),
                       Text(
