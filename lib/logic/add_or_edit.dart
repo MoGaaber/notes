@@ -1,41 +1,40 @@
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:notes/constants/constants.dart';
-import 'package:notes/models/vidange.dart';
-import 'package:notes/screens/add_or_edit/vidangee.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'globals.dart';
 
-class AddOrEditLogic extends ChangeNotifier {
-  int test = 1;
+class AddOrEditLogic with ChangeNotifier {
   Map<String, dynamic> decodedelement;
   SharedPreferences sharedPreferences;
+  Globals globals;
+  void update(int mainViewIndex, int dateViewIndex) {
+    this.mainViewIndex = mainViewIndex;
+    this.dateViewIndex = dateViewIndex;
+    controllers = List.generate(
+        globals.addOrEditPages[mainViewIndex]['controllersLength'],
+        (_) => TextEditingController());
+    yesOrNo = List.filled(
+        globals.addOrEditPages[mainViewIndex]['yesNoLength'], false);
+    if (dateViewIndex != null) {
+      fetches[mainViewIndex]();
+    }
+  }
+
   List<TextEditingController> controllers;
   List<bool> yesOrNo;
   var formKey = GlobalKey<FormState>();
   String date;
-  Color dateColor = Colors.black;
-  int dateViewIndex;
   List<VoidCallback> fetches;
-  int mainViewIndex;
-  bool front = false;
-  bool rear = false;
-  bool formIsValid = true;
-  AddOrEditLogic(
-      {@required this.sharedPreferences,
-      @required this.dateViewIndex,
-      @required this.mainViewIndex,
-      @required List addOrEditPages}) {
+  int mainViewIndex, dateViewIndex;
+  AddOrEditLogic(BuildContext context) {
+    globals = Provider.of<Globals>(context, listen: false);
+    this.sharedPreferences =
+        Provider.of<SharedPreferences>(context, listen: false);
     date = DateFormat.yMd().format(DateTime.now());
-    controllers = List.generate(
-        addOrEditPages[mainViewIndex]['controllersLength'],
-        (_) => TextEditingController());
-    yesOrNo = List.filled(addOrEditPages[mainViewIndex]['yesNoLength'], false);
     fetches = [
       fetchVidange,
       fetchCourroie,
@@ -43,9 +42,6 @@ class AddOrEditLogic extends ChangeNotifier {
       fetchBatterie,
       fetchFreinage
     ];
-    if (dateViewIndex != null) {
-      fetches[mainViewIndex]();
-    }
   }
   void fetchVidange() {
     decodedelement = jsonDecode(sharedPreferences
@@ -126,56 +122,6 @@ class AddOrEditLogic extends ChangeNotifier {
       Navigator.pop(context, jsonEncode(object));
     });
   }
-
-/*
-  void save(BuildContext context) {
-    bool validate = formKey.currentState.validate();
-    if (date == null) {
-      color = Colors.red;
-    }
-
-    if (validate && date != null) {
-      var key = Constants.vidangePref;
-      var list = sharedPreferences.getStringList(key);
-      VidangeModel vidangeModel = VidangeModel(
-          date: date,
-          km: double.parse(controllers[0].text),
-          nextOil: double.parse(controllers[1].text),
-          oil: VidangeFilterModel(
-              yesOrNo: yesOrNo[0],
-              price: controllers[2].text.isEmpty
-                  ? null
-                  : double.parse(controllers[2].text)),
-          air: VidangeFilterModel(
-            yesOrNo: yesOrNo[1],
-            price: controllers[3].text.isEmpty
-                ? null
-                : double.parse(controllers[3].text),
-          ),
-          fuel: VidangeFilterModel(
-              yesOrNo: yesOrNo[2],
-              price: controllers[4].text.isEmpty
-                  ? null
-                  : double.parse(controllers[4].text)),
-          clim: VidangeFilterModel(
-              yesOrNo: yesOrNo[3],
-              price: controllers[5].text.isEmpty
-                  ? null
-                  : double.parse(controllers[5].text)));
-      String encodedElement = jsonEncode(vidangeModel.toJson());
-      if (dateViewIndex == null) {
-        list.add(encodedElement);
-      } else {
-        list[dateViewIndex] = jsonEncode(vidangeModel.toJson());
-      }
-      sharedPreferences.setStringList(Constants.vidangePref, list).then((x) {
-        Navigator.pop(context, jsonEncode(vidangeModel.toJson()));
-      });
-    }
-
-    notifyListeners();
-  }
-*/
 
   void showDatePick(BuildContext context) {
     showDatePicker(

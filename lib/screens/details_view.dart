@@ -1,73 +1,20 @@
 import 'dart:convert';
-
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:notes/logic/details_view.dart';
 import 'package:notes/logic/globals.dart';
-import 'package:notes/models/amortisseur.dart';
-import 'package:notes/models/details_view_args.dart';
-import 'package:notes/models/frienage.dart';
-import 'package:notes/models/vidange.dart';
-import 'package:notes/screens/add_or_edit/vidangee.dart';
-import 'package:notes/utility/screen.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class DetailsView extends StatefulWidget {
+class DetailsView extends StatelessWidget {
   static const route = '/details';
-
-  @override
-  _DetailsViewState createState() => _DetailsViewState();
-}
-
-class _DetailsViewState extends State<DetailsView> {
-  Map<String, dynamic> data;
-
-  bool expanded = false;
   bool isResult = false;
-
-  int expandedIndex;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    if (!isResult) {
-      final DetailsViewModelArgs args =
-          ModalRoute.of(context).settings.arguments;
-      this.data = args.data;
-    }
-    print('didchange!');
-  }
 
   @override
   Widget build(BuildContext context) {
-/*
-    var test = {
-      'Date': '12/12/2020',
-      'KM': '55555665',
-      'Rear / AV': true,
-      'Front / AV': false,
-      'Note':
-          'this.notethis.notethis.notethis.notethis.notethis.notethis.notethis.notethis.notethis.notethis.notethis.notethis.notethis.notethis.note',
-    };
-*/
-
     Globals globals = Provider.of<Globals>(context, listen: false);
 
-    double height = globals.screen.height;
-    double width = globals.screen.width;
-    double aspectRatio = globals.screen.aspectRatio;
-    double textScale = globals.screen.textScale;
-    Screen screen = globals.screen;
-    SharedPreferences sharedPreferences =
-        Provider.of<SharedPreferences>(context, listen: true);
+    DetailsViewLogic detailsView = Provider.of<DetailsViewLogic>(context);
 
     return SafeArea(
       child: Scaffold(
@@ -75,21 +22,23 @@ class _DetailsViewState extends State<DetailsView> {
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {
-                Navigator.pop(context, isResult ? data : null);
+                Navigator.pop(
+                    context, isResult ? detailsView.decodedData : null);
               },
             ),
             actions: <Widget>[
               IconButton(
                   icon: Icon(Icons.edit),
                   onPressed: () async {
-                    var result = await Navigator.pushNamed(context,
-                        globals.addOrEditPages[globals.mainViewIndex]['route']);
+                    var result = await Navigator.pushNamed(
+                        context,
+                        globals.addOrEditPages[detailsView.mainViewIndex]
+                            ['route']);
                     if (result != null) {
                       this.isResult = true;
 
                       print('result');
-                      this.data = jsonDecode(result);
-                      setState(() {});
+                      detailsView.decodedData = jsonDecode(result);
                     }
                   }),
 /*
@@ -149,13 +98,13 @@ class _DetailsViewState extends State<DetailsView> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Image.asset(
-                  'assets/images/${globals.addOrEditPages[globals.mainViewIndex]['icon']}',
+                  'assets/images/${globals.addOrEditPages[detailsView.mainViewIndex]['icon']}',
                   color: Colors.white,
-                  width: screen.convert(50, width),
-                  height: screen.convert(30, height),
+                  width: globals.screen.convert(50, globals.width),
+                  height: globals.screen.convert(30, globals.height),
                   fit: BoxFit.fitHeight,
                 ),
-                Text(globals.addOrEditPages[globals.mainViewIndex]['name'],
+                Text(globals.addOrEditPages[detailsView.mainViewIndex]['name'],
                     style: TextStyle(
                       color: Colors.white,
                     )),
@@ -165,41 +114,55 @@ class _DetailsViewState extends State<DetailsView> {
           body: ScrollConfiguration(
             behavior: ScrollBehavior(),
             child: ListView.separated(
-                itemCount: data.keys.toList().length,
-                padding: EdgeInsets.only(top: screen.convert(5, height)),
+                itemCount: detailsView.decodedData.keys.toList().length,
+                padding: EdgeInsets.only(
+                    top: globals.screen.convert(5, globals.height)),
                 itemBuilder: (BuildContext context, int x) {
-                  return data[data.keys.toList()[x]] is Map
+                  return detailsView.decodedData[
+                          detailsView.decodedData.keys.toList()[x]] is Map
                       ? ExpandablePanel(
                           theme: ExpandableThemeData(iconColor: Colors.orange),
                           expanded: Column(children: <Widget>[
-                            for (var key in data[data.keys.toList()[x]].keys)
-                              if (data[data.keys.toList()[x]][key] != null)
+                            for (var key in detailsView
+                                .decodedData[
+                                    detailsView.decodedData.keys.toList()[x]]
+                                .keys)
+                              if (detailsView.decodedData[detailsView
+                                      .decodedData.keys
+                                      .toList()[x]][key] !=
+                                  null)
                                 ListTile(
                                   contentPadding:
                                       EdgeInsets.symmetric(horizontal: 30),
-                                  trailing: data[data.keys.toList()[x]][key]
-                                          is bool
+                                  trailing: detailsView.decodedData[detailsView
+                                          .decodedData.keys
+                                          .toList()[x]][key] is bool
                                       ? Material(
-                                          color: data[data.keys.toList()[x]]
-                                                  [key]
+                                          color: detailsView.decodedData[
+                                                  detailsView.decodedData.keys
+                                                      .toList()[x]][key]
                                               ? Colors.green
                                               : Colors.red,
                                           type: MaterialType.circle,
                                           child: Icon(
-                                            data[data.keys.toList()[x]][key]
+                                            detailsView.decodedData[detailsView
+                                                    .decodedData.keys
+                                                    .toList()[x]][key]
                                                 ? Icons.check
                                                 : Icons.close,
                                             color: Colors.white,
-                                            size:
-                                                screen.convert(24, aspectRatio),
+                                            size: globals.screen.convert(
+                                                24, globals.aspectRatio),
                                           ),
                                         )
                                       : Text(
-                                          data[data.keys.toList()[x]][key]
+                                          detailsView.decodedData[detailsView
+                                                  .decodedData.keys
+                                                  .toList()[x]][key]
                                               .toString(),
                                           style: TextStyle(
-                                              fontSize:
-                                                  screen.convert(18, textScale),
+                                              fontSize: globals.screen.convert(
+                                                  18, globals.textScaleFactor),
                                               fontWeight: FontWeight.w700,
                                               color: Colors.green),
                                         ),
@@ -207,55 +170,71 @@ class _DetailsViewState extends State<DetailsView> {
                                     key.toString(),
                                     style: TextStyle(
 //                                        color: Colors.orange,
-                                        fontSize: screen.convert(21, textScale),
+                                        fontSize: globals.screen.convert(
+                                            21, globals.textScaleFactor),
                                         fontWeight: FontWeight.w700),
                                   ),
                                 )
                           ]),
                           header: ListTile(
                             title: Text(
-                              data.keys.toList()[x],
+                              detailsView.decodedData.keys.toList()[x],
                             ),
                           ),
                         )
                       : ListTile(
-                          trailing: data[data.keys.toList()[x]] is bool
+                          trailing: detailsView.decodedData[
+                                      detailsView.decodedData.keys.toList()[x]]
+                                  is bool
                               ? Material(
-                                  color: data[data.keys.toList()[x]]
+                                  color: detailsView.decodedData[detailsView
+                                          .decodedData.keys
+                                          .toList()[x]]
                                       ? Colors.green
                                       : Colors.red,
                                   type: MaterialType.circle,
                                   child: Icon(
-                                    data[data.keys.toList()[x]]
+                                    detailsView.decodedData[detailsView
+                                            .decodedData.keys
+                                            .toList()[x]]
                                         ? Icons.check
                                         : Icons.close,
                                     color: Colors.white,
-                                    size: screen.convert(24, aspectRatio),
+                                    size: globals.screen
+                                        .convert(24, globals.aspectRatio),
                                   ),
                                 )
-                              : data.keys.toList()[x] == 'Note'
+                              : detailsView.decodedData.keys.toList()[x] ==
+                                      'Note'
                                   ? null
                                   : Text(
-                                      data[data.keys.toList()[x]].toString(),
+                                      detailsView.decodedData[detailsView
+                                              .decodedData.keys
+                                              .toList()[x]]
+                                          .toString(),
                                       style: TextStyle(
-                                          fontSize:
-                                              screen.convert(20, textScale),
+                                          fontSize: globals.screen.convert(
+                                              20, globals.textScaleFactor),
                                           fontWeight: FontWeight.w700,
                                           color: Colors.green),
                                     ),
                           title: Text(
-                            data.keys.toList()[x],
+                            detailsView.decodedData.keys.toList()[x],
                             style: TextStyle(
-                                fontSize: screen.convert(25, textScale),
+                                fontSize: globals.screen
+                                    .convert(25, globals.textScaleFactor),
                                 fontWeight: FontWeight.w700),
                           ),
-                          subtitle: data.keys.toList()[x] == 'Note'
+                          subtitle: detailsView.decodedData.keys.toList()[x] ==
+                                  'Note'
                               ? Text(
-                                  data[data.keys.toList()[x]],
+                                  detailsView.decodedData[
+                                      detailsView.decodedData.keys.toList()[x]],
                                   style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       color: Colors.green,
-                                      fontSize: screen.convert(20, textScale)),
+                                      fontSize: globals.screen.convert(
+                                          20, globals.textScaleFactor)),
                                 )
                               : null,
                         );

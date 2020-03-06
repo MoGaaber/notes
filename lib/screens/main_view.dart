@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:notes/constants/constants.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:notes/logic/globals.dart';
 import 'package:notes/logic/main_view.dart';
-import 'package:notes/models/vidange.dart';
 import 'package:notes/utility/screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,9 +20,65 @@ class MainView extends StatelessWidget {
     globals.screen = Screen(
         size: MediaQuery.of(context).size,
         textScale: MediaQuery.textScaleFactorOf(context));
-
+    globals.height = globals.screen.height;
+    globals.width = globals.screen.width;
+    globals.aspectRatio = globals.screen.aspectRatio;
+    globals.textScaleFactor = globals.screen.textScale;
     return SafeArea(
       child: Scaffold(
+        drawer: Drawer(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              SizedBox.fromSize(
+                size: Size.fromHeight(250),
+                child: DrawerHeader(
+                  child: Center(
+                      child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Image.asset(
+                        'assets/images/fff.png',
+                        fit: BoxFit.contain,
+                        width: 130,
+                        color: Colors.orange,
+                      ),
+                      Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                      Text(
+                        'Car Note',
+                        style: TextStyle(
+                            color: Colors.white.withOpacity(0.5),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700),
+                      )
+                    ],
+                  )),
+                  decoration: BoxDecoration(
+                    color: Color(0xff250101),
+                  ),
+                ),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                onTap: () {},
+                leading: Icon(FontAwesomeIcons.share),
+                title: Text(
+                  'Share Our App',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              Divider(),
+              ListTile(
+                onTap: () {},
+                leading: Icon(FontAwesomeIcons.star),
+                title: Text('Rate Us'),
+              )
+            ],
+          ),
+        ),
         appBar: AppBar(
           centerTitle: true,
           title: Text(
@@ -32,13 +87,15 @@ class MainView extends StatelessWidget {
           backgroundColor: Colors.orange,
         ),
         body: sharedPreferences == null
+            // instance not ready
             ? Center(
                 child: CircularProgressIndicator(),
               )
+            // instance is ready
             : ScrollConfiguration(
                 behavior: ScrollBehavior(),
                 child: ListView.separated(
-                  itemCount: mainViewLogic.globals.addOrEditPages.length,
+                  itemCount: globals.addOrEditPages.length,
                   itemBuilder: (BuildContext context, int index) => Column(
                     children: <Widget>[
                       ListTile(
@@ -57,7 +114,7 @@ class MainView extends StatelessWidget {
                                   color: Colors.orange.withOpacity(0.8),
                                 )),
                             Image.asset(
-                              'assets/images/${mainViewLogic.globals.addOrEditPages[index]['icon']}',
+                              'assets/images/${globals.addOrEditPages[index]['icon']}',
                               width: 35 /
                                   globals.screen.width *
                                   globals.screen.width,
@@ -77,13 +134,10 @@ class MainView extends StatelessWidget {
                           color: Colors.orange,
                         ),
                         onTap: () {
-                          mainViewLogic.navigateToDateView(
-                            index: index,
-                            context: context,
-                          );
+                          mainViewLogic.navigateToDateView(context, index);
                         },
                         title: Text(
-                          mainViewLogic.globals.addOrEditPages[index]['name'],
+                          globals.addOrEditPages[index]['name'],
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20 /
@@ -97,65 +151,6 @@ class MainView extends StatelessWidget {
                       Divider(),
                 ),
               ),
-/*
-        body: FutureBuilder<SharedPreferences>(
-          future: SharedPreferences.getInstance(),
-          builder: (BuildContext context,
-              AsyncSnapshot<SharedPreferences> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: Text('wait'),
-              );
-            } else {
-              sharedPreferences = snapshot.data;
-              if (sharedPreferences.getStringList(Constants.amortisseurPref) !=
-                  null) {
-                return ListView.builder(
-                  itemCount: mainLogic.list.length,
-                  itemBuilder: (BuildContext context, int index) => ListTile(
-                    onTap: () async {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (BuildContext context) => DateView(
-                              index: index,
-                              sharedPreferences: sharedPreferences,
-                              sharedPreferencesKey: mainLogic.list[index]
-                                  ['sharedPrefKey'])));
-                    },
-                    title: Text(mainLogic.list[index]['name']),
-                  ),
-                );
-              } else {
-                return FutureBuilder<List<bool>>(
-                  future: Future.wait([
-                    sharedPreferences
-                        .setStringList(Constants.amortisseurPref, []),
-                    sharedPreferences.setStringList(Constants.batteriPref, []),
-                    sharedPreferences.setStringList(Constants.courroiePref, []),
-                    sharedPreferences.setStringList(Constants.vidange, []),
-                  ]),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<bool>> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: Text('waiting'),
-                      );
-                    } else {
-                      return ListView.builder(
-                        itemCount: mainLogic.list.length,
-                        itemBuilder: (BuildContext context, int index) =>
-                            ListTile(
-                          onTap: () {},
-                          title: Text(mainLogic.list[index]['name']),
-                        ),
-                      );
-                    }
-                  },
-                );
-              }
-            }
-          },
-        ),
-*/
       ),
     );
   }

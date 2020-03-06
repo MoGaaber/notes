@@ -1,39 +1,30 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:notes/constants/constants.dart';
 import 'package:notes/logic/globals.dart';
-import 'package:notes/models/batterie.dart';
-import 'package:notes/screens/add_or_edit/amortisseur.dart';
-import 'package:notes/screens/add_or_edit/batterie.dart';
-import 'package:notes/screens/add_or_edit/courroie.dart';
-import 'package:notes/screens/add_or_edit/frenage.dart';
-import 'package:notes/screens/add_or_edit/vidangee.dart';
-import 'package:notes/screens/date_view/date_view.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DateViewLogic extends ChangeNotifier {
-  int index, selectedMainViewElementIndex, itemIndex;
+  int mainViewIndex, dateViewIndex;
+
   String mKey;
-  Animation<double> animation;
-  AnimationController animationController;
   SharedPreferences sharedPreferences;
   List<String> list;
   var pushResult;
   Globals globals;
   Map mPage;
   String mRoute;
-  DateViewLogic({
-    this.sharedPreferences,
-    this.selectedMainViewElementIndex,
-    BuildContext context,
-  }) {
-    globals = Provider.of(context, listen: false);
-    mPage = globals.addOrEditPages[selectedMainViewElementIndex];
+  void update(int mainViewIndex) {
+    this.mainViewIndex = mainViewIndex;
+    mPage = globals.addOrEditPages[mainViewIndex];
     mKey = mPage['refKey'];
     mRoute = mPage['route'];
-    print('date view construcot');
     list = sharedPreferences.getStringList(mKey);
+  }
+
+  DateViewLogic(BuildContext context) {
+    sharedPreferences = Provider.of<SharedPreferences>(context, listen: false);
+    globals = Provider.of<Globals>(context, listen: false);
   }
 
   void deleteItem({int index}) {
@@ -43,20 +34,15 @@ class DateViewLogic extends ChangeNotifier {
   }
 
   void navigateToSave({int index, BuildContext context}) async {
-    globals.dateViewIndex = index;
+    this.dateViewIndex = index;
+    notifyListeners();
     pushResult = await Navigator.pushNamed(
       context,
       mRoute,
     );
-    print(pushResult);
-
     if (pushResult != null) {
-      if (list == null) list = [];
-
       if (index == null) {
         list.add(pushResult);
-
-        print('1555555');
       } else {
         list[index] = pushResult;
       }

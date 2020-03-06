@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:notes/constants/constants.dart';
 import 'package:notes/logic/add_or_edit.dart';
 import 'package:notes/logic/globals.dart';
@@ -35,13 +34,15 @@ class Courroie extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Image.asset(
-                  'assets/images/${globals.addOrEditPages[globals.mainViewIndex]['icon']}',
+                  'assets/images/${globals.addOrEditPages[addOrEditLogic.mainViewIndex]['icon']}',
                   color: Colors.white,
                   width: screen.convert(50, width),
                   height: screen.convert(30, height),
                   fit: BoxFit.fitHeight,
                 ),
-                Text(globals.addOrEditPages[globals.mainViewIndex]['name'],
+                Text(
+                    globals.addOrEditPages[addOrEditLogic.mainViewIndex]
+                        ['name'],
                     style: TextStyle(
                       color: Colors.white,
                     )),

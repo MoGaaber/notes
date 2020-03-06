@@ -1,6 +1,4 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:notes/constants/constants.dart';
 import 'package:notes/screens/add_or_edit/amortisseur.dart';
 import 'package:notes/screens/add_or_edit/batterie.dart';
@@ -9,16 +7,11 @@ import 'package:notes/screens/add_or_edit/frenage.dart';
 import 'package:notes/screens/add_or_edit/vidangee.dart';
 import 'package:notes/utility/screen.dart';
 import 'package:notes/widgets/text_field.dart';
-import 'package:provider/provider.dart';
 
-import 'add_or_edit.dart';
-
-class Globals extends ChangeNotifier {
-  int mainViewIndex, dateViewIndex;
-
-  String sharedPrefKey;
-  List<Map<String, dynamic>> addOrEditPages;
+class Globals {
   Screen screen;
+  double height, width, aspectRatio, textScaleFactor;
+  List<Map<String, dynamic>> addOrEditPages;
 
   void initializeAddOrEditPages() {
     addOrEditPages = [
@@ -33,7 +26,7 @@ class Globals extends ChangeNotifier {
         'route': Vidangee.route,
         'refKey': SharedPrefKeys.vidangePref,
         'icon': 'oil.png',
-        'name': 'VIDANGE'
+        'name': 'VIDANGE',
       },
       {
         'textFields': [
@@ -83,7 +76,7 @@ class Globals extends ChangeNotifier {
     ];
   }
 
-  Globals() {
+  Globals(BuildContext context) {
     initializeAddOrEditPages();
   }
 }

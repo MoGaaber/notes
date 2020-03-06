@@ -1,21 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:notes/constants/constants.dart';
 import 'package:notes/logic/date_view.dart';
-import 'package:notes/logic/globals.dart';
-import 'package:notes/models/batterie.dart';
 import 'package:notes/models/details_view_args.dart';
-import 'package:notes/screens/add_or_edit/amortisseur.dart';
-import 'package:notes/screens/add_or_edit/batterie.dart';
-import 'package:notes/screens/add_or_edit/courroie.dart';
-import 'package:notes/screens/add_or_edit/vidangee.dart';
-import 'package:notes/screens/details_view/details_view.dart';
-import 'package:notes/utility/screen.dart';
+import 'package:notes/screens/details_view.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class DateView extends StatefulWidget {
   static const String route = '/dateView';
@@ -91,7 +79,7 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
     slideAnimation = Tween<Offset>(begin: Offset(0, 0), end: Offset(0.0, -0.1))
         .animate(CurvedAnimation(
             parent: slideAnimationController, curve: Curves.easeInToLinear));
-    slideAnimationController.repeat(reverse: true);
+//    slideAnimationController.repeat(reverse: true);
   }
 
   @override
@@ -104,13 +92,6 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     DateViewLogic dateViewLogic =
         Provider.of<DateViewLogic>(context, listen: true);
-    Globals globals = Provider.of<Globals>(context, listen: false);
-    double height = globals.screen.height;
-    double width = globals.screen.width;
-    double aspectRatio = globals.screen.aspectRatio;
-    double textScale = globals.screen.textScale;
-    Screen screen = globals.screen;
-    print(globals.addOrEditPages[globals.mainViewIndex]['icon']);
 
     return SafeArea(
       child: Scaffold(
@@ -120,8 +101,8 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
               icon: Icon(
                 Icons.add,
                 size: 30 /
-                    globals.screen.aspectRatio *
-                    globals.screen.aspectRatio,
+                    dateViewLogic.globals.screen.aspectRatio *
+                    dateViewLogic.globals.screen.aspectRatio,
                 color: Colors.white,
               ),
               onPressed: () {
@@ -134,13 +115,17 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Image.asset(
-                'assets/images/${globals.addOrEditPages[globals.mainViewIndex]['icon']}',
+                'assets/images/${dateViewLogic.globals.addOrEditPages[dateViewLogic.mainViewIndex]['icon']}',
                 color: Colors.white,
-                width: screen.convert(50, width),
-                height: screen.convert(30, height),
+                width: dateViewLogic.globals.screen
+                    .convert(50, dateViewLogic.globals.width),
+                height: dateViewLogic.globals.screen
+                    .convert(30, dateViewLogic.globals.height),
                 fit: BoxFit.fitHeight,
               ),
-              Text(globals.addOrEditPages[globals.mainViewIndex]['name'],
+              Text(
+                  dateViewLogic.globals
+                      .addOrEditPages[dateViewLogic.mainViewIndex]['name'],
                   style: TextStyle(
                     color: Colors.white,
                   )),
@@ -169,8 +154,8 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                       reverse: false,
                       padding: EdgeInsets.only(
                           top: 1 /
-                              globals.screen.height *
-                              globals.screen.height),
+                              dateViewLogic.globals.screen.height *
+                              dateViewLogic.globals.screen.height),
                       itemCount: dateViewLogic.list.length,
                       itemBuilder: (BuildContext context, int index) =>
                           Dismissible(
@@ -182,25 +167,33 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                           children: <Widget>[
                             ListTile(
                               contentPadding: EdgeInsets.all(
-                                screen.convert(10, aspectRatio),
+                                dateViewLogic.globals.screen.convert(
+                                    10, dateViewLogic.globals.aspectRatio),
                               ),
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   InkWell(
                                     onTap: () async {
+                                      dateViewLogic.dateViewIndex = index;
+                                      dateViewLogic.notifyListeners();
                                       var result = await Navigator.pushNamed(
                                           context,
-                                          globals.addOrEditPages[
-                                              globals.mainViewIndex]['route']);
+                                          dateViewLogic.globals.addOrEditPages[
+                                                  dateViewLogic.mainViewIndex]
+                                              ['route']);
                                       if (result != null) {
                                         dateViewLogic.list[index] = result;
                                         dateViewLogic.notifyListeners();
                                       }
                                     },
                                     child: SizedBox(
-                                      height: screen.convert(50, height),
-                                      width: screen.convert(50, width),
+                                      height: dateViewLogic.globals.screen
+                                          .convert(
+                                              50, dateViewLogic.globals.height),
+                                      width: dateViewLogic.globals.screen
+                                          .convert(
+                                              50, dateViewLogic.globals.width),
                                       child: Material(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(20)),
@@ -208,7 +201,10 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                                         type: MaterialType.canvas,
                                         child: Icon(
                                           Icons.mode_edit,
-                                          size: 30 / aspectRatio * aspectRatio,
+                                          size: 30 /
+                                              dateViewLogic
+                                                  .globals.aspectRatio *
+                                              dateViewLogic.globals.aspectRatio,
                                           color: Colors.white,
                                         ),
                                       ),
@@ -216,11 +212,17 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                                   ),
                                   Padding(
                                       padding: EdgeInsets.symmetric(
-                                          horizontal:
-                                              screen.convert(5, screen.width))),
+                                          horizontal: dateViewLogic
+                                              .globals.screen
+                                              .convert(
+                                                  5,
+                                                  dateViewLogic
+                                                      .globals.screen.width))),
                                   InkWell(
                                     onTap: () async {
-                                      globals.dateViewIndex = index;
+                                      dateViewLogic.dateViewIndex = index;
+                                      dateViewLogic.notifyListeners();
+                                      print('!!!');
                                       var result = await Navigator.pushNamed(
                                           context, DetailsView.route,
                                           arguments: DetailsViewModelArgs(
@@ -235,8 +237,12 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                                       }
                                     },
                                     child: SizedBox(
-                                      height: screen.convert(50, height),
-                                      width: screen.convert(50, width),
+                                      height: dateViewLogic.globals.screen
+                                          .convert(
+                                              50, dateViewLogic.globals.height),
+                                      width: dateViewLogic.globals.screen
+                                          .convert(
+                                              50, dateViewLogic.globals.width),
                                       child: Material(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(20)),
@@ -244,7 +250,10 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                                         type: MaterialType.canvas,
                                         child: Icon(
                                           Icons.arrow_forward_ios,
-                                          size: 30 / aspectRatio * aspectRatio,
+                                          size: 30 /
+                                              dateViewLogic
+                                                  .globals.aspectRatio *
+                                              dateViewLogic.globals.aspectRatio,
                                           color: Colors.white,
                                         ),
                                       ),
@@ -261,7 +270,9 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                                   type: MaterialType.circle,
                                   child: Icon(
                                     Icons.remove,
-                                    size: 40 / aspectRatio * aspectRatio,
+                                    size: 40 /
+                                        dateViewLogic.globals.aspectRatio *
+                                        dateViewLogic.globals.aspectRatio,
                                     color: Colors.white,
                                   ),
                                 ),
@@ -272,7 +283,9 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                             ),
                             index == 0
                                 ? Divider(
-                                    height: 20 / height * height,
+                                    height: 20 /
+                                        dateViewLogic.globals.height *
+                                        dateViewLogic.globals.height,
                                   )
                                 : SizedBox(),
                           ],
@@ -280,7 +293,9 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                       ),
                       separatorBuilder: (BuildContext context, int index) =>
                           Divider(
-                        height: 20 / height * height,
+                        height: 20 /
+                            dateViewLogic.globals.height *
+                            dateViewLogic.globals.height,
                       ),
                     ),
                   ),

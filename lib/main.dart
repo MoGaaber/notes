@@ -1,147 +1,111 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:notes/logic/details_view.dart';
 import 'package:notes/logic/main_view.dart';
 import 'package:notes/logic/add_or_edit.dart';
 import 'package:notes/screens/add_or_edit/amortisseur.dart';
 import 'package:notes/screens/add_or_edit/batterie.dart';
 import 'package:notes/screens/add_or_edit/frenage.dart';
-import 'package:notes/screens/date_view/date_view.dart';
+import 'package:notes/screens/date_view.dart';
 import 'package:notes/screens/add_or_edit/vidangee.dart';
-import 'package:notes/screens/details_view/details_view.dart';
+import 'package:notes/screens/details_view.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'logic/date_view.dart';
 import 'logic/globals.dart';
 import 'screens/add_or_edit/courroie.dart';
-import 'screens/main_view/main_view.dart';
+import 'screens/main_view.dart';
 
-void main() => runApp(MultiProvider(
-      child: MyApp(),
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
       providers: [
         FutureProvider<SharedPreferences>(
             create: (BuildContext context) => SharedPreferences.getInstance()),
-        ChangeNotifierProvider(create: (BuildContext context) => Globals()),
+        Provider<Globals>(create: (BuildContext context) => Globals(context)),
+        ChangeNotifierProvider(
+            create: (BuildContext context) => DetailsViewLogic()),
+        ChangeNotifierProvider<MainViewLogic>(
+          create: (BuildContext context) => MainViewLogic(),
+        ),
+        ChangeNotifierProxyProvider<MainViewLogic, DateViewLogic>(
+          update: (BuildContext context, MainViewLogic value,
+              DateViewLogic previous) {
+            return previous..update(value.index);
+          },
+          create: (BuildContext context) {
+            return DateViewLogic(context);
+          },
+        ),
+        ChangeNotifierProxyProvider<DateViewLogic, AddOrEditLogic>(
+          create: (BuildContext context) => AddOrEditLogic(context),
+          update: (BuildContext context, DateViewLogic value,
+                  AddOrEditLogic previous) =>
+              previous..update(value.mainViewIndex, value.dateViewIndex),
+        ),
+        ChangeNotifierProxyProvider<DateViewLogic, DetailsViewLogic>(
+          create: (BuildContext context) => DetailsViewLogic(),
+          update: (BuildContext context, DateViewLogic value,
+                  DetailsViewLogic previous) =>
+              previous
+                ..update(
+                  jsonDecode(value.list[value.dateViewIndex]),
+                  value.mainViewIndex,
+                ),
+        ),
       ],
-    ));
-
-// This widget is the root of your application.
-
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  MaterialPageRoute materialPageRoute(Widget widget) =>
-      MaterialPageRoute(builder: (_) => widget);
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      color: Colors.orange,
-      title: 'Car Note',
-      theme: ThemeData(
-          textTheme: TextTheme(
-            subhead: TextStyle(
-                fontSize: (25 / MediaQuery.textScaleFactorOf(context)) *
-                    MediaQuery.textScaleFactorOf(context),
-                color: Colors.black,
-                fontWeight: FontWeight.w700),
-            display2:
-                TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
-          ),
-          appBarTheme: AppBarTheme(
-              iconTheme: IconThemeData(color: Colors.white),
-              actionsIconTheme: IconThemeData(
-                color: Colors.white,
-              )),
-          primaryTextTheme: TextTheme(title: TextStyle(color: Colors.white)),
-          primaryColor: Colors.orange,
-          iconTheme: IconThemeData(color: Colors.white),
-          accentColor: Colors.orange,
-          dialogTheme: DialogTheme(
-              titleTextStyle: TextStyle(fontSize: 16, color: Colors.black),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              contentTextStyle: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black)),
-          primaryColorLight: Colors.white,
-          primaryColorDark: Colors.white,
-          accentColorBrightness: Brightness.light,
-//          splashColor: Colors.transparent,
-//          highlightColor: Colors.transparent,
-          scaffoldBackgroundColor: Colors.white),
-      initialRoute: MainView.route,
-      routes: {
-        DetailsView.route: (_) => DetailsView(),
-        Batterie.route: (_) => ChangeNotifierProvider(
-            child: Batterie(),
-            create: (BuildContext context) => AddOrEditLogic(
-                addOrEditPages:
-                    Provider.of<Globals>(context, listen: false).addOrEditPages,
-                mainViewIndex:
-                    Provider.of<Globals>(context, listen: false).mainViewIndex,
-                dateViewIndex:
-                    Provider.of<Globals>(context, listen: false).dateViewIndex,
-                sharedPreferences:
-                    Provider.of<SharedPreferences>(context, listen: false))),
-        Armortisseur.route: (_) => ChangeNotifierProvider(
-            child: Armortisseur(),
-            create: (BuildContext context) => AddOrEditLogic(
-                addOrEditPages:
-                    Provider.of<Globals>(context, listen: false).addOrEditPages,
-                mainViewIndex:
-                    Provider.of<Globals>(context, listen: false).mainViewIndex,
-                dateViewIndex:
-                    Provider.of<Globals>(context, listen: false).dateViewIndex,
-                sharedPreferences:
-                    Provider.of<SharedPreferences>(context, listen: false))),
-        Courroie.route: (_) => ChangeNotifierProvider(
-            child: Courroie(),
-            create: (BuildContext context) => AddOrEditLogic(
-                addOrEditPages:
-                    Provider.of<Globals>(context, listen: false).addOrEditPages,
-                mainViewIndex:
-                    Provider.of<Globals>(context, listen: false).mainViewIndex,
-                dateViewIndex:
-                    Provider.of<Globals>(context, listen: false).dateViewIndex,
-                sharedPreferences:
-                    Provider.of<SharedPreferences>(context, listen: false))),
-        Vidangee.route: (_) => ChangeNotifierProvider(
-            child: Vidangee(),
-            create: (BuildContext context) => AddOrEditLogic(
-                addOrEditPages:
-                    Provider.of<Globals>(context, listen: false).addOrEditPages,
-                mainViewIndex:
-                    Provider.of<Globals>(context, listen: false).mainViewIndex,
-                dateViewIndex:
-                    Provider.of<Globals>(context, listen: false).dateViewIndex,
-                sharedPreferences:
-                    Provider.of<SharedPreferences>(context, listen: false))),
-        MainView.route: (_) => ChangeNotifierProvider(
-            create: (BuildContext context) => MainViewLogic(context),
-            child: MainView()),
-        DateView.route: (_) => ChangeNotifierProvider(
-            create: (context) => DateViewLogic(
-                context: context,
-                selectedMainViewElementIndex:
-                    Provider.of<Globals>(context, listen: false).mainViewIndex,
-                sharedPreferences:
-                    Provider.of<SharedPreferences>(context, listen: false)),
-            child: DateView()),
-        Freinage.route: (_) => ChangeNotifierProvider(
-            child: Freinage(),
-            create: (BuildContext context) => AddOrEditLogic(
-                addOrEditPages:
-                    Provider.of<Globals>(context, listen: false).addOrEditPages,
-                mainViewIndex:
-                    Provider.of<Globals>(context, listen: false).mainViewIndex,
-                dateViewIndex:
-                    Provider.of<Globals>(context, listen: false).dateViewIndex,
-                sharedPreferences:
-                    Provider.of<SharedPreferences>(context, listen: false)))
-      },
-      debugShowCheckedModeBanner: false,
+      child: MaterialApp(
+        color: Colors.orange,
+        title: 'Car Note',
+        theme: ThemeData(
+            textTheme: TextTheme(
+              subhead: TextStyle(
+                  fontSize: (25 / MediaQuery.textScaleFactorOf(context)) *
+                      MediaQuery.textScaleFactorOf(context),
+                  color: Colors.black,
+                  fontWeight: FontWeight.w700),
+              display2:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
+            ),
+            appBarTheme: AppBarTheme(
+                iconTheme: IconThemeData(color: Colors.white),
+                actionsIconTheme: IconThemeData(
+                  color: Colors.white,
+                )),
+            primaryTextTheme: TextTheme(title: TextStyle(color: Colors.white)),
+            primaryColor: Colors.orange,
+            iconTheme: IconThemeData(color: Colors.white),
+            accentColor: Colors.orange,
+            dialogTheme: DialogTheme(
+                titleTextStyle: TextStyle(fontSize: 16, color: Colors.black),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                contentTextStyle: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black)),
+            primaryColorLight: Colors.white,
+            primaryColorDark: Colors.white,
+            accentColorBrightness: Brightness.light,
+//            splashColor: Colors.transparent,
+//            highlightColor: Colors.transparent,
+            scaffoldBackgroundColor: Colors.white),
+        initialRoute: MainView.route,
+        routes: {
+          DetailsView.route: (_) => DetailsView(),
+          Batterie.route: (_) => Batterie(),
+          Armortisseur.route: (_) => Armortisseur(),
+          Courroie.route: (_) => Courroie(),
+          Vidangee.route: (_) => Vidangee(),
+          MainView.route: (_) => MainView(),
+          DateView.route: (_) => DateView(),
+          Freinage.route: (_) => Freinage()
+        },
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }

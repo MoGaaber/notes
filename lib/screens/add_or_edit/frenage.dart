@@ -1,39 +1,16 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 import 'package:notes/constants/constants.dart';
 import 'package:notes/logic/globals.dart';
-import 'package:notes/models/amortisseur.dart';
-import 'package:notes/models/batterie.dart';
-import 'package:notes/models/courroie.dart';
 import 'package:notes/models/frienage.dart';
 import 'package:notes/utility/screen.dart';
 import 'package:notes/widgets/date_chooser.dart';
 import 'package:notes/widgets/text_field.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
-import 'package:notes/constants/constants.dart';
 import 'package:notes/logic/add_or_edit.dart';
-import 'package:notes/models/amortisseur.dart';
-import 'package:notes/models/batterie.dart';
-import 'package:notes/models/courroie.dart';
-import 'package:notes/widgets/text_field.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Freinage extends StatelessWidget {
   static const String route = '/freinage';
-//  controllers = List.generate(2, (_) => TextEditingController());
 
   @override
   Widget build(BuildContext context) {
@@ -56,13 +33,13 @@ class Freinage extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Image.asset(
-                'assets/images/${globals.addOrEditPages[globals.mainViewIndex]['icon']}',
+                'assets/images/${globals.addOrEditPages[addOrEditLogic.mainViewIndex]['icon']}',
                 color: Colors.white,
                 width: screen.convert(50, width),
                 height: screen.convert(30, height),
                 fit: BoxFit.fitHeight,
               ),
-              Text(globals.addOrEditPages[globals.mainViewIndex]['name'],
+              Text(globals.addOrEditPages[addOrEditLogic.mainViewIndex]['name'],
                   style: TextStyle(
                     color: Colors.white,
                   )),
