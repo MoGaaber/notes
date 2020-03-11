@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:notes/constants/constants.dart';
+import 'package:notes/screens/main_view.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'globals.dart';
@@ -20,6 +21,7 @@ class AddOrEditLogic with ChangeNotifier {
     yesOrNo = List.filled(
         globals.addOrEditPages[mainViewIndex]['yesNoLength'], false);
     if (dateViewIndex != null) {
+      print('hey iam called');
       fetches[mainViewIndex]();
     }
   }
@@ -30,7 +32,9 @@ class AddOrEditLogic with ChangeNotifier {
   String date;
   List<VoidCallback> fetches;
   int mainViewIndex, dateViewIndex;
+
   AddOrEditLogic(BuildContext context) {
+
     globals = Provider.of<Globals>(context, listen: false);
     this.sharedPreferences =
         Provider.of<SharedPreferences>(context, listen: false);
@@ -72,7 +76,7 @@ class AddOrEditLogic with ChangeNotifier {
     decodedelement = jsonDecode(sharedPreferences
         .getStringList(SharedPrefKeys.batteriPref)[dateViewIndex]);
     this.date = decodedelement['Date'];
-    controllers[0].text = decodedelement['KM'].toString();
+    controllers[0].text =decodedelement['KM']==null ? '': decodedelement['KM'].toString();
     controllers[1].text = decodedelement['Note'].toString();
   }
 
@@ -80,19 +84,19 @@ class AddOrEditLogic with ChangeNotifier {
     decodedelement = jsonDecode(sharedPreferences
         .getStringList(SharedPrefKeys.courroiePref)[dateViewIndex]);
     date = decodedelement['Date'];
-    controllers[0].text = decodedelement['KM'].toString();
-    controllers[1].text = decodedelement['Next Km'].toString();
-    controllers[2].text = decodedelement['Note'].toString();
+    controllers[0].text =decodedelement['KM'] == null ? '': decodedelement['KM'].toString();
+    controllers[1].text = decodedelement['Next Km'] ==null ? '':decodedelement['Next Km'].toString();
+    controllers[2].text = decodedelement['Note'];
   }
 
   void fetchAmortisseur() {
     decodedelement = jsonDecode(sharedPreferences
         .getStringList(SharedPrefKeys.amortisseurPref)[dateViewIndex]);
     this.date = decodedelement['Date'];
-    controllers[0].text = decodedelement['KM'].toString();
+    controllers[0].text =decodedelement['KM']==null ? "": decodedelement['KM'].toString();
     controllers[1].text = decodedelement['Note'];
     yesOrNo[0] = decodedelement['Front / AV'];
-    yesOrNo[1] = decodedelement['Rear / AV'];
+    yesOrNo[1] = decodedelement['Rear / AR'];
   }
 
   void fetchFreinage() {
@@ -102,14 +106,14 @@ class AddOrEditLogic with ChangeNotifier {
     this.controllers[0].text = decodedelement['Disc Frien']['KM'].toString();
     this.controllers[1].text = decodedelement['Plaqwets']['KM'].toString();
     this.yesOrNo[0] = decodedelement['Disc Frien']['Front / AV'];
-    this.yesOrNo[1] = decodedelement['Disc Frien']['Rear / AV'];
+    this.yesOrNo[1] = decodedelement['Disc Frien']['Rear / AR'];
     this.yesOrNo[2] = decodedelement['Plaqwets']['Front / AV'];
-    this.yesOrNo[3] = decodedelement['Plaqwets']['Rear / AV'];
+    this.yesOrNo[3] = decodedelement['Plaqwets']['Rear / AR'];
   }
 
   void saveChanges(
       {BuildContext context, String key, Map<String, dynamic> object}) {
-    print(object);
+
     var list = sharedPreferences.getStringList(key);
 
     String encodedElement = jsonEncode(object);
@@ -148,4 +152,9 @@ class AddOrEditLogic with ChangeNotifier {
       }
     });
   }
+
+
+void showFullScreenAd(){
+
+}
 }

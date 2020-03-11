@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:notes/constants/constants.dart';
 import 'package:notes/screens/add_or_edit/amortisseur.dart';
@@ -12,6 +15,35 @@ class Globals {
   Screen screen;
   double height, width, aspectRatio, textScaleFactor;
   List<Map<String, dynamic>> addOrEditPages;
+  String getAppId() {
+    if (Platform.isIOS) {
+      return 'ca-app-pub-3940256099942544~1458002511';
+    } else if (Platform.isAndroid) {
+      //هنا كود  تطبيقك للاعلان
+      return 'ca-app-pub-3940256099942544~3347511713';
+    }
+    return null;
+  }
+
+  String getBannerAdUnitId() {
+    if (Platform.isIOS) {
+      return 'ca-app-pub-3940256099942544/2934735716';
+    } else if (Platform.isAndroid) {
+      // هنا للبانر
+      return 'ca-app-pub-3940256099942544/6300978111';
+    }
+    return null;
+  }
+
+  String getInterstitialAdUnitId() {
+    if (Platform.isIOS) {
+      return 'ca-app-pub-3940256099942544/4411468910';
+    } else if (Platform.isAndroid) {
+      //هنا للشاشه الكامله
+      return 'ca-app-pub-3940256099942544/1033173712';
+    }
+    return null;
+  }
 
   void initializeAddOrEditPages() {
     addOrEditPages = [
@@ -76,7 +108,29 @@ class Globals {
     ];
   }
 
+  InterstitialAd admobInterstitial;
+  BannerAd bannerAd;
   Globals(BuildContext context) {
     initializeAddOrEditPages();
+    admobInterstitial = InterstitialAd(
+      adUnitId: getInterstitialAdUnitId(),
+    );
+    bannerAd = BannerAd(adUnitId: getBannerAdUnitId(), size: AdSize.banner);
+
+    bannerAd..load();
+    bannerAd..show();
+  }
+
+  void showFullScreenAd() {
+
+    admobInterstitial.dispose();
+    admobInterstitial = null;
+    admobInterstitial = InterstitialAd(
+      adUnitId: getInterstitialAdUnitId(),
+    );
+
+    admobInterstitial..load();
+
+    admobInterstitial..show();
   }
 }

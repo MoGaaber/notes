@@ -41,8 +41,8 @@ class Batterie extends StatelessWidget {
                       addOrEditLogic.date != null) {
                     BatterieModel batteriModel = BatterieModel(
                         date: addOrEditLogic.date,
-                        km: num.parse(addOrEditLogic.controllers[0].text),
-                        note: (addOrEditLogic.controllers[1].text));
+                        km:addOrEditLogic.controllers[0].text==''?null:  num.parse(addOrEditLogic.controllers[0].text),
+                        note: addOrEditLogic.controllers[1].text);
                     addOrEditLogic.saveChanges(
                         key: SharedPrefKeys.batteriPref,
                         object: batteriModel.toJson(),

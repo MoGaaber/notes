@@ -56,8 +56,8 @@ class Vidangee extends StatelessWidget {
                   VidangeModel vidangeModel = VidangeModel(
                       note: addOrEditLogic.controllers[2].text,
                       date: addOrEditLogic.date,
-                      km: num.parse(addOrEditLogic.controllers[0].text),
-                      nextOil: num.parse(addOrEditLogic.controllers[1].text),
+                      km:addOrEditLogic.controllers[0].text==''? null: num.parse(addOrEditLogic.controllers[0].text),
+                      nextOil:addOrEditLogic.controllers[0].text==''?null: num.parse(addOrEditLogic.controllers[1].text),
                       oil: VidangeFilterModel(
                           excited: addOrEditLogic.yesOrNo[0],
                           price: addOrEditLogic.controllers[3].text.isEmpty
@@ -93,8 +93,8 @@ class Vidangee extends StatelessWidget {
         child: ScrollConfiguration(
           behavior: ScrollBehavior(),
           child: ListView(
-            padding: EdgeInsets.symmetric(
-                horizontal: globals.screen.convert(10, width)),
+            padding: EdgeInsets.only(
+            bottom:globals.screen.convert(80, width),top:globals.screen.convert(10, width) )  ,
             children: <Widget>[
               DateChooser(
                 addOrEditLogic: addOrEditLogic,
@@ -149,9 +149,8 @@ class Vidangee extends StatelessWidget {
                     ),
                   ),
                 ),
-              Padding(
-                  padding:
-                      EdgeInsets.only(top: globals.screen.convert(10, height)))
+
+
             ],
           ),
         ),

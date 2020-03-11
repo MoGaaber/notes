@@ -25,6 +25,8 @@ class Courroie extends StatelessWidget {
     double textScale = globals.screen.textScale;
     Screen screen = globals.screen;
 
+
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -52,22 +54,25 @@ class Courroie extends StatelessWidget {
             actions: <Widget>[
               IconButton(
                 onPressed: () {
-                  if (addOrEditLogic.formKey.currentState.validate() &&
-                      addOrEditLogic.date != null) {
+                  print(addOrEditLogic.controllers[2].text);
                     var object = CourroieModel(
                             date: addOrEditLogic.date,
-                            km: double.parse(
-                                addOrEditLogic.controllers[0].text),
-                            nextKm: double.parse(
-                                addOrEditLogic.controllers[1].text),
-                            note: (addOrEditLogic.controllers[2].text))
+                            km: addOrEditLogic.controllers[0].text == ''
+                                ? null
+                                : double.parse(
+                                    addOrEditLogic.controllers[0].text),
+                            nextKm: addOrEditLogic.controllers[1].text == ''
+                                ? null
+                                : double.parse(
+                                    addOrEditLogic.controllers[1].text),
+                            note:  addOrEditLogic.controllers[2].text)
                         .toJson();
 
                     addOrEditLogic.saveChanges(
                         context: context,
                         object: object,
                         key: SharedPrefKeys.courroiePref);
-                  }
+
                 },
                 icon: Icon(
                   Icons.check,

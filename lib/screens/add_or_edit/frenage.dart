@@ -60,13 +60,13 @@ class Freinage extends StatelessWidget {
                         object: FrienageModel(
                                 date: addOrEditLogic.date,
                                 firstInnerModel: InnerModel(
-                                  km: num.parse(
+                                  km:addOrEditLogic.controllers[0].text==''?null: num.parse(
                                       addOrEditLogic.controllers[0].text),
                                   front: addOrEditLogic.yesOrNo[0],
                                   rear: addOrEditLogic.yesOrNo[1],
                                 ),
                                 secondInnerModel: InnerModel(
-                                    km: num.parse(
+                                    km:addOrEditLogic.controllers[1].text=='' ? null:  num.parse(
                                         addOrEditLogic.controllers[1].text),
                                     front: addOrEditLogic.yesOrNo[2],
                                     rear: addOrEditLogic.yesOrNo[3]))
@@ -92,7 +92,7 @@ class Freinage extends StatelessWidget {
                     ListTile(
                       contentPadding: EdgeInsets.symmetric(horizontal: 2),
                       title: Text(
-                        'DiscFrien',
+                        'Disque de frein /Brake Disc',
                         style: Theme.of(context).textTheme.display2,
                       ),
                     ),
@@ -123,7 +123,7 @@ class Freinage extends StatelessWidget {
                         Row(
                           children: <Widget>[
                             Text(
-                              'Rear / AV',
+                              'Rear / AR',
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w700),
                             ),
@@ -148,7 +148,7 @@ class Freinage extends StatelessWidget {
                     ListTile(
                       contentPadding: EdgeInsets.symmetric(horizontal: 2),
                       title: Text(
-                        'Plaqweta',
+                        'Plaquette de frien /Brake Pad',
                         style: Theme.of(context).textTheme.display2,
                       ),
                     ),
@@ -179,7 +179,7 @@ class Freinage extends StatelessWidget {
                         Row(
                           children: <Widget>[
                             Text(
-                              'Rear / AV',
+                              'Rear / AR',
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w700),
                             ),

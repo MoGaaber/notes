@@ -15,7 +15,7 @@ class DetailsView extends StatelessWidget {
     Globals globals = Provider.of<Globals>(context, listen: false);
 
     DetailsViewLogic detailsView = Provider.of<DetailsViewLogic>(context);
-
+    print(detailsView.decodedData);
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
@@ -41,56 +41,6 @@ class DetailsView extends StatelessWidget {
                       detailsView.decodedData = jsonDecode(result);
                     }
                   }),
-/*
-              IconButton(
-                  icon: Icon(Icons.remove_circle_outline),
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (_) => AlertDialog(
-                              title: Text('Delete confirmation'),
-                              content: Text('Are you sure ?!'),
-                              backgroundColor: Colors.white,
-                              actions: <Widget>[
-                                FlatButton(
-                                    textColor: Colors.orange,
-                                    onPressed: () {
-                                      Globals globals =
-                                          Provider.of(context, listen: false);
-                                      var list = sharedPreferences
-                                          .getStringList(globals.addOrEditPages[
-                                              globals.mainViewIndex]['refKey']);
-                                      list.removeAt(globals.dateViewIndex);
-                                      sharedPreferences
-                                          .setStringList(
-                                              globals.sharedPrefKey, list)
-                                          .then((x) {});
-                                    },
-                                    child: Text('Yes')),
-                                FlatButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text('No'),
-                                  textColor: Colors.orange,
-                                )
-                              ],
-                            ));
-                    Globals globals = Provider.of(context, listen: false);
-                    var list = sharedPreferences.getStringList(globals
-                        .addOrEditPages[globals.mainViewIndex]['refKey']);
-                    print(globals.mainViewIndex.toString() + '!!!!');
-                    list.removeAt(globals.dateViewIndex);
-                    sharedPreferences
-                        .setStringList(
-                            globals.addOrEditPages[globals.mainViewIndex]
-                                ['refKey'],
-                            list)
-                        .then((x) {
-                      Navigator.pop(context);
-                    });
-                  }),
-*/
             ],
             iconTheme: IconThemeData(color: Colors.white),
             centerTitle: true,
@@ -182,62 +132,68 @@ class DetailsView extends StatelessWidget {
                             ),
                           ),
                         )
-                      : ListTile(
-                          trailing: detailsView.decodedData[
-                                      detailsView.decodedData.keys.toList()[x]]
-                                  is bool
-                              ? Material(
-                                  color: detailsView.decodedData[detailsView
-                                          .decodedData.keys
-                                          .toList()[x]]
-                                      ? Colors.green
-                                      : Colors.red,
-                                  type: MaterialType.circle,
-                                  child: Icon(
-                                    detailsView.decodedData[detailsView
-                                            .decodedData.keys
-                                            .toList()[x]]
-                                        ? Icons.check
-                                        : Icons.close,
-                                    color: Colors.white,
-                                    size: globals.screen
-                                        .convert(24, globals.aspectRatio),
-                                  ),
-                                )
-                              : detailsView.decodedData.keys.toList()[x] ==
-                                      'Note'
-                                  ? null
-                                  : Text(
-                                      detailsView.decodedData[detailsView
+                      : detailsView.decodedData[
+                                  detailsView.decodedData.keys.toList()[x]] ==
+                              ''
+                          ? Container()
+                          : ListTile(
+                              trailing: detailsView.decodedData[detailsView
+                                      .decodedData.keys
+                                      .toList()[x]] is bool
+                                  ? Material(
+                                      color: detailsView.decodedData[detailsView
                                               .decodedData.keys
                                               .toList()[x]]
-                                          .toString(),
-                                      style: TextStyle(
-                                          fontSize: globals.screen.convert(
-                                              20, globals.textScaleFactor),
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.green),
-                                    ),
-                          title: Text(
-                            detailsView.decodedData.keys.toList()[x],
-                            style: TextStyle(
-                                fontSize: globals.screen
-                                    .convert(25, globals.textScaleFactor),
-                                fontWeight: FontWeight.w700),
-                          ),
-                          subtitle: detailsView.decodedData.keys.toList()[x] ==
-                                  'Note'
-                              ? Text(
-                                  detailsView.decodedData[
-                                      detailsView.decodedData.keys.toList()[x]],
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.green,
-                                      fontSize: globals.screen.convert(
-                                          20, globals.textScaleFactor)),
-                                )
-                              : null,
-                        );
+                                          ? Colors.green
+                                          : Colors.red,
+                                      type: MaterialType.circle,
+                                      child: Icon(
+                                        detailsView.decodedData[detailsView
+                                                .decodedData.keys
+                                                .toList()[x]]
+                                            ? Icons.check
+                                            : Icons.close,
+                                        color: Colors.white,
+                                        size: globals.screen
+                                            .convert(24, globals.aspectRatio),
+                                      ),
+                                    )
+                                  : detailsView.decodedData.keys.toList()[x] ==
+                                          'Note'
+                                      ? null
+                                      : Text(
+                                          detailsView.decodedData[detailsView
+                                                  .decodedData.keys
+                                                  .toList()[x]]
+                                              .toString(),
+                                          style: TextStyle(
+                                              fontSize: globals.screen.convert(
+                                                  20, globals.textScaleFactor),
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.green),
+                                        ),
+                              title: Text(
+                                detailsView.decodedData.keys.toList()[x],
+                                style: TextStyle(
+                                    fontSize: globals.screen
+                                        .convert(25, globals.textScaleFactor),
+                                    fontWeight: FontWeight.w700),
+                              ),
+                              subtitle:
+                                  detailsView.decodedData.keys.toList()[x] ==
+                                          'Note'
+                                      ? Text(
+                                          detailsView.decodedData[detailsView
+                                              .decodedData.keys
+                                              .toList()[x]],
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.green,
+                                              fontSize: globals.screen.convert(
+                                                  20, globals.textScaleFactor)),
+                                        )
+                                      : null,
+                            );
                 },
                 separatorBuilder: (BuildContext context, int index) {
                   return Divider();

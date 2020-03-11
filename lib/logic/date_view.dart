@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:notes/logic/globals.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,10 +28,32 @@ class DateViewLogic extends ChangeNotifier {
     globals = Provider.of<Globals>(context, listen: false);
   }
 
-  void deleteItem({int index}) {
-    list.removeAt(index);
-    sharedPreferences.setStringList(mKey, list);
-    notifyListeners();
+  void deleteItem({int index, BuildContext ctx}) {
+    showDialog(
+        context: ctx,
+        builder: (_) => AlertDialog(
+              title: Text('Delete confirmation'),
+              content: Text('Are you sure ?!'),
+              backgroundColor: Colors.white,
+              actions: <Widget>[
+                FlatButton(
+                    textColor: Colors.orange,
+                    onPressed: () async {
+                      list.removeAt(index);
+                      await sharedPreferences.setStringList(mKey, list);
+                      Navigator.pop(ctx);
+                      notifyListeners();
+                    },
+                    child: Text('Yes')),
+                FlatButton(
+                  onPressed: () {
+                    Navigator.pop(ctx);
+                  },
+                  child: Text('No'),
+                  textColor: Colors.orange,
+                )
+              ],
+            ));
   }
 
   void navigateToSave({int index, BuildContext context}) async {

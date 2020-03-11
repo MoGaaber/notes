@@ -31,7 +31,7 @@ class MyTextField extends StatelessWidget {
           EdgeInsets.symmetric(vertical: globals.screen.convert(10, height)),
       child: SizedBox(
         width: 280 / width * width,
-        child: TextFormField(
+        child: TextFormField(style: TextStyle(fontSize: 14),
           maxLines: this.textFieldType == TextFieldType.text ? null : 1,
           textAlignVertical: TextAlignVertical.center,
           textAlign: TextAlign.center,
@@ -72,13 +72,6 @@ class MyTextField extends StatelessWidget {
                       borderSide: BorderSide(color: Colors.orange),
                       borderRadius: BorderRadius.all(Radius.circular(10))),
                 ),
-          validator: this.textFieldType != TextFieldType.price
-              ? (x) {
-                  if (x.isEmpty) {
-                    return 'Must be not empty .';
-                  }
-                }
-              : null,
           inputFormatters: textFieldType == TextFieldType.text
               ? null
               : [WhitelistingTextInputFormatter.digitsOnly],
@@ -91,3 +84,14 @@ class MyTextField extends StatelessWidget {
     );
   }
 }
+/*
+
+
+          validator: this.textFieldType == TextFieldType.price || this.label =='Note'
+              ? null : (x) {
+                  if (x.isEmpty) {
+                    return 'Must be not empty .';
+                  }
+                },
+
+ */

@@ -60,7 +60,7 @@ class Armortisseur extends StatelessWidget {
                             date: addOrEditLogic.date,
                             rear: addOrEditLogic.yesOrNo[1],
                             front: addOrEditLogic.yesOrNo[0],
-                            km: double.parse(
+                            km:addOrEditLogic.controllers[0].text==''?null: double.parse(
                                 addOrEditLogic.controllers[0].text),
                             note: (addOrEditLogic.controllers[1].text))
                         .toJson();
@@ -104,7 +104,7 @@ class Armortisseur extends StatelessWidget {
                     Column(
                       children: <Widget>[
                         Text(
-                          'Front / Av',
+                          'Front / AV',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w700),
                         ),
@@ -119,7 +119,7 @@ class Armortisseur extends StatelessWidget {
                     Column(
                       children: <Widget>[
                         Text(
-                          'Rear / Av',
+                          'Rear / AR',
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w700),
                         ),

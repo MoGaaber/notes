@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
                   color: Colors.black,
                   fontWeight: FontWeight.w700),
               display2:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.w700,fontSize: 20),
             ),
             appBarTheme: AppBarTheme(
                 iconTheme: IconThemeData(color: Colors.white),

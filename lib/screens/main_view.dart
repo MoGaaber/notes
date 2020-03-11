@@ -1,14 +1,20 @@
+import 'dart:io';
+
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:launch_review/launch_review.dart';
+import 'package:notes/constants/ads_ids.dart';
 import 'package:notes/logic/globals.dart';
 import 'package:notes/logic/main_view.dart';
 import 'package:notes/utility/screen.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MainView extends StatelessWidget {
-  static const String route = '/';
+  static const route = '/mainView';
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +32,7 @@ class MainView extends StatelessWidget {
     globals.textScaleFactor = globals.screen.textScale;
     return SafeArea(
       child: Scaffold(
+        //
         drawer: Drawer(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -60,10 +67,11 @@ class MainView extends StatelessWidget {
               ),
               ListTile(
                 contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                onTap: () {},
+                onTap: () {Share.share('شارك تطبيقانا مع اصدقائك لتعم الفائده  https://play.google.com/store/apps/details?id=com.HNY.qurancareem', subject: 'Look what I made!');
+                },
                 leading: Icon(FontAwesomeIcons.share),
                 title: Text(
-                  'Share Our App',
+                  'Share App',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
@@ -72,13 +80,19 @@ class MainView extends StatelessWidget {
               ),
               Divider(),
               ListTile(
-                onTap: () {},
-                leading: Icon(FontAwesomeIcons.star),
-                title: Text('Rate Us'),
+                onTap: () { LaunchReview.launch(androidAppId: "https://play.google.com/store/apps/details?id=com.HNY.qurancareem");
+                },
+                leading: Icon(Icons.star,color: Colors.orange,size: 28,),
+                title: Text('Rate Us',                  style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                ),
+                ),
               )
             ],
           ),
         ),
+
         appBar: AppBar(
           centerTitle: true,
           title: Text(
@@ -133,8 +147,11 @@ class MainView extends StatelessWidget {
                               globals.screen.aspectRatio,
                           color: Colors.orange,
                         ),
-                        onTap: () {
+                        onTap: () async {
                           mainViewLogic.navigateToDateView(context, index);
+                          if(index==0||index==globals.addOrEditPages.length-1){
+                            globals.showFullScreenAd() ;
+                          }
                         },
                         title: Text(
                           globals.addOrEditPages[index]['name'],
@@ -149,9 +166,42 @@ class MainView extends StatelessWidget {
                   ),
                   separatorBuilder: (BuildContext context, int index) =>
                       Divider(),
+
                 ),
+
               ),
+
       ),
     );
   }
+}
+
+String getAppId() {
+  if (Platform.isIOS) {
+    return 'ca-app-pub-3940256099942544~1458002511';
+  } else if (Platform.isAndroid) {
+    //هنا كود  تطبيقك للاعلان
+    return 'ca-app-pub-3940256099942544~3347511713';
+  }
+  return null;
+}
+
+String getBannerAdUnitId() {
+  if (Platform.isIOS) {
+    return 'ca-app-pub-3940256099942544/2934735716';
+  } else if (Platform.isAndroid) {
+    // هنا للبانر
+    return 'ca-app-pub-3940256099942544/6300978111';
+  }
+  return null;
+}
+
+String getInterstitialAdUnitId() {
+  if (Platform.isIOS) {
+    return 'ca-app-pub-3940256099942544/4411468910';
+  } else if (Platform.isAndroid) {
+    //هنا للشاشه الكامله
+    return 'ca-app-pub-3940256099942544/1033173712';
+  }
+  return null;
 }

@@ -4,8 +4,8 @@ class FrienageModel {
   FrienageModel({this.date, this.firstInnerModel, this.secondInnerModel});
   Map<String, dynamic> toJson() => {
         'Date': this.date,
-        'Disc Frien': this.firstInnerModel.toJson(),
-        'Plaqwets': this.secondInnerModel.toJson()
+        'Disque de frein /Brake Disc': this.firstInnerModel.toJson(),
+        'Plaquette de frien /Brake Pad': this.secondInnerModel.toJson()
       };
 }
 
@@ -14,5 +14,5 @@ class InnerModel {
   bool front, rear;
   InnerModel({this.km, this.front, this.rear});
   Map<String, dynamic> toJson() =>
-      {'KM': this.km, 'Front / AV': this.front, 'Rear / AV': this.rear};
+      {'KM': this.km, 'Front / AV': this.front, 'Rear / AR': this.rear};
 }
