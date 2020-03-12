@@ -11,7 +11,6 @@ import 'package:provider/provider.dart';
 
 class Batterie extends StatelessWidget {
   static const String route = '/batterie';
-
   String date;
   @override
   Widget build(BuildContext context) {
@@ -41,7 +40,9 @@ class Batterie extends StatelessWidget {
                       addOrEditLogic.date != null) {
                     BatterieModel batteriModel = BatterieModel(
                         date: addOrEditLogic.date,
-                        km:addOrEditLogic.controllers[0].text==''?null:  num.parse(addOrEditLogic.controllers[0].text),
+                        km: addOrEditLogic.controllers[0].text == ''
+                            ? null
+                            : num.parse(addOrEditLogic.controllers[0].text),
                         note: addOrEditLogic.controllers[1].text);
                     addOrEditLogic.saveChanges(
                         key: SharedPrefKeys.batteriPref,

@@ -9,8 +9,12 @@ import 'package:notes/screens/details_view.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'add_or_edit.dart';
+
 class DateViewLogic extends ChangeNotifier {
   int mainViewIndex, dateViewIndex;
+  List<TextEditingController> controllers;
+  List<bool> yesOrNo;
 
   String mKey;
   SharedPreferences sharedPreferences;
@@ -19,12 +23,14 @@ class DateViewLogic extends ChangeNotifier {
   Globals globals;
   Map mPage;
   String mRoute;
-  void update(int mainViewIndex) {
-    this.mainViewIndex = mainViewIndex;
-    mPage = globals.addOrEditPages[mainViewIndex];
-    mKey = mPage['refKey'];
-    mRoute = mPage['route'];
-    list = sharedPreferences.getStringList(mKey);
+  void updateDependicies(int mainViewIndex) {
+    if (this.mainViewIndex != mainViewIndex) {
+      this.mainViewIndex = mainViewIndex;
+      mPage = globals.addOrEditPages[mainViewIndex];
+      mKey = mPage['refKey'];
+      mRoute = mPage['route'];
+      list = sharedPreferences.getStringList(mKey);
+    }
   }
 
   DateViewLogic(BuildContext context) {
@@ -36,20 +42,26 @@ class DateViewLogic extends ChangeNotifier {
     int index,
     BuildContext context,
   }) async {
+    saveOperation = update;
     dateViewIndex = index;
     notifyListeners();
     var result = await Navigator.pushNamed(
         context, globals.addOrEditPages[mainViewIndex]['route']);
-
     if (result != null) {
       list[index] = result;
       notifyListeners();
     }
   }
 
+  SaveOperation saveOperation;
+
   void addItem(BuildContext context) async {
+    saveOperation = add;
+    notifyListeners();
+
     var result = await Navigator.pushNamed(
         context, globals.addOrEditPages[mainViewIndex]['route']);
+
     if (result != null) {
       list.add(result);
     }
@@ -88,14 +100,27 @@ class DateViewLogic extends ChangeNotifier {
   }
 
   void showItemDetails(int index, BuildContext context) async {
+    this.dateViewIndex = index;
+    notifyListeners();
     var result = await Navigator.pushNamed(context, DetailsView.route,
         arguments: DetailsViewModelArgs(jsonDecode(list[index]), index));
-    if (result != null) { 
+    if (result != null) {
       list[index] = jsonEncode(result);
       notifyListeners();
     }
   }
 
+  void update(List<String> list, String element) {
+    list[dateViewIndex] = element;
+  }
+}
+
+void add(List<String> list, String element) {
+  list.add(element);
+}
+
+//AddOrEditModelArgs(index: index)
+/*
   void navigateToSave({int index, BuildContext context}) async {
     this.dateViewIndex = index;
     notifyListeners();
@@ -112,6 +137,4 @@ class DateViewLogic extends ChangeNotifier {
 
       notifyListeners();
     }
-  }
-}
-//AddOrEditModelArgs(index: index)
+  }*/

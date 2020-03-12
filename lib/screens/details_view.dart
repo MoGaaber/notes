@@ -36,7 +36,6 @@ class DetailsView extends StatelessWidget {
                             ['route']);
                     if (result != null) {
                       this.isResult = true;
-
                       print('result');
                       detailsView.decodedData = jsonDecode(result);
                     }

@@ -26,36 +26,47 @@ class MyApp extends StatelessWidget {
         FutureProvider<SharedPreferences>(
             create: (BuildContext context) => SharedPreferences.getInstance()),
         Provider<Globals>(create: (BuildContext context) => Globals(context)),
-        ChangeNotifierProvider(
-            create: (BuildContext context) => DetailsViewLogic()),
         ChangeNotifierProvider<MainViewLogic>(
           create: (BuildContext context) => MainViewLogic(),
         ),
         ChangeNotifierProxyProvider<MainViewLogic, DateViewLogic>(
           update: (BuildContext context, MainViewLogic value,
               DateViewLogic previous) {
-            return previous..update(value.index);
+            return previous..updateDependicies(value.index);
           },
           create: (BuildContext context) {
             return DateViewLogic(context);
           },
-        ),
-        ChangeNotifierProxyProvider<DateViewLogic, AddOrEditLogic>(
-          create: (BuildContext context) => AddOrEditLogic(context),
-          update: (BuildContext context, DateViewLogic value,
-                  AddOrEditLogic previous) =>
-              previous..update(value.mainViewIndex, value.dateViewIndex),
         ),
         ChangeNotifierProxyProvider<DateViewLogic, DetailsViewLogic>(
           create: (BuildContext context) => DetailsViewLogic(),
           update: (BuildContext context, DateViewLogic value,
                   DetailsViewLogic previous) =>
               previous
-                ..update(
-                  jsonDecode(value.list[value.dateViewIndex]),
-                  value.mainViewIndex,
-                ),
+                ..update(jsonDecode(value.list[value.dateViewIndex]),
+                    value.mainViewIndex),
         ),
+        ChangeNotifierProxyProvider2<DateViewLogic, DetailsViewLogic,
+                AddOrEditLogic>(
+            create: (BuildContext context) => AddOrEditLogic(context),
+            update: (BuildContext context, DateViewLogic value,
+                    DetailsViewLogic value2, AddOrEditLogic previous) =>
+                previous
+                  ..update(value.mainViewIndex, value.dateViewIndex,
+                      value.saveOperation)),
+
+/*
+          update: (BuildContext context, DateViewLogic value,
+              AddOrEditLogic pre
+vious) {
+            return previous
+              ..update(value.mainViewIndex, value.dateViewIndex,
+                  value.saveOperation);
+          },
+
+          */
+/*
+*/
       ],
       child: MaterialApp(
         color: Colors.orange,
@@ -67,8 +78,10 @@ class MyApp extends StatelessWidget {
                       MediaQuery.textScaleFactorOf(context),
                   color: Colors.black,
                   fontWeight: FontWeight.w700),
-              display2:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.w700,fontSize: 20),
+              display2: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20),
             ),
             appBarTheme: AppBarTheme(
                 iconTheme: IconThemeData(color: Colors.white),

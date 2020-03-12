@@ -11,7 +11,6 @@ import 'package:notes/logic/add_or_edit.dart';
 
 class Freinage extends StatelessWidget {
   static const String route = '/freinage';
-
   @override
   Widget build(BuildContext context) {
     AddOrEditLogic addOrEditLogic =
@@ -22,7 +21,6 @@ class Freinage extends StatelessWidget {
     double width = globals.screen.width;
     double aspectRatio = globals.screen.aspectRatio;
     double textScale = globals.screen.textScale;
-    print(addOrEditLogic.controllers.length);
     Screen screen = globals.screen;
 
     return SafeArea(
@@ -60,14 +58,18 @@ class Freinage extends StatelessWidget {
                         object: FrienageModel(
                                 date: addOrEditLogic.date,
                                 firstInnerModel: InnerModel(
-                                  km:addOrEditLogic.controllers[0].text==''?null: num.parse(
-                                      addOrEditLogic.controllers[0].text),
+                                  km: addOrEditLogic.controllers[0].text == ''
+                                      ? null
+                                      : num.parse(
+                                          addOrEditLogic.controllers[0].text),
                                   front: addOrEditLogic.yesOrNo[0],
                                   rear: addOrEditLogic.yesOrNo[1],
                                 ),
                                 secondInnerModel: InnerModel(
-                                    km:addOrEditLogic.controllers[1].text=='' ? null:  num.parse(
-                                        addOrEditLogic.controllers[1].text),
+                                    km: addOrEditLogic.controllers[1].text == ''
+                                        ? null
+                                        : num.parse(
+                                            addOrEditLogic.controllers[1].text),
                                     front: addOrEditLogic.yesOrNo[2],
                                     rear: addOrEditLogic.yesOrNo[3]))
                             .toJson(),

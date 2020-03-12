@@ -18,7 +18,6 @@ class Armortisseur extends StatelessWidget {
     AddOrEditLogic addOrEditLogic =
         Provider.of<AddOrEditLogic>(context, listen: true);
     Globals globals = Provider.of<Globals>(context, listen: false);
-
     double height = globals.screen.height;
     double width = globals.screen.width;
     double aspectRatio = globals.screen.aspectRatio;
@@ -68,9 +67,10 @@ class Armortisseur extends StatelessWidget {
                         .toJson();
 
                     addOrEditLogic.saveChanges(
-                        key: SharedPrefKeys.amortisseurPref,
-                        object: armortisseurModel,
-                        context: context);
+                      key: SharedPrefKeys.amortisseurPref,
+                      object: armortisseurModel,
+                      context: context,
+                    );
                   }
                 })
           ],

@@ -11,7 +11,6 @@ import 'package:provider/provider.dart';
 
 class Courroie extends StatelessWidget {
   static const String route = '/courroie';
-
   String date;
   @override
   Widget build(BuildContext context) {
@@ -24,8 +23,6 @@ class Courroie extends StatelessWidget {
     double aspectRatio = globals.screen.aspectRatio;
     double textScale = globals.screen.textScale;
     Screen screen = globals.screen;
-
-
 
     return SafeArea(
       child: Scaffold(
@@ -55,24 +52,23 @@ class Courroie extends StatelessWidget {
               IconButton(
                 onPressed: () {
                   print(addOrEditLogic.controllers[2].text);
-                    var object = CourroieModel(
-                            date: addOrEditLogic.date,
-                            km: addOrEditLogic.controllers[0].text == ''
-                                ? null
-                                : double.parse(
-                                    addOrEditLogic.controllers[0].text),
-                            nextKm: addOrEditLogic.controllers[1].text == ''
-                                ? null
-                                : double.parse(
-                                    addOrEditLogic.controllers[1].text),
-                            note:  addOrEditLogic.controllers[2].text)
-                        .toJson();
+                  var object = CourroieModel(
+                          date: addOrEditLogic.date,
+                          km: addOrEditLogic.controllers[0].text == ''
+                              ? null
+                              : double.parse(
+                                  addOrEditLogic.controllers[0].text),
+                          nextKm: addOrEditLogic.controllers[1].text == ''
+                              ? null
+                              : double.parse(
+                                  addOrEditLogic.controllers[1].text),
+                          note: addOrEditLogic.controllers[2].text)
+                      .toJson();
 
-                    addOrEditLogic.saveChanges(
-                        context: context,
-                        object: object,
-                        key: SharedPrefKeys.courroiePref);
-
+                  addOrEditLogic.saveChanges(
+                      context: context,
+                      object: object,
+                      key: SharedPrefKeys.courroiePref);
                 },
                 icon: Icon(
                   Icons.check,

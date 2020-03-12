@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:notes/constants/constants.dart';
+import 'package:notes/logic/date_view.dart';
 import 'package:notes/screens/main_view.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,20 +20,28 @@ class AddOrEditLogic with ChangeNotifier {
   String date;
   List<VoidCallback> fetches;
   int mainViewIndex, dateViewIndex;
-
+  SaveOperation saveOperation;
   Globals globals;
-  void update(int mainViewIndex, int dateViewIndex) {
+  void update(
+      int mainViewIndex, int dateViewIndex, SaveOperation saveOperation) {
     if (this.dateViewIndex != dateViewIndex) {
-      this.mainViewIndex = mainViewIndex;
+      print('called');
       this.dateViewIndex = dateViewIndex;
+    }
+    if (this.mainViewIndex != mainViewIndex) {
+      this.mainViewIndex = mainViewIndex;
       controllers = List.generate(
           globals.addOrEditPages[mainViewIndex]['controllersLength'],
           (_) => TextEditingController());
       yesOrNo = List.filled(
           globals.addOrEditPages[mainViewIndex]['yesNoLength'], false);
-      if (dateViewIndex != null) {
-        fetches[mainViewIndex]();
-      }
+    }
+
+    if (this.saveOperation != saveOperation) {
+      this.saveOperation = saveOperation;
+    }
+    if (saveOperation != add) {
+      fetches[mainViewIndex]();
     }
   }
 
@@ -132,19 +141,11 @@ class AddOrEditLogic with ChangeNotifier {
         decodedelement['Plaquette de frien /Brake Pad']['Rear / AR'];
   }
 
-  void addItem(List<String> list, String element) {
-    list.add(element);
-  }
-
-  void updateItem(List<String> list, String element) {
-    list[dateViewIndex] = element;
-  }
-
-  void saveChanges(
-      {BuildContext context,
-      String key,
-      Map<String, dynamic> object,
-      SaveOperation saveOperation}) {
+  void saveChanges({
+    BuildContext context,
+    String key,
+    Map<String, dynamic> object,
+  }) {
     var list = sharedPreferences.getStringList(key);
     String encodedElement = jsonEncode(object);
     saveOperation(list, encodedElement);

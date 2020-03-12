@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 
 class Vidangee extends StatelessWidget {
   static const String route = '/vidangee';
-// if doing something based on parameters
   List<String> list = ['Oil / Huile', 'Air', 'Carburant / Fuel', 'Clim'];
   @override
   Widget build(BuildContext context) {
@@ -56,8 +55,12 @@ class Vidangee extends StatelessWidget {
                   VidangeModel vidangeModel = VidangeModel(
                       note: addOrEditLogic.controllers[2].text,
                       date: addOrEditLogic.date,
-                      km:addOrEditLogic.controllers[0].text==''? null: num.parse(addOrEditLogic.controllers[0].text),
-                      nextOil:addOrEditLogic.controllers[0].text==''?null: num.parse(addOrEditLogic.controllers[1].text),
+                      km: addOrEditLogic.controllers[0].text == ''
+                          ? null
+                          : num.parse(addOrEditLogic.controllers[0].text),
+                      nextOil: addOrEditLogic.controllers[0].text == ''
+                          ? null
+                          : num.parse(addOrEditLogic.controllers[1].text),
                       oil: VidangeFilterModel(
                           excited: addOrEditLogic.yesOrNo[0],
                           price: addOrEditLogic.controllers[3].text.isEmpty
@@ -94,7 +97,8 @@ class Vidangee extends StatelessWidget {
           behavior: ScrollBehavior(),
           child: ListView(
             padding: EdgeInsets.only(
-            bottom:globals.screen.convert(80, width),top:globals.screen.convert(10, width) )  ,
+                bottom: globals.screen.convert(80, width),
+                top: globals.screen.convert(10, width)),
             children: <Widget>[
               DateChooser(
                 addOrEditLogic: addOrEditLogic,
@@ -149,8 +153,6 @@ class Vidangee extends StatelessWidget {
                     ),
                   ),
                 ),
-
-
             ],
           ),
         ),

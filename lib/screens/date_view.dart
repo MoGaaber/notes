@@ -213,8 +213,8 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                                                         .width))),
                                     InkWell(
                                       onTap: () async {
-
-                                        dateViewLogic.showItemDetails(index, context);
+                                        dateViewLogic.showItemDetails(
+                                            index, context);
                                       },
                                       child: SizedBox(
                                         height: dateViewLogic.globals.screen
