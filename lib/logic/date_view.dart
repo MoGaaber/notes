@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:notes/logic/globals.dart';
+import 'package:notes/models/details_view_args.dart';
+import 'package:notes/screens/details_view.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -81,6 +85,15 @@ class DateViewLogic extends ChangeNotifier {
                 )
               ],
             ));
+  }
+
+  void showItemDetails(int index, BuildContext context) async {
+    var result = await Navigator.pushNamed(context, DetailsView.route,
+        arguments: DetailsViewModelArgs(jsonDecode(list[index]), index));
+    if (result != null) { 
+      list[index] = jsonEncode(result);
+      notifyListeners();
+    }
   }
 
   void navigateToSave({int index, BuildContext context}) async {

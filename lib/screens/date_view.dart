@@ -213,20 +213,8 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                                                         .width))),
                                     InkWell(
                                       onTap: () async {
-                                        dateViewLogic.dateViewIndex = index;
-                                        print('!!!');
-                                        var result = await Navigator.pushNamed(
-                                            context, DetailsView.route,
-                                            arguments: DetailsViewModelArgs(
-                                                jsonDecode(
-                                                    dateViewLogic.list[index]),
-                                                index));
-                                        print(result.toString() + 'hello');
-                                        if (result != null) {
-                                          dateViewLogic.list[index] =
-                                              jsonEncode(result);
-                                          dateViewLogic.notifyListeners();
-                                        }
+
+                                        dateViewLogic.showItemDetails(index, context);
                                       },
                                       child: SizedBox(
                                         height: dateViewLogic.globals.screen
@@ -257,7 +245,7 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                                 leading: InkWell(
                                   onTap: () {
                                     dateViewLogic.showDeleteAlertDialog(
-                                        context, index);
+                                        index, context);
                                   },
                                   child: Material(
                                     color: Colors.red,
