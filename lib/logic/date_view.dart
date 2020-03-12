@@ -28,26 +28,53 @@ class DateViewLogic extends ChangeNotifier {
     globals = Provider.of<Globals>(context, listen: false);
   }
 
-  void deleteItem({int index, BuildContext ctx}) {
+  void updateItem({
+    int index,
+    BuildContext context,
+  }) async {
+    dateViewIndex = index;
+    notifyListeners();
+    var result = await Navigator.pushNamed(
+        context, globals.addOrEditPages[mainViewIndex]['route']);
+
+    if (result != null) {
+      list[index] = result;
+      notifyListeners();
+    }
+  }
+
+  void addItem(BuildContext context) async {
+    var result = await Navigator.pushNamed(
+        context, globals.addOrEditPages[mainViewIndex]['route']);
+    if (result != null) {
+      list.add(result);
+    }
+  }
+
+  void deleteItem({int index, BuildContext context}) async {
+    list.removeAt(index);
+    await sharedPreferences.setStringList(mKey, list);
+    Navigator.pop(context);
+    notifyListeners();
+  }
+
+  void showDeleteAlertDialog(int index, BuildContext context) {
     showDialog(
-        context: ctx,
+        context: context,
         builder: (_) => AlertDialog(
               title: Text('Delete confirmation'),
               content: Text('Are you sure ?!'),
               backgroundColor: Colors.white,
               actions: <Widget>[
                 FlatButton(
+                    child: Text('Yes'),
                     textColor: Colors.orange,
                     onPressed: () async {
-                      list.removeAt(index);
-                      await sharedPreferences.setStringList(mKey, list);
-                      Navigator.pop(ctx);
-                      notifyListeners();
-                    },
-                    child: Text('Yes')),
+                      deleteItem(index: index, context: context);
+                    }),
                 FlatButton(
                   onPressed: () {
-                    Navigator.pop(ctx);
+                    Navigator.pop(context);
                   },
                   child: Text('No'),
                   textColor: Colors.orange,

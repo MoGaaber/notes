@@ -132,9 +132,13 @@ class DetailsView extends StatelessWidget {
                             ),
                           ),
                         )
-                      : detailsView.decodedData[
-                                  detailsView.decodedData.keys.toList()[x]] ==
-                              ''
+                      : detailsView.decodedData[detailsView.decodedData.keys
+                                      .toList()[x]] ==
+                                  '' ||
+                              detailsView.decodedData[detailsView
+                                      .decodedData.keys
+                                      .toList()[x]] ==
+                                  null
                           ? Container()
                           : ListTile(
                               trailing: detailsView.decodedData[detailsView

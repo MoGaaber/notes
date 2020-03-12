@@ -92,7 +92,6 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     DateViewLogic dateViewLogic =
         Provider.of<DateViewLogic>(context, listen: true);
-
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -106,7 +105,7 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                 color: Colors.white,
               ),
               onPressed: () {
-                dateViewLogic.navigateToSave(context: context, index: null);
+                dateViewLogic.addItem(context);
               },
             )
           ],
@@ -163,7 +162,7 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                           key: GlobalKey(debugLabel: index.toString()),
                           onDismissed: (x) {
                             dateViewLogic.deleteItem(
-                                index: index, ctx: context);
+                                index: index, context: context);
                           },
                           child: Column(
                             children: <Widget>[
@@ -177,18 +176,8 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                                   children: <Widget>[
                                     InkWell(
                                       onTap: () async {
-                                        dateViewLogic.dateViewIndex = index;
-                                        dateViewLogic.notifyListeners();
-                                        var result = await Navigator.pushNamed(
-                                            context,
-                                            dateViewLogic
-                                                        .globals.addOrEditPages[
-                                                    dateViewLogic.mainViewIndex]
-                                                ['route']);
-                                        if (result != null) {
-                                          dateViewLogic.list[index] = result;
-                                          dateViewLogic.notifyListeners();
-                                        }
+                                        dateViewLogic.updateItem(
+                                            context: context, index: index);
                                       },
                                       child: SizedBox(
                                         height: dateViewLogic.globals.screen
@@ -238,7 +227,6 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                                               jsonEncode(result);
                                           dateViewLogic.notifyListeners();
                                         }
-
                                       },
                                       child: SizedBox(
                                         height: dateViewLogic.globals.screen
@@ -268,8 +256,8 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                                 ),
                                 leading: InkWell(
                                   onTap: () {
-                                    dateViewLogic.deleteItem(
-                                        index: index, ctx: context);
+                                    dateViewLogic.showDeleteAlertDialog(
+                                        context, index);
                                   },
                                   child: Material(
                                     color: Colors.red,

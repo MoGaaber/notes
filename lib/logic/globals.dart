@@ -108,29 +108,39 @@ class Globals {
     ];
   }
 
-  InterstitialAd admobInterstitial;
+  InterstitialAd interstitialAd;
   BannerAd bannerAd;
   Globals(BuildContext context) {
     initializeAddOrEditPages();
-    admobInterstitial = InterstitialAd(
-      adUnitId: getInterstitialAdUnitId(),
-    );
     bannerAd = BannerAd(adUnitId: getBannerAdUnitId(), size: AdSize.banner);
-
     bannerAd..load();
     bannerAd..show();
+    interstitialAd = createInterstitialAd()..load();
+  }
+  InterstitialAd createInterstitialAd() {
+    return InterstitialAd(
+      adUnitId: InterstitialAd.testAdUnitId,
+      listener: (MobileAdEvent event) {
+//        if (event == MobileAdEvent.closed) {
+//          interstitialAd?.dispose();
+//          interstitialAd = createInterstitialAd()..load();
+//        }
+//        else if (event == MobileAdEvent.failedToLoad) {
+//          interstitialAd = createInterstitialAd()..load();
+//        }
+        if (event == MobileAdEvent.opened ||
+            event == MobileAdEvent.failedToLoad) {
+          interstitialAd?.dispose();
+
+          interstitialAd = createInterstitialAd();
+          interstitialAd.load();
+        }
+        print(event);
+      },
+    );
   }
 
   void showFullScreenAd() {
-
-    admobInterstitial.dispose();
-    admobInterstitial = null;
-    admobInterstitial = InterstitialAd(
-      adUnitId: getInterstitialAdUnitId(),
-    );
-
-    admobInterstitial..load();
-
-    admobInterstitial..show();
+    interstitialAd?.show();
   }
 }

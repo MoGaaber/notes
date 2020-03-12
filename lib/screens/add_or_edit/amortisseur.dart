@@ -60,8 +60,10 @@ class Armortisseur extends StatelessWidget {
                             date: addOrEditLogic.date,
                             rear: addOrEditLogic.yesOrNo[1],
                             front: addOrEditLogic.yesOrNo[0],
-                            km:addOrEditLogic.controllers[0].text==''?null: double.parse(
-                                addOrEditLogic.controllers[0].text),
+                            km: addOrEditLogic.controllers[0].text == ''
+                                ? null
+                                : double.parse(
+                                    addOrEditLogic.controllers[0].text),
                             note: (addOrEditLogic.controllers[1].text))
                         .toJson();
 

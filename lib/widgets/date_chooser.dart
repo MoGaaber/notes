@@ -19,7 +19,10 @@ class DateChooser extends StatelessWidget {
 
     var screen = globals.screen;
     return Padding(
-      padding: EdgeInsets.only(top: screen.convert(10, height)),
+      padding: EdgeInsets.only(
+          top: screen.convert(10, height),
+          right: screen.convert(20, width),
+          left: screen.convert(20, width)),
       child: Column(
         children: <Widget>[
           Row(

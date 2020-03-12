@@ -8,24 +8,11 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'globals.dart';
 
+typedef SaveOperation = Function(List<String> list, String element);
+
 class AddOrEditLogic with ChangeNotifier {
   Map<String, dynamic> decodedelement;
   SharedPreferences sharedPreferences;
-  Globals globals;
-  void update(int mainViewIndex, int dateViewIndex) {
-    this.mainViewIndex = mainViewIndex;
-    this.dateViewIndex = dateViewIndex;
-    controllers = List.generate(
-        globals.addOrEditPages[mainViewIndex]['controllersLength'],
-        (_) => TextEditingController());
-    yesOrNo = List.filled(
-        globals.addOrEditPages[mainViewIndex]['yesNoLength'], false);
-    if (dateViewIndex != null) {
-      print('hey iam called');
-      fetches[mainViewIndex]();
-    }
-  }
-
   List<TextEditingController> controllers;
   List<bool> yesOrNo;
   var formKey = GlobalKey<FormState>();
@@ -33,8 +20,23 @@ class AddOrEditLogic with ChangeNotifier {
   List<VoidCallback> fetches;
   int mainViewIndex, dateViewIndex;
 
-  AddOrEditLogic(BuildContext context) {
+  Globals globals;
+  void update(int mainViewIndex, int dateViewIndex) {
+    if (this.dateViewIndex != dateViewIndex) {
+      this.mainViewIndex = mainViewIndex;
+      this.dateViewIndex = dateViewIndex;
+      controllers = List.generate(
+          globals.addOrEditPages[mainViewIndex]['controllersLength'],
+          (_) => TextEditingController());
+      yesOrNo = List.filled(
+          globals.addOrEditPages[mainViewIndex]['yesNoLength'], false);
+      if (dateViewIndex != null) {
+        fetches[mainViewIndex]();
+      }
+    }
+  }
 
+  AddOrEditLogic(BuildContext context) {
     globals = Provider.of<Globals>(context, listen: false);
     this.sharedPreferences =
         Provider.of<SharedPreferences>(context, listen: false);
@@ -52,19 +54,22 @@ class AddOrEditLogic with ChangeNotifier {
         .getStringList(SharedPrefKeys.vidangePref)[dateViewIndex]);
 
     date = decodedelement['Date'];
-    controllers[0].text = decodedelement['KM'].toString();
-    controllers[1].text = decodedelement['Next Oil Change'].toString();
+    controllers[0].text =
+        decodedelement['KM'] == null ? null : decodedelement['KM'].toString();
+    controllers[1].text = decodedelement['Next Oil Change'] == null
+        ? null
+        : decodedelement['Next Oil Change'].toString();
     controllers[2].text = decodedelement['Oil / Huile']['Price'] == null
-        ? ''
+        ? null
         : decodedelement['Oil / Huile']['Price'].toString();
     controllers[3].text = decodedelement['Air']['Price'] == null
-        ? ''
+        ? null
         : decodedelement['Air']['Price'].toString();
     controllers[4].text = decodedelement['Fuel / Carburant']['Price'] == null
-        ? ''
+        ? null
         : decodedelement['Fuel / Carburant']['Price'].toString();
     controllers[5].text = decodedelement['Clim']['Price'] == null
-        ? ''
+        ? null
         : decodedelement['Clim']['Price'].toString();
     yesOrNo[0] = decodedelement['Oil / Huile']['Excited'];
     yesOrNo[1] = decodedelement['Air']['Excited'];
@@ -76,7 +81,8 @@ class AddOrEditLogic with ChangeNotifier {
     decodedelement = jsonDecode(sharedPreferences
         .getStringList(SharedPrefKeys.batteriPref)[dateViewIndex]);
     this.date = decodedelement['Date'];
-    controllers[0].text =decodedelement['KM']==null ? '': decodedelement['KM'].toString();
+    controllers[0].text =
+        decodedelement['KM'] == null ? null : decodedelement['KM'].toString();
     controllers[1].text = decodedelement['Note'].toString();
   }
 
@@ -84,8 +90,12 @@ class AddOrEditLogic with ChangeNotifier {
     decodedelement = jsonDecode(sharedPreferences
         .getStringList(SharedPrefKeys.courroiePref)[dateViewIndex]);
     date = decodedelement['Date'];
-    controllers[0].text =decodedelement['KM'] == null ? '': decodedelement['KM'].toString();
-    controllers[1].text = decodedelement['Next Km'] ==null ? '':decodedelement['Next Km'].toString();
+    print(decodedelement);
+    controllers[0].text =
+        decodedelement['KM'] == null ? null : decodedelement['KM'].toString();
+    controllers[1].text = decodedelement['Next Km'] == null
+        ? null
+        : decodedelement['KM'].toString();
     controllers[2].text = decodedelement['Note'];
   }
 
@@ -93,7 +103,8 @@ class AddOrEditLogic with ChangeNotifier {
     decodedelement = jsonDecode(sharedPreferences
         .getStringList(SharedPrefKeys.amortisseurPref)[dateViewIndex]);
     this.date = decodedelement['Date'];
-    controllers[0].text =decodedelement['KM']==null ? "": decodedelement['KM'].toString();
+    controllers[0].text =
+        decodedelement['KM'] == null ? null : decodedelement['KM'].toString();
     controllers[1].text = decodedelement['Note'];
     yesOrNo[0] = decodedelement['Front / AV'];
     yesOrNo[1] = decodedelement['Rear / AR'];
@@ -103,25 +114,40 @@ class AddOrEditLogic with ChangeNotifier {
     decodedelement = jsonDecode(sharedPreferences
         .getStringList(SharedPrefKeys.freinagePref)[dateViewIndex]);
     this.date = decodedelement['Date'];
-    this.controllers[0].text = decodedelement['Disc Frien']['KM'].toString();
-    this.controllers[1].text = decodedelement['Plaqwets']['KM'].toString();
-    this.yesOrNo[0] = decodedelement['Disc Frien']['Front / AV'];
-    this.yesOrNo[1] = decodedelement['Disc Frien']['Rear / AR'];
-    this.yesOrNo[2] = decodedelement['Plaqwets']['Front / AV'];
-    this.yesOrNo[3] = decodedelement['Plaqwets']['Rear / AR'];
+    this.controllers[0].text =
+        decodedelement['Disque de frein /Brake Disc']['KM'] == null
+            ? null
+            : decodedelement['Disque de frein /Brake Disc']['KM'].toString();
+    this.controllers[1].text =
+        decodedelement['Plaquette de frien /Brake Pad']['KM'] == null
+            ? null
+            : decodedelement['Disque de frein /Brake Disc']['KM'].toString();
+    this.yesOrNo[0] =
+        decodedelement['Disque de frein /Brake Disc']['Front / AV'];
+    this.yesOrNo[1] =
+        decodedelement['Disque de frein /Brake Disc']['Rear / AR'];
+    this.yesOrNo[2] =
+        decodedelement['Plaquette de frien /Brake Pad']['Front / AV'];
+    this.yesOrNo[3] =
+        decodedelement['Plaquette de frien /Brake Pad']['Rear / AR'];
+  }
+
+  void addItem(List<String> list, String element) {
+    list.add(element);
+  }
+
+  void updateItem(List<String> list, String element) {
+    list[dateViewIndex] = element;
   }
 
   void saveChanges(
-      {BuildContext context, String key, Map<String, dynamic> object}) {
-
+      {BuildContext context,
+      String key,
+      Map<String, dynamic> object,
+      SaveOperation saveOperation}) {
     var list = sharedPreferences.getStringList(key);
-
     String encodedElement = jsonEncode(object);
-    if (dateViewIndex == null) {
-      list.add(encodedElement);
-    } else {
-      list[dateViewIndex] = jsonEncode(object);
-    }
+    saveOperation(list, encodedElement);
     sharedPreferences.setStringList(key, list).then((x) {
       Navigator.pop(context, jsonEncode(object));
     });
@@ -153,8 +179,5 @@ class AddOrEditLogic with ChangeNotifier {
     });
   }
 
-
-void showFullScreenAd(){
-
-}
+  void showFullScreenAd() {}
 }
