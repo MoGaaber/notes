@@ -20,7 +20,6 @@ class Vidangee extends StatelessWidget {
     double height = globals.screen.height;
     double width = globals.screen.width;
     double aspectRatio = globals.screen.aspectRatio;
-    double textScale = globals.screen.textScale;
 
     return SafeArea(
         child: Scaffold(
@@ -58,7 +57,7 @@ class Vidangee extends StatelessWidget {
                       km: addOrEditLogic.controllers[0].text == ''
                           ? null
                           : num.parse(addOrEditLogic.controllers[0].text),
-                      nextOil: addOrEditLogic.controllers[0].text == ''
+                      nextOil: addOrEditLogic.controllers[1].text == ''
                           ? null
                           : num.parse(addOrEditLogic.controllers[1].text),
                       oil: VidangeFilterModel(

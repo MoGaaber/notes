@@ -9,13 +9,24 @@ import 'package:provider/provider.dart';
 class DetailsView extends StatelessWidget {
   static const route = '/details';
   bool isResult = false;
+//  ExpandableController expandableController = ExpandableController();
 
+  Color color = Colors.black;
   @override
   Widget build(BuildContext context) {
     Globals globals = Provider.of<Globals>(context, listen: false);
 
     DetailsViewLogic detailsView = Provider.of<DetailsViewLogic>(context);
     print(detailsView.decodedData);
+//    expandableController.addListener(() {
+//      print(expandableController.value);
+//      if (expandableController.value) {
+//        color = Colors.orange;
+//      } else {
+//        color = Colors.black;
+//      }
+//
+//    });
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
@@ -67,10 +78,13 @@ class DetailsView extends StatelessWidget {
                 padding: EdgeInsets.only(
                     top: globals.screen.convert(5, globals.height)),
                 itemBuilder: (BuildContext context, int x) {
+                  print(x);
                   return detailsView.decodedData[
                           detailsView.decodedData.keys.toList()[x]] is Map
                       ? ExpandablePanel(
-                          theme: ExpandableThemeData(iconColor: Colors.orange),
+                          theme: ExpandableThemeData(
+                            iconColor: Colors.orange,
+                          ),
                           expanded: Column(children: <Widget>[
                             for (var key in detailsView
                                 .decodedData[

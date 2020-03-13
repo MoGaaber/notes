@@ -39,9 +39,11 @@ class AddOrEditLogic with ChangeNotifier {
 
     if (this.saveOperation != saveOperation) {
       this.saveOperation = saveOperation;
-    }
-    if (saveOperation != add) {
-      fetches[mainViewIndex]();
+
+      if (saveOperation != add) {
+        fetches[mainViewIndex]();
+      }
+
     }
   }
 

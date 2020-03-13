@@ -43,8 +43,8 @@ class MyApp extends StatelessWidget {
           update: (BuildContext context, DateViewLogic value,
                   DetailsViewLogic previous) =>
               previous
-                ..update(jsonDecode(value.list[value.dateViewIndex]),
-                    value.mainViewIndex),
+                ..update(value.list.length== 0 ? null:jsonDecode(value.list[value.dateViewIndex]),
+                    value.mainViewIndex,value.send),
         ),
         ChangeNotifierProxyProvider2<DateViewLogic, DetailsViewLogic,
                 AddOrEditLogic>(
@@ -55,18 +55,7 @@ class MyApp extends StatelessWidget {
                   ..update(value.mainViewIndex, value.dateViewIndex,
                       value.saveOperation)),
 
-/*
-          update: (BuildContext context, DateViewLogic value,
-              AddOrEditLogic pre
-vious) {
-            return previous
-              ..update(value.mainViewIndex, value.dateViewIndex,
-                  value.saveOperation);
-          },
 
-          */
-/*
-*/
       ],
       child: MaterialApp(
         color: Colors.orange,

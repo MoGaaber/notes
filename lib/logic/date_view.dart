@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'add_or_edit.dart';
 
 class DateViewLogic extends ChangeNotifier {
+  bool send = false ;
   int mainViewIndex, dateViewIndex;
   List<TextEditingController> controllers;
   List<bool> yesOrNo;
@@ -56,6 +57,7 @@ class DateViewLogic extends ChangeNotifier {
   SaveOperation saveOperation;
 
   void addItem(BuildContext context) async {
+    send = false;
     saveOperation = add;
     notifyListeners();
 
@@ -100,8 +102,10 @@ class DateViewLogic extends ChangeNotifier {
   }
 
   void showItemDetails(int index, BuildContext context) async {
+    send = true ;
     this.dateViewIndex = index;
     notifyListeners();
+    send = false;
     var result = await Navigator.pushNamed(context, DetailsView.route,
         arguments: DetailsViewModelArgs(jsonDecode(list[index]), index));
     if (result != null) {

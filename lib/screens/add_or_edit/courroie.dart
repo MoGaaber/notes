@@ -21,7 +21,6 @@ class Courroie extends StatelessWidget {
     double height = globals.screen.height;
     double width = globals.screen.width;
     double aspectRatio = globals.screen.aspectRatio;
-    double textScale = globals.screen.textScale;
     Screen screen = globals.screen;
 
     return SafeArea(

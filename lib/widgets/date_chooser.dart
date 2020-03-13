@@ -14,8 +14,6 @@ class DateChooser extends StatelessWidget {
     Globals globals = Provider.of<Globals>(context, listen: false);
     double height = globals.screen.height;
     double width = globals.screen.width;
-    double aspectRatio = globals.screen.aspectRatio;
-    double textScale = globals.screen.textScale;
 
     var screen = globals.screen;
     return Padding(

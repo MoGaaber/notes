@@ -1,11 +1,9 @@
 import 'dart:io';
 
-import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:launch_review/launch_review.dart';
-import 'package:notes/constants/ads_ids.dart';
 import 'package:notes/logic/globals.dart';
 import 'package:notes/logic/main_view.dart';
 import 'package:notes/utility/screen.dart';
@@ -67,7 +65,10 @@ class MainView extends StatelessWidget {
               ),
               ListTile(
                 contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                onTap: () {Share.share('شارك تطبيقانا مع اصدقائك لتعم الفائده  https://play.google.com/store/apps/details?id=com.HNY.qurancareem', subject: 'Look what I made!');
+                onTap: () {
+                  Share.share(
+                      'شارك تطبيقانا مع اصدقائك لتعم الفائده  https://play.google.com/store/apps/details?id=com.HNY.qurancareem',
+                      subject: 'Look what I made!');
                 },
                 leading: Icon(FontAwesomeIcons.share),
                 title: Text(
@@ -80,13 +81,22 @@ class MainView extends StatelessWidget {
               ),
               Divider(),
               ListTile(
-                onTap: () { LaunchReview.launch(androidAppId: "https://play.google.com/store/apps/details?id=com.HNY.qurancareem");
+                onTap: () {
+                  LaunchReview.launch(
+                      androidAppId:
+                          "https://play.google.com/store/apps/details?id=com.HNY.qurancareem");
                 },
-                leading: Icon(Icons.star,color: Colors.orange,size: 28,),
-                title: Text('Rate Us',                  style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
+                leading: Icon(
+                  Icons.star,
+                  color: Colors.orange,
+                  size: 28,
                 ),
+                title: Text(
+                  'Rate Us',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               )
             ],
@@ -149,8 +159,9 @@ class MainView extends StatelessWidget {
                         ),
                         onTap: () async {
                           mainViewLogic.navigateToDateView(context, index);
-                          if(index==0||index==globals.addOrEditPages.length-1){
-                            globals.showFullScreenAd() ;
+                          if (index == 0 ||
+                              index == globals.addOrEditPages.length - 1) {
+                            globals.showFullScreenAd();
                           }
                         },
                         title: Text(
@@ -166,11 +177,8 @@ class MainView extends StatelessWidget {
                   ),
                   separatorBuilder: (BuildContext context, int index) =>
                       Divider(),
-
                 ),
-
               ),
-
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
+import 'package:notes/constants/ads_ids.dart';
 import 'package:notes/constants/constants.dart';
 import 'package:notes/screens/add_or_edit/amortisseur.dart';
 import 'package:notes/screens/add_or_edit/batterie.dart';
@@ -15,35 +16,7 @@ class Globals {
   Screen screen;
   double height, width, aspectRatio, textScaleFactor;
   List<Map<String, dynamic>> addOrEditPages;
-  String getAppId() {
-    if (Platform.isIOS) {
-      return 'ca-app-pub-3940256099942544~1458002511';
-    } else if (Platform.isAndroid) {
-      //هنا كود  تطبيقك للاعلان
-      return 'ca-app-pub-3940256099942544~3347511713';
-    }
-    return null;
-  }
 
-  String getBannerAdUnitId() {
-    if (Platform.isIOS) {
-      return 'ca-app-pub-3940256099942544/2934735716';
-    } else if (Platform.isAndroid) {
-      // هنا للبانر
-      return 'ca-app-pub-3940256099942544/6300978111';
-    }
-    return null;
-  }
-
-  String getInterstitialAdUnitId() {
-    if (Platform.isIOS) {
-      return 'ca-app-pub-3940256099942544/4411468910';
-    } else if (Platform.isAndroid) {
-      //هنا للشاشه الكامله
-      return 'ca-app-pub-3940256099942544/1033173712';
-    }
-    return null;
-  }
 
   void initializeAddOrEditPages() {
     addOrEditPages = [
@@ -112,26 +85,23 @@ class Globals {
   BannerAd bannerAd;
   Globals(BuildContext context) {
     initializeAddOrEditPages();
-    bannerAd = BannerAd(adUnitId: getBannerAdUnitId(), size: AdSize.banner);
-    bannerAd..load();
-    bannerAd..show();
-    interstitialAd = createInterstitialAd()..load();
+    FirebaseAdMob.instance.initialize(appId: AdsIds.appId).then((x){
+      bannerAd = BannerAd(adUnitId: AdsIds.bannerId, size: AdSize.banner);
+      bannerAd..load();
+      bannerAd..show();
+      interstitialAd = createInterstitialAd()..load();
+
+
+    });
+
   }
   InterstitialAd createInterstitialAd() {
     return InterstitialAd(
-      adUnitId: InterstitialAd.testAdUnitId,
+      adUnitId: AdsIds.interId,
       listener: (MobileAdEvent event) {
-//        if (event == MobileAdEvent.closed) {
-//          interstitialAd?.dispose();
-//          interstitialAd = createInterstitialAd()..load();
-//        }
-//        else if (event == MobileAdEvent.failedToLoad) {
-//          interstitialAd = createInterstitialAd()..load();
-//        }
         if (event == MobileAdEvent.opened ||
             event == MobileAdEvent.failedToLoad) {
           interstitialAd?.dispose();
-
           interstitialAd = createInterstitialAd();
           interstitialAd.load();
         }

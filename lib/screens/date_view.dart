@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:notes/logic/date_view.dart';
-import 'package:notes/models/details_view_args.dart';
-import 'package:notes/screens/details_view.dart';
 import 'package:provider/provider.dart';
 
 class DateView extends StatefulWidget {
