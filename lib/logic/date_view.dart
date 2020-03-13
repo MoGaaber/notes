@@ -24,15 +24,6 @@ class DateViewLogic extends ChangeNotifier {
   Globals globals;
   Map mPage;
   String mRoute;
-  void updateDependicies(int mainViewIndex) {
-    if (this.mainViewIndex != mainViewIndex) {
-      this.mainViewIndex = mainViewIndex;
-      mPage = globals.addOrEditPages[mainViewIndex];
-      mKey = mPage['refKey'];
-      mRoute = mPage['route'];
-      list = sharedPreferences.getStringList(mKey);
-    }
-  }
 
   DateViewLogic(BuildContext context) {
     sharedPreferences = Provider.of<SharedPreferences>(context, listen: false);

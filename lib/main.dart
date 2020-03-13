@@ -29,33 +29,16 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<MainViewLogic>(
           create: (BuildContext context) => MainViewLogic(),
         ),
-        ChangeNotifierProxyProvider<MainViewLogic, DateViewLogic>(
-          update: (BuildContext context, MainViewLogic value,
-              DateViewLogic previous) {
-            return previous..updateDependicies(value.index);
-          },
+        ChangeNotifierProvider<DateViewLogic>(
           create: (BuildContext context) {
             return DateViewLogic(context);
           },
         ),
-        ChangeNotifierProxyProvider<DateViewLogic, DetailsViewLogic>(
+        ChangeNotifierProvider<DetailsViewLogic>(
           create: (BuildContext context) => DetailsViewLogic(),
-          update: (BuildContext context, DateViewLogic value,
-                  DetailsViewLogic previous) =>
-              previous
-                ..update(value.list.length== 0 ? null:jsonDecode(value.list[value.dateViewIndex]),
-                    value.mainViewIndex,value.send),
         ),
-        ChangeNotifierProxyProvider2<DateViewLogic, DetailsViewLogic,
-                AddOrEditLogic>(
-            create: (BuildContext context) => AddOrEditLogic(context),
-            update: (BuildContext context, DateViewLogic value,
-                    DetailsViewLogic value2, AddOrEditLogic previous) =>
-                previous
-                  ..update(value.mainViewIndex, value.dateViewIndex,
-                      value.saveOperation)),
-
-
+        ChangeNotifierProvider<AddOrEditLogic>(
+            create: (BuildContext context) => AddOrEditLogic(context)),
       ],
       child: MaterialApp(
         color: Colors.orange,

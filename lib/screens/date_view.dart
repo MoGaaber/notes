@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:notes/logic/date_view.dart';
+import 'package:notes/models/date_view_args.dart';
 import 'package:provider/provider.dart';
 
 class DateView extends StatefulWidget {
@@ -90,6 +91,15 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     DateViewLogic dateViewLogic =
         Provider.of<DateViewLogic>(context, listen: true);
+
+    DateViewArgs dateViewArgs = ModalRoute.of(context).settings.arguments;
+    var index=dateViewArgs.index;
+    dateViewLogic.mPage = dateViewLogic.globals.addOrEditPages[index];
+    dateViewLogic.mKey =dateViewLogic. mPage['refKey'];
+    dateViewLogic.mRoute = dateViewLogic.mPage['route'];
+    dateViewLogic.list = dateViewLogic.sharedPreferences.getStringList(dateViewLogic.mKey);
+
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -112,7 +122,7 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Image.asset(
-                'assets/images/${dateViewLogic.globals.addOrEditPages[dateViewLogic.mainViewIndex]['icon']}',
+                'assets/images/${dateViewLogic.globals.addOrEditPages[dateViewArgs.index]['icon']}',
                 color: Colors.white,
                 width: dateViewLogic.globals.screen
                     .convert(50, dateViewLogic.globals.width),
@@ -129,7 +139,7 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
             ],
           ),
         ),
-        body: dateViewLogic.list == null
+        body: dateViewArgs.index == null
             ? FutureBuilder<bool>(
                 future: dateViewLogic.sharedPreferences
                     .setStringList(dateViewLogic.mKey, []),
@@ -284,22 +294,3 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
     );
   }
 }
-/*
-/*
-            RotationTransition(
-              child: IconButton(
-                  icon: Icon(Icons.arrow_upward),
-                  onPressed: () {
-                    if (rotateAnimation.isCompleted) {
-                      rotateAnimationController.reverse();
-                      dateViewLogic.list = dateViewLogic.list.reversed.toList();
-                    } else {
-                      rotateAnimationController.forward();
-                      dateViewLogic.list = dateViewLogic.list.reversed.toList();
-                    }
-                    dateViewLogic.notifyListeners();
-                  }),
-              turns: rotateAnimation,
-            ),
-*/
- */
