@@ -33,74 +33,78 @@ class MainView extends StatelessWidget {
       child: Scaffold(
         //
         drawer: Drawer(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              SizedBox.fromSize(
-                size: Size.fromHeight(250),
-                child: DrawerHeader(
-                  child: Center(
-                      child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Image.asset(
-                        'assets/images/fff.png',
-                        fit: BoxFit.contain,
-                        width: 130,
-                        color: Colors.orange,
-                      ),
-                      Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-                      Text(
-                        'Car Note',
-                        style: TextStyle(
-                            color: Colors.white.withOpacity(0.5),
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700),
-                      )
-                    ],
-                  )),
-                  decoration: BoxDecoration(
-                    color: Color(0xff250101),
+          child: Material(
+            color: Colors.white,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                SizedBox.fromSize(
+                  size: Size.fromHeight(
+                      globals.screen.convert(250, globals.height)),
+                  child: DrawerHeader(
+                    child: Center(
+                        child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Image.asset(
+                          'assets/images/fff.png',
+                          fit: BoxFit.contain,
+                          width: globals.screen.convert(130, globals.width),
+                          color: Colors.orange,
+                        ),
+                        Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                        Text(
+                          'Car Note',
+                          style: TextStyle(
+                              color: Colors.white.withOpacity(0.5),
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700),
+                        )
+                      ],
+                    )),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-              ListTile(
-                contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                onTap: () {
-                  Share.share(
-                      'شارك تطبيقانا مع اصدقائك لتعم الفائده  https://play.google.com/store/apps/details?id=com.HNY.qurancareem',
-                      subject: 'Look what I made!');
-                },
-                leading: Icon(FontAwesomeIcons.share),
-                title: Text(
-                  'Share App',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                  onTap: () {
+                    Share.share(
+                        'شارك تطبيقانا مع اصدقائك لتعم الفائده  https://play.google.com/store/apps/details?id=com.HNY.qurancareem',
+                        subject: 'Look what I made!');
+                  },
+                  leading: Icon(FontAwesomeIcons.share),
+                  title: Text(
+                    'Share App',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
-              ),
-              Divider(),
-              ListTile(
-                onTap: () {
-                  LaunchReview.launch(
-                      androidAppId:
-                          "https://play.google.com/store/apps/details?id=com.HNY.qurancareem");
-                },
-                leading: Icon(
-                  Icons.star,
-                  color: Colors.orange,
-                  size: 28,
-                ),
-                title: Text(
-                  'Rate Us',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
+                Divider(),
+                ListTile(
+                  onTap: () {
+                    LaunchReview.launch(
+                        androidAppId:
+                            "https://play.google.com/store/apps/details?id=com.HNY.qurancareem");
+                  },
+                  leading: Icon(
+                    Icons.star,
+                    color: Colors.orange,
+                    size: 28,
                   ),
-                ),
-              )
-            ],
+                  title: Text(
+                    'Rate Us',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
 
