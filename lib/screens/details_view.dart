@@ -76,7 +76,7 @@ class DetailsView extends StatelessWidget {
                 itemCount: detailsView.decodedData.keys.toList().length,
                 padding: EdgeInsets.only(
                   top: globals.screen.convert(5, globals.height),
-                  bottom: globals.screen.convert(40, globals.height),
+                  bottom: globals.screen.convert(60, globals.height),
                 ),
                 itemBuilder: (BuildContext context, int x) {
                   print(x);
