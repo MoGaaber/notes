@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -47,23 +45,23 @@ class MainView extends StatelessWidget {
                       'assets/images/fff.png',
                       fit: BoxFit.contain,
                       width: globals.screen.convert(130, globals.width),
-                      color: Colors.orange,
+                      color: Colors.white,
                     )),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Colors.orange,
                     ),
                   ),
                 ),
                 ListTile(
                   contentPadding: EdgeInsets.symmetric(
-                      horizontal: globals.screen.convert(10, globals.width)),
+                      horizontal: globals.screen.convert(20, globals.width)),
                   onTap: () {
                     Share.share(
                         'شارك تطبيقانا مع اصدقائك لتعم الفائده  https://play.google.com/store/apps/details?id=com.HNY.qurancareem',
                         subject: 'Look what I made!');
                   },
                   leading: Icon(FontAwesomeIcons.share,
-                      size: globals.screen.convert(24, globals.aspectRatio)),
+                      size: globals.screen.convert(28, globals.aspectRatio)),
                   title: Text(
                     'Share App',
                     style: TextStyle(
@@ -74,6 +72,8 @@ class MainView extends StatelessWidget {
                 ),
                 Divider(),
                 ListTile(
+                  contentPadding: EdgeInsets.symmetric(
+                      horizontal: globals.screen.convert(20, globals.width)),
                   onTap: () {
                     LaunchReview.launch(
                         androidAppId:
@@ -81,11 +81,11 @@ class MainView extends StatelessWidget {
                   },
                   leading: Icon(Icons.star,
                       color: Colors.orange,
-                      size: globals.screen.convert(28, globals.aspectRatio)),
+                      size: globals.screen.convert(33, globals.aspectRatio)),
                   title: Text(
                     'Rate Us',
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: globals.screen.convert(20, globals.aspectRatio),
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -105,7 +105,9 @@ class MainView extends StatelessWidget {
         body: sharedPreferences == null
             // instance not ready
             ? Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.orange,
+                ),
               )
             // instance is ready
             : ScrollConfiguration(
@@ -176,34 +178,4 @@ class MainView extends StatelessWidget {
       ),
     );
   }
-}
-
-String getAppId() {
-  if (Platform.isIOS) {
-    return 'ca-app-pub-3940256099942544~1458002511';
-  } else if (Platform.isAndroid) {
-    //هنا كود  تطبيقك للاعلان
-    return 'ca-app-pub-3940256099942544~3347511713';
-  }
-  return null;
-}
-
-String getBannerAdUnitId() {
-  if (Platform.isIOS) {
-    return 'ca-app-pub-3940256099942544/2934735716';
-  } else if (Platform.isAndroid) {
-    // هنا للبانر
-    return 'ca-app-pub-3940256099942544/6300978111';
-  }
-  return null;
-}
-
-String getInterstitialAdUnitId() {
-  if (Platform.isIOS) {
-    return 'ca-app-pub-3940256099942544/4411468910';
-  } else if (Platform.isAndroid) {
-    //هنا للشاشه الكامله
-    return 'ca-app-pub-3940256099942544/1033173712';
-  }
-  return null;
 }

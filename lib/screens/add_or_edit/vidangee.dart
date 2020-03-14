@@ -25,8 +25,7 @@ class Vidangee extends StatelessWidget {
 
     addOrEditLogic.initialize(addOrEditArgs.mainViewIndex,
         addOrEditArgs.dateViewIndex, addOrEditArgs.isAdd);
-    print(addOrEditLogic.controllers.length);
-    print(addOrEditLogic.decodedelement);
+
     return Consumer<AddOrEditLogic>(
       builder: (BuildContext context, value, Widget child) => SafeArea(
           child: Scaffold(
@@ -86,7 +85,6 @@ class Vidangee extends StatelessWidget {
                           price: addOrEditLogic.controllers[6].text.isEmpty
                               ? null
                               : num.parse(addOrEditLogic.controllers[6].text)));
-                  print(vidangeModel.toJson());
                   addOrEditLogic.saveChanges(
                       context: context,
                       object: vidangeModel.toJson(),
@@ -118,12 +116,14 @@ class Vidangee extends StatelessWidget {
                   ),
                 Divider(),
                 Padding(
-                  padding:  EdgeInsets.all(screen.convert(8,aspectRatio),),
+                  padding: EdgeInsets.all(
+                    screen.convert(8, aspectRatio),
+                  ),
                   child: Text(
                     'Filtres ',
                     style: TextStyle(
                         color: Colors.orange,
-                        fontSize: screen.convert(30,aspectRatio),
+                        fontSize: screen.convert(30, aspectRatio),
                         fontWeight: FontWeight.w700),
                   ),
                 ),
@@ -141,7 +141,8 @@ class Vidangee extends StatelessWidget {
                         Text(
                           list[i - 3],
                           style: TextStyle(
-                              fontSize: screen.convert(20,aspectRatio), fontWeight: FontWeight.w700),
+                              fontSize: screen.convert(20, aspectRatio),
+                              fontWeight: FontWeight.w700),
                         ),
                       ],
                     ),
@@ -151,9 +152,6 @@ class Vidangee extends StatelessWidget {
                       child: SizedBox.fromSize(
                         size: Size.fromWidth(globals.screen.convert(80, width)),
                         child: MyTextField(
-                          onTab: () {
-                            print(i);
-                          },
                           textFieldType: TextFieldType.price,
                           textEditingController: addOrEditLogic.controllers[i],
                         ),

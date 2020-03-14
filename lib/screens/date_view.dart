@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:notes/logic/date_view.dart';
 import 'package:notes/logic/globals.dart';
 import 'package:notes/models/date_view_args.dart';
-import 'package:notes/models/main_view_args.dart';
 import 'package:notes/utility/screen.dart';
 import 'package:provider/provider.dart';
 
@@ -96,9 +95,6 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
         Provider.of<DateViewLogic>(context, listen: false);
     Globals globals = Provider.of<Globals>(context, listen: false);
     double height = globals.screen.height;
-    double width = globals.screen.width;
-    double aspectRatio = globals.screen.aspectRatio;
-    double textScale = globals.screen.textScale;
     Screen screen = globals.screen;
 
     DateViewArgs dateViewArgs = ModalRoute.of(context).settings.arguments;

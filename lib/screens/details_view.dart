@@ -1,10 +1,8 @@
-import 'dart:convert';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:notes/logic/details_view.dart';
 import 'package:notes/logic/globals.dart';
-import 'package:notes/models/add_edit_args.dart';
 import 'package:notes/models/details_view_args.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +24,6 @@ class DetailsView extends StatelessWidget {
         detailsViewArgs.mainViewIndex);
 
     List<Map> controllers = [];
-    List<Color> colors = [];
     for (int i = 0; i < detailsView.decodedData.keys.toList().length; i++) {
       if (detailsView.decodedData[detailsView.decodedData.keys.toList()[i]]
           is Map) {

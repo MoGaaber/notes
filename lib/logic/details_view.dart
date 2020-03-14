@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:notes/logic/globals.dart';
 
 import 'add_or_edit.dart';
 
@@ -9,10 +8,10 @@ class DetailsViewLogic extends ChangeNotifier {
   Map<String, dynamic> decodedData;
   SaveOperation saveOperation;
 
-
-  void initialize(Map<String, dynamic> decodedData, int dateViewIndex,int mainViewIndex){
+  void initialize(
+      Map<String, dynamic> decodedData, int dateViewIndex, int mainViewIndex) {
     this.dateViewIndex = dateViewIndex;
     this.decodedData = decodedData;
-    this.mainViewIndex = mainViewIndex ;
+    this.mainViewIndex = mainViewIndex;
   }
 }

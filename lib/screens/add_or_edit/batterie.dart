@@ -22,7 +22,6 @@ class Batterie extends StatelessWidget {
     double height = globals.screen.height;
     double width = globals.screen.width;
     double aspectRatio = globals.screen.aspectRatio;
-    double textScale = globals.screen.textScale;
     Screen screen = globals.screen;
     AddOrEditArgs addOrEditArgs = ModalRoute.of(context).settings.arguments;
 
@@ -42,19 +41,16 @@ class Batterie extends StatelessWidget {
                     size: 24 / aspectRatio * aspectRatio,
                   ),
                   onPressed: () {
-                    if (addOrEditLogic.formKey.currentState.validate() &&
-                        addOrEditLogic.date != null) {
-                      BatterieModel batteriModel = BatterieModel(
-                          date: addOrEditLogic.date,
-                          km: addOrEditLogic.controllers[0].text == ''
-                              ? null
-                              : num.parse(addOrEditLogic.controllers[0].text),
-                          note: addOrEditLogic.controllers[1].text);
-                      addOrEditLogic.saveChanges(
-                          key: SharedPrefKeys.batteriPref,
-                          object: batteriModel.toJson(),
-                          context: context);
-                    }
+                    BatterieModel batteriModel = BatterieModel(
+                        date: addOrEditLogic.date,
+                        km: addOrEditLogic.controllers[0].text == ''
+                            ? null
+                            : num.parse(addOrEditLogic.controllers[0].text),
+                        note: addOrEditLogic.controllers[1].text);
+                    addOrEditLogic.saveChanges(
+                        key: SharedPrefKeys.batteriPref,
+                        object: batteriModel.toJson(),
+                        context: context);
                   })
             ],
             centerTitle: true,

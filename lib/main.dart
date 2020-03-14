@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:notes/logic/details_view.dart';
 import 'package:notes/logic/main_view.dart';

@@ -58,31 +58,27 @@ class Freinage extends StatelessWidget {
                     size: 24 / aspectRatio * aspectRatio,
                   ),
                   onPressed: () {
-                    if (addOrEditLogic.formKey.currentState.validate() &&
-                        addOrEditLogic.date != null) {
-                      addOrEditLogic.saveChanges(
-                          key: SharedPrefKeys.freinagePref,
-                          object: FrienageModel(
-                                  date: addOrEditLogic.date,
-                                  firstInnerModel: InnerModel(
-                                    km: addOrEditLogic.controllers[0].text == ''
+                    addOrEditLogic.saveChanges(
+                        key: SharedPrefKeys.freinagePref,
+                        object: FrienageModel(
+                                date: addOrEditLogic.date,
+                                firstInnerModel: InnerModel(
+                                  km: addOrEditLogic.controllers[0].text == ''
+                                      ? null
+                                      : num.parse(
+                                          addOrEditLogic.controllers[0].text),
+                                  front: addOrEditLogic.yesOrNo[0],
+                                  rear: addOrEditLogic.yesOrNo[1],
+                                ),
+                                secondInnerModel: InnerModel(
+                                    km: addOrEditLogic.controllers[1].text == ''
                                         ? null
                                         : num.parse(
-                                            addOrEditLogic.controllers[0].text),
-                                    front: addOrEditLogic.yesOrNo[0],
-                                    rear: addOrEditLogic.yesOrNo[1],
-                                  ),
-                                  secondInnerModel: InnerModel(
-                                      km: addOrEditLogic.controllers[1].text ==
-                                              ''
-                                          ? null
-                                          : num.parse(addOrEditLogic
-                                              .controllers[1].text),
-                                      front: addOrEditLogic.yesOrNo[2],
-                                      rear: addOrEditLogic.yesOrNo[3]))
-                              .toJson(),
-                          context: context);
-                    }
+                                            addOrEditLogic.controllers[1].text),
+                                    front: addOrEditLogic.yesOrNo[2],
+                                    rear: addOrEditLogic.yesOrNo[3]))
+                            .toJson(),
+                        context: context);
                   })
             ],
           ),

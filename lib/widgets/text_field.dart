@@ -13,12 +13,9 @@ class MyTextField extends StatelessWidget {
   String label;
   Map<String, dynamic> fields;
   TextFieldType textFieldType;
-  VoidCallback onTab;
   MyTextField(
-      {@required this.fields,
-      @required this.textFieldType,
+      {@required this.textFieldType,
       @required this.label,
-      this.onTab,
       @required this.textEditingController});
   @override
   Widget build(BuildContext context) {
@@ -33,7 +30,6 @@ class MyTextField extends StatelessWidget {
       child: SizedBox(
         width: 280 / width * width,
         child: TextFormField(
-          onTap: this.onTab,
           style: TextStyle(fontSize: 14),
           maxLines: this.textFieldType == TextFieldType.text ? null : 1,
           textAlignVertical: TextAlignVertical.center,
