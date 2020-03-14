@@ -43,15 +43,11 @@ class MainView extends StatelessWidget {
                       globals.screen.convert(250, globals.height)),
                   child: DrawerHeader(
                     child: Center(
-                        child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Image.asset(
-                          'assets/images/fff.png',
-                          fit: BoxFit.contain,
-                          width: globals.screen.convert(130, globals.width),
-                          color: Colors.orange,
-                        ),
+                        child: Image.asset(
+                      'assets/images/fff.png',
+                      fit: BoxFit.contain,
+                      width: globals.screen.convert(130, globals.width),
+                      color: Colors.orange,
                     )),
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -59,17 +55,19 @@ class MainView extends StatelessWidget {
                   ),
                 ),
                 ListTile(
-                  contentPadding: EdgeInsets.symmetric(horizontal: globals.screen.convert(10,globals.width)),
+                  contentPadding: EdgeInsets.symmetric(
+                      horizontal: globals.screen.convert(10, globals.width)),
                   onTap: () {
                     Share.share(
                         'شارك تطبيقانا مع اصدقائك لتعم الفائده  https://play.google.com/store/apps/details?id=com.HNY.qurancareem',
                         subject: 'Look what I made!');
                   },
-                  leading: Icon(FontAwesomeIcons.share),
+                  leading: Icon(FontAwesomeIcons.share,
+                      size: globals.screen.convert(24, globals.aspectRatio)),
                   title: Text(
                     'Share App',
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: globals.screen.convert(20, globals.aspectRatio),
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -81,11 +79,9 @@ class MainView extends StatelessWidget {
                         androidAppId:
                             "https://play.google.com/store/apps/details?id=com.HNY.qurancareem");
                   },
-                  leading: Icon(
-                    Icons.star,
-                    color: Colors.orange,
-                    size: 28,
-                  ),
+                  leading: Icon(Icons.star,
+                      color: Colors.orange,
+                      size: globals.screen.convert(28, globals.aspectRatio)),
                   title: Text(
                     'Rate Us',
                     style: TextStyle(
@@ -126,8 +122,10 @@ class MainView extends StatelessWidget {
                           alignment: Alignment.center,
                           children: <Widget>[
                             SizedBox(
-                                height: 80,
-                                width: 50,
+                                height:
+                                    globals.screen.convert(80, globals.height),
+                                width:
+                                    globals.screen.convert(50, globals.width),
                                 child: Material(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
@@ -165,8 +163,8 @@ class MainView extends StatelessWidget {
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20 /
-                                  globals.screen.textScale *
-                                  globals.screen.textScale),
+                                  globals.screen.aspectRatio *
+                                  globals.screen.aspectRatio),
                         ),
                       ),
                     ],

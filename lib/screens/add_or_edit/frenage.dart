@@ -120,7 +120,8 @@ class Freinage extends StatelessWidget {
                               Text(
                                 'Front / AV',
                                 style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w700),
+                                    fontSize: screen.convert(18, aspectRatio),
+                                    fontWeight: FontWeight.w700),
                               ),
                               Checkbox(
                                   value: addOrEditLogic.yesOrNo[0],
@@ -135,7 +136,8 @@ class Freinage extends StatelessWidget {
                               Text(
                                 'Rear / AR',
                                 style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w700),
+                                    fontSize: screen.convert(18, aspectRatio),
+                                    fontWeight: FontWeight.w700),
                               ),
                               Checkbox(
                                   value: addOrEditLogic.yesOrNo[1],
@@ -149,14 +151,16 @@ class Freinage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       ),
                       Divider(
-                        height: 30,
+                        height: screen.convert(30, height),
                       ),
                     ],
                   ),
                   Column(
                     children: <Widget>[
                       ListTile(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 2),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: screen.convert(2, screen.width),
+                        ),
                         title: Text(
                           'Plaquette de frien /Brake Pad',
                           style: Theme.of(context).textTheme.display2,
@@ -176,7 +180,8 @@ class Freinage extends StatelessWidget {
                               Text(
                                 'Front / AV',
                                 style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w700),
+                                    fontSize: screen.convert(18, aspectRatio),
+                                    fontWeight: FontWeight.w700),
                               ),
                               Checkbox(
                                   value: addOrEditLogic.yesOrNo[2],
@@ -191,7 +196,8 @@ class Freinage extends StatelessWidget {
                               Text(
                                 'Rear / AR',
                                 style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w700),
+                                    fontSize: screen.convert(18, aspectRatio),
+                                    fontWeight: FontWeight.w700),
                               ),
                               Checkbox(
                                   value: addOrEditLogic.yesOrNo[3],

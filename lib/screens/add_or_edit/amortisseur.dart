@@ -110,7 +110,8 @@ class Armortisseur extends StatelessWidget {
                           Text(
                             'Front / AV',
                             style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w700),
+                                fontSize: screen.convert(18, aspectRatio),
+                                fontWeight: FontWeight.w700),
                           ),
                           Checkbox(
                               value: addOrEditLogic.yesOrNo[0],
@@ -125,7 +126,8 @@ class Armortisseur extends StatelessWidget {
                           Text(
                             'Rear / AR',
                             style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w700),
+                                fontSize: screen.convert(18, aspectRatio),
+                                fontWeight: FontWeight.w700),
                           ),
                           Checkbox(
                               value: addOrEditLogic.yesOrNo[1],

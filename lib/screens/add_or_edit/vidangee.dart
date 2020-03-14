@@ -118,12 +118,12 @@ class Vidangee extends StatelessWidget {
                   ),
                 Divider(),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding:  EdgeInsets.all(screen.convert(8,aspectRatio),),
                   child: Text(
                     'Filtres ',
                     style: TextStyle(
                         color: Colors.orange,
-                        fontSize: 30,
+                        fontSize: screen.convert(30,aspectRatio),
                         fontWeight: FontWeight.w700),
                   ),
                 ),
@@ -141,7 +141,7 @@ class Vidangee extends StatelessWidget {
                         Text(
                           list[i - 3],
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w700),
+                              fontSize: screen.convert(20,aspectRatio), fontWeight: FontWeight.w700),
                         ),
                       ],
                     ),

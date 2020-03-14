@@ -71,8 +71,9 @@ class DetailsView extends StatelessWidget {
                 ),
                 Text(globals.addOrEditPages[detailsView.mainViewIndex]['name'],
                     style: TextStyle(
-                      color: Colors.white,
-                    )),
+                        color: Colors.white,
+                        fontSize:
+                            globals.screen.convert(24, globals.aspectRatio))),
               ],
             ),
           ),
