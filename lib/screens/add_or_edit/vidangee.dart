@@ -124,11 +124,14 @@ class Vidangee extends StatelessWidget {
                     ),
                   ),
                 Divider(),
-                ListTile(
-                  contentPadding: EdgeInsets.symmetric(horizontal: 2),
-                  title: Text(
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
                     'Filtres ',
-                    style: Theme.of(context).textTheme.display2,
+                    style: TextStyle(
+                        color: Colors.orange,
+                        fontSize: 30,
+                        fontWeight: FontWeight.w700),
                   ),
                 ),
                 for (int i = 3; i < 7; i++)
