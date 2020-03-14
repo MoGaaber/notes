@@ -92,74 +92,70 @@ class Vidangee extends StatelessWidget {
                 })
           ],
         ),
-        body: Form(
-          key: addOrEditLogic.formKey,
-          child: ScrollConfiguration(
-            behavior: ScrollBehavior(),
-            child: ListView(
-              padding: EdgeInsets.only(
-                  bottom: globals.screen.convert(80, width),
-                  top: globals.screen.convert(10, width)),
-              children: <Widget>[
-                DateChooser(
-                  addOrEditLogic: addOrEditLogic,
-                ),
-                for (int i = 0; i < 3; i++)
-                  Center(
-                    child: MyTextField(
-                      textFieldType: globals.addOrEditPages[0]['textFields'][i]
-                          ['type'],
-                      textEditingController: addOrEditLogic.controllers[i],
-                      label: globals.addOrEditPages[0]['textFields'][i]
-                          ['label'],
-                    ),
-                  ),
-                Divider(),
-                Padding(
-                  padding: EdgeInsets.all(
-                    screen.convert(8, aspectRatio),
-                  ),
-                  child: Text(
-                    'Filtres ',
-                    style: TextStyle(
-                        color: Colors.orange,
-                        fontSize: screen.convert(30, aspectRatio),
-                        fontWeight: FontWeight.w700),
+        body: ScrollConfiguration(
+          behavior: ScrollBehavior(),
+          child: ListView(
+            padding: EdgeInsets.only(
+                bottom: globals.screen.convert(80, width),
+                top: globals.screen.convert(10, width)),
+            children: <Widget>[
+              DateChooser(
+                addOrEditLogic: addOrEditLogic,
+              ),
+              for (int i = 0; i < 3; i++)
+                Center(
+                  child: MyTextField(
+                    textFieldType: globals.addOrEditPages[0]['textFields'][i]
+                        ['type'],
+                    textEditingController: addOrEditLogic.controllers[i],
+                    label: globals.addOrEditPages[0]['textFields'][i]['label'],
                   ),
                 ),
-                for (int i = 3; i < 7; i++)
-                  ListTile(
-                    title: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Checkbox(
-                            value: addOrEditLogic.yesOrNo[i - 3],
-                            onChanged: (x) {
-                              addOrEditLogic.yesOrNo[i - 3] = x;
-                              addOrEditLogic.notifyListeners();
-                            }),
-                        Text(
-                          list[i - 3],
-                          style: TextStyle(
-                              fontSize: screen.convert(20, aspectRatio),
-                              fontWeight: FontWeight.w700),
-                        ),
-                      ],
-                    ),
-                    trailing: Padding(
-                      padding: EdgeInsets.only(
-                          bottom: globals.screen.convert(10, height)),
-                      child: SizedBox.fromSize(
-                        size: Size.fromWidth(globals.screen.convert(80, width)),
-                        child: MyTextField(
-                          textFieldType: TextFieldType.price,
-                          textEditingController: addOrEditLogic.controllers[i],
-                        ),
+              Divider(),
+              Padding(
+                padding: EdgeInsets.all(
+                  screen.convert(8, aspectRatio),
+                ),
+                child: Text(
+                  'Filtres ',
+                  style: TextStyle(
+                      color: Colors.orange,
+                      fontSize: screen.convert(30, aspectRatio),
+                      fontWeight: FontWeight.w700),
+                ),
+              ),
+              for (int i = 3; i < 7; i++)
+                ListTile(
+                  title: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Checkbox(
+                          value: addOrEditLogic.yesOrNo[i - 3],
+                          onChanged: (x) {
+                            addOrEditLogic.yesOrNo[i - 3] = x;
+                            addOrEditLogic.notifyListeners();
+                          }),
+                      Text(
+                        list[i - 3],
+                        style: TextStyle(
+                            fontSize: screen.convert(20, aspectRatio),
+                            fontWeight: FontWeight.w700),
+                      ),
+                    ],
+                  ),
+                  trailing: Padding(
+                    padding: EdgeInsets.only(
+                        bottom: globals.screen.convert(10, height)),
+                    child: SizedBox.fromSize(
+                      size: Size.fromWidth(globals.screen.convert(100, width)),
+                      child: MyTextField(
+                        textFieldType: TextFieldType.price,
+                        textEditingController: addOrEditLogic.controllers[i],
                       ),
                     ),
                   ),
-              ],
-            ),
+                ),
+            ],
           ),
         ),
       )),

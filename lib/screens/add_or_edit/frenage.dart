@@ -82,137 +82,134 @@ class Freinage extends StatelessWidget {
                   })
             ],
           ),
-          body: Form(
-            key: addOrEditLogic.formKey,
-            child: ScrollConfiguration(
-              behavior: ScrollBehavior(),
-              child: ListView(
-                padding: EdgeInsets.symmetric(
-                    horizontal: globals.screen.convert(10, width)),
-                children: <Widget>[
-                  DateChooser(
-                    addOrEditLogic: addOrEditLogic,
-                  ),
-                  Column(
-                    children: <Widget>[
-                      ListTile(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 2),
-                        title: Text(
-                          'Disque de frein /Brake Disc',
-                          style: Theme.of(context).textTheme.display2,
+          body: ScrollConfiguration(
+            behavior: ScrollBehavior(),
+            child: ListView(
+              padding: EdgeInsets.symmetric(
+                  horizontal: globals.screen.convert(10, width)),
+              children: <Widget>[
+                DateChooser(
+                  addOrEditLogic: addOrEditLogic,
+                ),
+                Column(
+                  children: <Widget>[
+                    ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 2),
+                      title: Text(
+                        'Disque de frein /Brake Disc',
+                        style: Theme.of(context).textTheme.display2,
+                      ),
+                    ),
+                    Center(
+                      child: MyTextField(
+                        textFieldType: TextFieldType.number,
+                        label: 'KM',
+                        textEditingController: addOrEditLogic.controllers[0],
+                      ),
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              'Front / AV',
+                              style: TextStyle(
+                                  fontSize: screen.convert(18, aspectRatio),
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            Checkbox(
+                                value: addOrEditLogic.yesOrNo[0],
+                                onChanged: (x) {
+                                  addOrEditLogic.yesOrNo[0] = x;
+                                  addOrEditLogic.notifyListeners();
+                                })
+                          ],
                         ),
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              'Rear / AR',
+                              style: TextStyle(
+                                  fontSize: screen.convert(18, aspectRatio),
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            Checkbox(
+                                value: addOrEditLogic.yesOrNo[1],
+                                onChanged: (x) {
+                                  addOrEditLogic.yesOrNo[1] = x;
+                                  addOrEditLogic.notifyListeners();
+                                })
+                          ],
+                        )
+                      ],
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    ),
+                    Divider(
+                      height: screen.convert(30, height),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: <Widget>[
+                    ListTile(
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: screen.convert(2, screen.width),
                       ),
-                      Center(
-                        child: MyTextField(
-                          textFieldType: TextFieldType.number,
-                          label: 'KM',
-                          textEditingController: addOrEditLogic.controllers[0],
+                      title: Text(
+                        'Plaquette de frien /Brake Pad',
+                        style: Theme.of(context).textTheme.display2,
+                      ),
+                    ),
+                    Center(
+                      child: MyTextField(
+                        textFieldType: TextFieldType.number,
+                        label: 'KM',
+                        textEditingController: addOrEditLogic.controllers[1],
+                      ),
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              'Front / AV',
+                              style: TextStyle(
+                                  fontSize: screen.convert(18, aspectRatio),
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            Checkbox(
+                                value: addOrEditLogic.yesOrNo[2],
+                                onChanged: (x) {
+                                  addOrEditLogic.yesOrNo[2] = x;
+                                  addOrEditLogic.notifyListeners();
+                                })
+                          ],
                         ),
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Text(
-                                'Front / AV',
-                                style: TextStyle(
-                                    fontSize: screen.convert(18, aspectRatio),
-                                    fontWeight: FontWeight.w700),
-                              ),
-                              Checkbox(
-                                  value: addOrEditLogic.yesOrNo[0],
-                                  onChanged: (x) {
-                                    addOrEditLogic.yesOrNo[0] = x;
-                                    addOrEditLogic.notifyListeners();
-                                  })
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Text(
-                                'Rear / AR',
-                                style: TextStyle(
-                                    fontSize: screen.convert(18, aspectRatio),
-                                    fontWeight: FontWeight.w700),
-                              ),
-                              Checkbox(
-                                  value: addOrEditLogic.yesOrNo[1],
-                                  onChanged: (x) {
-                                    addOrEditLogic.yesOrNo[1] = x;
-                                    addOrEditLogic.notifyListeners();
-                                  })
-                            ],
-                          )
-                        ],
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      ),
-                      Divider(
-                        height: screen.convert(30, height),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: <Widget>[
-                      ListTile(
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: screen.convert(2, screen.width),
-                        ),
-                        title: Text(
-                          'Plaquette de frien /Brake Pad',
-                          style: Theme.of(context).textTheme.display2,
-                        ),
-                      ),
-                      Center(
-                        child: MyTextField(
-                          textFieldType: TextFieldType.number,
-                          label: 'KM',
-                          textEditingController: addOrEditLogic.controllers[1],
-                        ),
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Text(
-                                'Front / AV',
-                                style: TextStyle(
-                                    fontSize: screen.convert(18, aspectRatio),
-                                    fontWeight: FontWeight.w700),
-                              ),
-                              Checkbox(
-                                  value: addOrEditLogic.yesOrNo[2],
-                                  onChanged: (x) {
-                                    addOrEditLogic.yesOrNo[2] = x;
-                                    addOrEditLogic.notifyListeners();
-                                  })
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Text(
-                                'Rear / AR',
-                                style: TextStyle(
-                                    fontSize: screen.convert(18, aspectRatio),
-                                    fontWeight: FontWeight.w700),
-                              ),
-                              Checkbox(
-                                  value: addOrEditLogic.yesOrNo[3],
-                                  onChanged: (x) {
-                                    addOrEditLogic.yesOrNo[3] = x;
-                                    addOrEditLogic.notifyListeners();
-                                  })
-                            ],
-                          )
-                        ],
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      ),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              top: globals.screen.convert(80, height)))
-                    ],
-                  ),
-                ],
-              ),
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              'Rear / AR',
+                              style: TextStyle(
+                                  fontSize: screen.convert(18, aspectRatio),
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            Checkbox(
+                                value: addOrEditLogic.yesOrNo[3],
+                                onChanged: (x) {
+                                  addOrEditLogic.yesOrNo[3] = x;
+                                  addOrEditLogic.notifyListeners();
+                                })
+                          ],
+                        )
+                      ],
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    ),
+                    Padding(
+                        padding: EdgeInsets.only(
+                            top: globals.screen.convert(80, height)))
+                  ],
+                ),
+              ],
             ),
           ),
         ),
