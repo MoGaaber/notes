@@ -25,7 +25,7 @@ class Vidangee extends StatelessWidget {
 
     addOrEditLogic.initialize(addOrEditArgs.mainViewIndex,
         addOrEditArgs.dateViewIndex, addOrEditArgs.isAdd);
-
+    print(addOrEditLogic.decodedelement);
     return Consumer<AddOrEditLogic>(
       builder: (BuildContext context, value, Widget child) => SafeArea(
           child: Scaffold(
@@ -143,6 +143,8 @@ class Vidangee extends StatelessWidget {
                         Checkbox(
                             value: addOrEditLogic.yesOrNo[i - 3],
                             onChanged: (x) {
+                              print(i);
+                              print(addOrEditLogic.yesOrNo);
                               addOrEditLogic.yesOrNo[i - 3] = x;
                               addOrEditLogic.notifyListeners();
                             }),
@@ -160,7 +162,8 @@ class Vidangee extends StatelessWidget {
                         size: Size.fromWidth(globals.screen.convert(80, width)),
                         child: MyTextField(
                           textFieldType: TextFieldType.price,
-                          textEditingController: addOrEditLogic.controllers[i],
+                          textEditingController:
+                              addOrEditLogic.controllers[i - 1],
                         ),
                       ),
                     ),
