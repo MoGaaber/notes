@@ -143,7 +143,6 @@ class AddOrEditLogic with ChangeNotifier {
   }) {
     var list = sharedPreferences.getStringList(key);
     String encodedElement = jsonEncode(object);
-    print(saveOperation);
     if (this.isAdd) {
       list.add(encodedElement);
     } else {
