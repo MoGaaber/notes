@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:notes/logic/globals.dart';
+import 'package:notes/models/add_edit_args.dart';
 import 'package:notes/models/details_view_args.dart';
 import 'package:notes/screens/details_view.dart';
 import 'package:provider/provider.dart';
@@ -31,30 +32,34 @@ class DateViewLogic extends ChangeNotifier {
   }
 
   void updateItem({
-    int index,
+    int dateViewIndex,
     BuildContext context,
   }) async {
-    saveOperation = update;
-    dateViewIndex = index;
-    notifyListeners();
     var result = await Navigator.pushNamed(
-        context, globals.addOrEditPages[mainViewIndex]['route']);
+        context, globals.addOrEditPages[mainViewIndex]['route'],arguments: AddOrEditArgs(update,mainViewIndex , dateViewIndex: dateViewIndex));
     if (result != null) {
-      list[index] = result;
+      list[dateViewIndex] = result;
       notifyListeners();
     }
+  }
+
+  void initialize(int mainViewIndex){
+    this.mainViewIndex = mainViewIndex;
+    mPage = globals.addOrEditPages[mainViewIndex];
+    mKey = mPage['refKey'];
+    mRoute = mPage['route'];
+    list = sharedPreferences.getStringList(mKey);
+
+
+
   }
 
   SaveOperation saveOperation;
 
   void addItem(BuildContext context) async {
-    send = false;
-    saveOperation = add;
-    notifyListeners();
 
     var result = await Navigator.pushNamed(
-        context, globals.addOrEditPages[mainViewIndex]['route']);
-
+        context, globals.addOrEditPages[mainViewIndex]['route'],arguments: AddOrEditArgs(add,this.mainViewIndex,dateViewIndex: this.dateViewIndex));
     if (result != null) {
       list.add(result);
     }
@@ -92,15 +97,11 @@ class DateViewLogic extends ChangeNotifier {
             ));
   }
 
-  void showItemDetails(int index, BuildContext context) async {
-    send = true ;
-    this.dateViewIndex = index;
-    notifyListeners();
-    send = false;
+  void showItemDetails(int dateViewIndex, BuildContext context) async {
     var result = await Navigator.pushNamed(context, DetailsView.route,
-        arguments: DetailsViewModelArgs(jsonDecode(list[index]), index));
+        arguments: DetailsViewArgs(jsonDecode(list[dateViewIndex]), dateViewIndex,this.mainViewIndex));
     if (result != null) {
-      list[index] = jsonEncode(result);
+      list[dateViewIndex] = jsonEncode(result);
       notifyListeners();
     }
   }

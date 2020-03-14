@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:notes/logic/date_view.dart';
 import 'package:notes/models/date_view_args.dart';
+import 'package:notes/models/main_view_args.dart';
 import 'package:provider/provider.dart';
 
 class DateView extends StatefulWidget {
@@ -93,12 +94,9 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
         Provider.of<DateViewLogic>(context, listen: true);
 
     DateViewArgs dateViewArgs = ModalRoute.of(context).settings.arguments;
-    var index=dateViewArgs.index;
-    dateViewLogic.mPage = dateViewLogic.globals.addOrEditPages[index];
-    dateViewLogic.mKey =dateViewLogic. mPage['refKey'];
-    dateViewLogic.mRoute = dateViewLogic.mPage['route'];
-    dateViewLogic.list = dateViewLogic.sharedPreferences.getStringList(dateViewLogic.mKey);
-
+    int mainViewIndex = dateViewArgs.index;
+    if (mainViewIndex != dateViewLogic.mainViewIndex)
+      dateViewLogic.initialize(mainViewIndex);
 
     return SafeArea(
       child: Scaffold(
@@ -185,7 +183,7 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                                     InkWell(
                                       onTap: () async {
                                         dateViewLogic.updateItem(
-                                            context: context, index: index);
+                                            context: context, dateViewIndex: index);
                                       },
                                       child: SizedBox(
                                         height: dateViewLogic.globals.screen

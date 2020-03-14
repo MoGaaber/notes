@@ -28,6 +28,7 @@ class MainView extends StatelessWidget {
     globals.width = globals.screen.width;
     globals.aspectRatio = globals.screen.aspectRatio;
     globals.textScaleFactor = globals.screen.textScale;
+
     return SafeArea(
       child: Scaffold(
         //

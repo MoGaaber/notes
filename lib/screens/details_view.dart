@@ -4,9 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:notes/logic/details_view.dart';
 import 'package:notes/logic/globals.dart';
+import 'package:notes/models/details_view_args.dart';
 import 'package:provider/provider.dart';
 
 class DetailsView extends StatelessWidget {
+
+
+
+
   static const route = '/details';
   bool isResult = false;
 //  ExpandableController expandableController = ExpandableController();
@@ -17,16 +22,10 @@ class DetailsView extends StatelessWidget {
     Globals globals = Provider.of<Globals>(context, listen: false);
 
     DetailsViewLogic detailsView = Provider.of<DetailsViewLogic>(context);
-    print(detailsView.decodedData);
-//    expandableController.addListener(() {
-//      print(expandableController.value);
-//      if (expandableController.value) {
-//        color = Colors.orange;
-//      } else {
-//        color = Colors.black;
-//      }
-//
-//    });
+    DetailsViewArgs detailsViewArgs = ModalRoute.of(context).settings.arguments;
+
+    detailsView.initialize(detailsViewArgs.data, detailsViewArgs.dateViewIndex,detailsViewArgs.mainViewIndex);
+
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(

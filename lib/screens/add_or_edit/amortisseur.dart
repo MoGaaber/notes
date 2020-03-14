@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:notes/constants/constants.dart';
 import 'package:notes/logic/add_or_edit.dart';
 import 'package:notes/logic/globals.dart';
+import 'package:notes/models/add_edit_args.dart';
 import 'package:notes/models/amortisseur.dart';
 import 'package:notes/utility/screen.dart';
 import 'package:notes/widgets/date_chooser.dart';
@@ -23,6 +24,9 @@ class Armortisseur extends StatelessWidget {
     double aspectRatio = globals.screen.aspectRatio;
     double textScale = globals.screen.textScale;
     Screen screen = globals.screen;
+    AddOrEditArgs addOrEditArgs = ModalRoute.of(context).settings.arguments;
+    addOrEditLogic.initialize(addOrEditArgs.mainViewIndex,
+        addOrEditArgs.dateViewIndex, addOrEditArgs.saveOperation);
 
     return SafeArea(
       child: Scaffold(

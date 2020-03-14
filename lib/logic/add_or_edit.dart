@@ -22,28 +22,22 @@ class AddOrEditLogic with ChangeNotifier {
   int mainViewIndex, dateViewIndex;
   SaveOperation saveOperation;
   Globals globals;
-  void update(
+  void initialize(
       int mainViewIndex, int dateViewIndex, SaveOperation saveOperation) {
-    if (this.dateViewIndex != dateViewIndex) {
-      print('called');
-      this.dateViewIndex = dateViewIndex;
-    }
-    if (this.mainViewIndex != mainViewIndex) {
-      this.mainViewIndex = mainViewIndex;
-      controllers = List.generate(
-          globals.addOrEditPages[mainViewIndex]['controllersLength'],
-          (_) => TextEditingController());
-      yesOrNo = List.filled(
-          globals.addOrEditPages[mainViewIndex]['yesNoLength'], false);
-    }
+    this.dateViewIndex = dateViewIndex;
+    this.mainViewIndex = mainViewIndex;
+    controllers = List.generate(
+        globals.addOrEditPages[mainViewIndex]['controllersLength'],
+        (_) => TextEditingController());
+    yesOrNo = List.filled(
+        globals.addOrEditPages[mainViewIndex]['yesNoLength'], false);
 
-    if (this.saveOperation != saveOperation) {
-      this.saveOperation = saveOperation;
-
-      if (saveOperation != add) {
-        fetches[mainViewIndex]();
-      }
-
+    this.saveOperation = saveOperation;
+    print(saveOperation);
+print(dateViewIndex.toString());
+    if (saveOperation != add) {
+      print('!!!!!!!!!');
+      fetches[mainViewIndex]();
     }
   }
 
@@ -113,6 +107,7 @@ class AddOrEditLogic with ChangeNotifier {
   void fetchAmortisseur() {
     decodedelement = jsonDecode(sharedPreferences
         .getStringList(SharedPrefKeys.amortisseurPref)[dateViewIndex]);
+    print(decodedelement);
     this.date = decodedelement['Date'];
     controllers[0].text =
         decodedelement['KM'] == null ? null : decodedelement['KM'].toString();
