@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:notes/constants/ads_ids.dart';
@@ -16,7 +14,6 @@ class Globals {
   Screen screen;
   double height, width, aspectRatio, textScaleFactor;
   List<Map<String, dynamic>> addOrEditPages;
-
 
   void initializeAddOrEditPages() {
     addOrEditPages = [
@@ -85,19 +82,16 @@ class Globals {
   BannerAd bannerAd;
   Globals(BuildContext context) {
     initializeAddOrEditPages();
-    FirebaseAdMob.instance.initialize(appId: AdsIds.appId).then((x){
-      bannerAd = BannerAd(adUnitId: AdsIds.bannerId, size: AdSize.banner);
+    FirebaseAdMob.instance.initialize(appId: AdsIds.appId).then((x) {
+      bannerAd = BannerAd(adUnitId: BannerAd.testAdUnitId, size: AdSize.banner);
       bannerAd..load();
       bannerAd..show();
       interstitialAd = createInterstitialAd()..load();
-
-
     });
-
   }
   InterstitialAd createInterstitialAd() {
     return InterstitialAd(
-      adUnitId: AdsIds.interId,
+      adUnitId: InterstitialAd.testAdUnitId,
       listener: (MobileAdEvent event) {
         if (event == MobileAdEvent.opened ||
             event == MobileAdEvent.failedToLoad) {
