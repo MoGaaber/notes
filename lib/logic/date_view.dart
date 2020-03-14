@@ -13,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'add_or_edit.dart';
 
 class DateViewLogic extends ChangeNotifier {
-  bool send = false ;
+  bool send = false;
   int mainViewIndex, dateViewIndex;
   List<TextEditingController> controllers;
   List<bool> yesOrNo;
@@ -36,30 +36,30 @@ class DateViewLogic extends ChangeNotifier {
     BuildContext context,
   }) async {
     var result = await Navigator.pushNamed(
-        context, globals.addOrEditPages[mainViewIndex]['route'],arguments: AddOrEditArgs(update,mainViewIndex , dateViewIndex: dateViewIndex));
+        context, globals.addOrEditPages[mainViewIndex]['route'],
+        arguments:
+            AddOrEditArgs(false, mainViewIndex, dateViewIndex: dateViewIndex));
     if (result != null) {
       list[dateViewIndex] = result;
       notifyListeners();
     }
   }
 
-  void initialize(int mainViewIndex){
+  void initialize(int mainViewIndex) {
     this.mainViewIndex = mainViewIndex;
     mPage = globals.addOrEditPages[mainViewIndex];
     mKey = mPage['refKey'];
     mRoute = mPage['route'];
     list = sharedPreferences.getStringList(mKey);
-
-
-
   }
 
   SaveOperation saveOperation;
 
   void addItem(BuildContext context) async {
-
     var result = await Navigator.pushNamed(
-        context, globals.addOrEditPages[mainViewIndex]['route'],arguments: AddOrEditArgs(add,this.mainViewIndex,dateViewIndex: this.dateViewIndex));
+        context, globals.addOrEditPages[mainViewIndex]['route'],
+        arguments: AddOrEditArgs(true, this.mainViewIndex,
+            dateViewIndex: this.dateViewIndex));
     if (result != null) {
       list.add(result);
     }
@@ -99,7 +99,8 @@ class DateViewLogic extends ChangeNotifier {
 
   void showItemDetails(int dateViewIndex, BuildContext context) async {
     var result = await Navigator.pushNamed(context, DetailsView.route,
-        arguments: DetailsViewArgs(jsonDecode(list[dateViewIndex]), dateViewIndex,this.mainViewIndex));
+        arguments: DetailsViewArgs(jsonDecode(list[dateViewIndex]),
+            dateViewIndex, this.mainViewIndex));
     if (result != null) {
       list[dateViewIndex] = jsonEncode(result);
       notifyListeners();

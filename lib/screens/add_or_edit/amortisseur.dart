@@ -25,7 +25,7 @@ class Armortisseur extends StatelessWidget {
     AddOrEditArgs addOrEditArgs = ModalRoute.of(context).settings.arguments;
 
     addOrEditLogic.initialize(addOrEditArgs.mainViewIndex,
-        addOrEditArgs.dateViewIndex, addOrEditArgs.saveOperation);
+        addOrEditArgs.dateViewIndex, addOrEditArgs.isAdd);
 
     return Consumer<AddOrEditLogic>(
       builder: (BuildContext context, AddOrEditLogic value, Widget child) =>

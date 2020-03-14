@@ -22,10 +22,11 @@ class AddOrEditLogic with ChangeNotifier {
   int mainViewIndex, dateViewIndex;
   SaveOperation saveOperation;
   Globals globals;
-  void initialize(
-      int mainViewIndex, int dateViewIndex, SaveOperation saveOperation) {
+  bool isAdd;
+  void initialize(int mainViewIndex, int dateViewIndex, bool isAdd) {
     this.dateViewIndex = dateViewIndex;
     this.mainViewIndex = mainViewIndex;
+    this.isAdd = isAdd;
     controllers = List.generate(
         globals.addOrEditPages[mainViewIndex]['controllersLength'],
         (_) => TextEditingController());
@@ -33,7 +34,7 @@ class AddOrEditLogic with ChangeNotifier {
         globals.addOrEditPages[mainViewIndex]['yesNoLength'], false);
 
     this.saveOperation = saveOperation;
-    if (saveOperation != add) {
+    if (!this.isAdd) {
       fetches[mainViewIndex]();
     }
   }
@@ -142,9 +143,15 @@ class AddOrEditLogic with ChangeNotifier {
   }) {
     var list = sharedPreferences.getStringList(key);
     String encodedElement = jsonEncode(object);
-    saveOperation(list, encodedElement);
+    print(saveOperation);
+    if (this.isAdd) {
+      list.add(encodedElement);
+    } else {
+      list[dateViewIndex] = encodedElement;
+    }
+
     sharedPreferences.setStringList(key, list).then((x) {
-      Navigator.pop(context, jsonEncode(object));
+      Navigator.pop(context, encodedElement);
     });
   }
 
@@ -173,6 +180,4 @@ class AddOrEditLogic with ChangeNotifier {
       }
     });
   }
-
-  void showFullScreenAd() {}
 }

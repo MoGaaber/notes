@@ -20,7 +20,7 @@ class Freinage extends StatelessWidget {
     AddOrEditArgs addOrEditArgs = ModalRoute.of(context).settings.arguments;
 
     addOrEditLogic.initialize(addOrEditArgs.mainViewIndex,
-        addOrEditArgs.dateViewIndex, addOrEditArgs.saveOperation);
+        addOrEditArgs.dateViewIndex, addOrEditArgs.isAdd);
 
     double height = globals.screen.height;
     double width = globals.screen.width;
