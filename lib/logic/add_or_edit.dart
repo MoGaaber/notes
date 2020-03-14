@@ -125,7 +125,7 @@ class AddOrEditLogic with ChangeNotifier {
     this.controllers[1].text =
         decodedelement['Plaquette de frien /Brake Pad']['KM'] == null
             ? null
-            : decodedelement['Disque de frein /Brake Disc']['KM'].toString();
+            : decodedelement['Plaquette de frien /Brake Pad']['KM'].toString();
     this.yesOrNo[0] =
         decodedelement['Disque de frein /Brake Disc']['Front / AV'];
     this.yesOrNo[1] =
