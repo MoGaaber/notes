@@ -61,12 +61,10 @@ class Courroie extends StatelessWidget {
                             date: addOrEditLogic.date,
                             km: addOrEditLogic.controllers[0].text == ''
                                 ? null
-                                : double.parse(
-                                    addOrEditLogic.controllers[0].text),
+                                : num.parse(addOrEditLogic.controllers[0].text),
                             nextKm: addOrEditLogic.controllers[1].text == ''
                                 ? null
-                                : double.parse(
-                                    addOrEditLogic.controllers[1].text),
+                                : num.parse(addOrEditLogic.controllers[1].text),
                             note: addOrEditLogic.controllers[2].text)
                         .toJson();
 

@@ -25,6 +25,7 @@ class Vidangee extends StatelessWidget {
 
     addOrEditLogic.initialize(addOrEditArgs.mainViewIndex,
         addOrEditArgs.dateViewIndex, addOrEditArgs.isAdd);
+    print(addOrEditLogic.controllers.length);
     print(addOrEditLogic.decodedelement);
     return Consumer<AddOrEditLogic>(
       builder: (BuildContext context, value, Widget child) => SafeArea(
@@ -55,47 +56,41 @@ class Vidangee extends StatelessWidget {
                   size: 24 / aspectRatio * aspectRatio,
                 ),
                 onPressed: () {
-                  if (addOrEditLogic.formKey.currentState.validate() &&
-                      addOrEditLogic.date != null) {
-                    VidangeModel vidangeModel = VidangeModel(
-                        note: addOrEditLogic.controllers[2].text,
-                        date: addOrEditLogic.date,
-                        km: addOrEditLogic.controllers[0].text == ''
-                            ? null
-                            : num.parse(addOrEditLogic.controllers[0].text),
-                        nextOil: addOrEditLogic.controllers[1].text == ''
-                            ? null
-                            : num.parse(addOrEditLogic.controllers[1].text),
-                        oil: VidangeFilterModel(
-                            excited: addOrEditLogic.yesOrNo[0],
-                            price: addOrEditLogic.controllers[3].text.isEmpty
-                                ? null
-                                : num.parse(
-                                    addOrEditLogic.controllers[3].text)),
-                        air: VidangeFilterModel(
-                          excited: addOrEditLogic.yesOrNo[1],
-                          price: addOrEditLogic.controllers[4].text.isEmpty
+                  VidangeModel vidangeModel = VidangeModel(
+                      date: addOrEditLogic.date,
+                      km: addOrEditLogic.controllers[0].text == ''
+                          ? null
+                          : num.parse(addOrEditLogic.controllers[0].text),
+                      nextOil: addOrEditLogic.controllers[1].text == ''
+                          ? null
+                          : num.parse(addOrEditLogic.controllers[1].text),
+                      note: addOrEditLogic.controllers[2].text,
+                      oil: VidangeFilterModel(
+                          excited: addOrEditLogic.yesOrNo[0],
+                          price: addOrEditLogic.controllers[3].text.isEmpty
                               ? null
-                              : num.parse(addOrEditLogic.controllers[4].text),
-                        ),
-                        fuel: VidangeFilterModel(
-                            excited: addOrEditLogic.yesOrNo[2],
-                            price: addOrEditLogic.controllers[5].text.isEmpty
-                                ? null
-                                : num.parse(
-                                    addOrEditLogic.controllers[5].text)),
-                        clim: VidangeFilterModel(
-                            excited: addOrEditLogic.yesOrNo[3],
-                            price: addOrEditLogic.controllers[6].text.isEmpty
-                                ? null
-                                : num.parse(
-                                    addOrEditLogic.controllers[6].text)));
-                    print(vidangeModel.toJson());
-                    addOrEditLogic.saveChanges(
-                        context: context,
-                        object: vidangeModel.toJson(),
-                        key: SharedPrefKeys.vidangePref);
-                  }
+                              : num.parse(addOrEditLogic.controllers[3].text)),
+                      air: VidangeFilterModel(
+                        excited: addOrEditLogic.yesOrNo[1],
+                        price: addOrEditLogic.controllers[4].text.isEmpty
+                            ? null
+                            : num.parse(addOrEditLogic.controllers[4].text),
+                      ),
+                      fuel: VidangeFilterModel(
+                          excited: addOrEditLogic.yesOrNo[2],
+                          price: addOrEditLogic.controllers[5].text.isEmpty
+                              ? null
+                              : num.parse(addOrEditLogic.controllers[5].text)),
+                      clim: VidangeFilterModel(
+                          excited: addOrEditLogic.yesOrNo[3],
+                          price: addOrEditLogic.controllers[6].text.isEmpty
+                              ? null
+                              : num.parse(addOrEditLogic.controllers[6].text)));
+                  print(vidangeModel.toJson());
+                  addOrEditLogic.saveChanges(
+                      context: context,
+                      object: vidangeModel.toJson(),
+                      key: SharedPrefKeys.vidangePref);
                 })
           ],
         ),
@@ -111,9 +106,7 @@ class Vidangee extends StatelessWidget {
                 DateChooser(
                   addOrEditLogic: addOrEditLogic,
                 ),
-                for (int i = 0;
-                    i < globals.addOrEditPages[0]['textFields'].length;
-                    i++)
+                for (int i = 0; i < 3; i++)
                   Center(
                     child: MyTextField(
                       textFieldType: globals.addOrEditPages[0]['textFields'][i]
@@ -136,15 +129,12 @@ class Vidangee extends StatelessWidget {
                 ),
                 for (int i = 3; i < 7; i++)
                   ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 0),
                     title: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Checkbox(
                             value: addOrEditLogic.yesOrNo[i - 3],
                             onChanged: (x) {
-                              print(i);
-                              print(addOrEditLogic.yesOrNo);
                               addOrEditLogic.yesOrNo[i - 3] = x;
                               addOrEditLogic.notifyListeners();
                             }),
@@ -161,9 +151,11 @@ class Vidangee extends StatelessWidget {
                       child: SizedBox.fromSize(
                         size: Size.fromWidth(globals.screen.convert(80, width)),
                         child: MyTextField(
+                          onTab: () {
+                            print(i);
+                          },
                           textFieldType: TextFieldType.price,
-                          textEditingController:
-                              addOrEditLogic.controllers[i - 1],
+                          textEditingController: addOrEditLogic.controllers[i],
                         ),
                       ),
                     ),

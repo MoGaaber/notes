@@ -62,16 +62,21 @@ class AddOrEditLogic with ChangeNotifier {
     controllers[1].text = decodedelement['Next Oil Change'] == null
         ? null
         : decodedelement['Next Oil Change'].toString();
-    controllers[2].text = decodedelement['Oil / Huile']['Price'] == null
+
+    controllers[2].text = decodedelement['Note'] == null
+        ? null
+        : decodedelement['Note'].toString();
+
+    controllers[3].text = decodedelement['Oil / Huile']['Price'] == null
         ? null
         : decodedelement['Oil / Huile']['Price'].toString();
-    controllers[3].text = decodedelement['Air']['Price'] == null
+    controllers[4].text = decodedelement['Air']['Price'] == null
         ? null
         : decodedelement['Air']['Price'].toString();
-    controllers[4].text = decodedelement['Fuel / Carburant']['Price'] == null
+    controllers[5].text = decodedelement['Fuel / Carburant']['Price'] == null
         ? null
         : decodedelement['Fuel / Carburant']['Price'].toString();
-    controllers[5].text = decodedelement['Clim']['Price'] == null
+    controllers[6].text = decodedelement['Clim']['Price'] == null
         ? null
         : decodedelement['Clim']['Price'].toString();
     yesOrNo[0] = decodedelement['Oil / Huile']['Excited'];
