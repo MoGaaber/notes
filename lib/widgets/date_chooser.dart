@@ -24,6 +24,7 @@ class DateChooser extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
@@ -33,7 +34,8 @@ class DateChooser extends StatelessWidget {
                     fontWeight: FontWeight.w700),
               ),
               SizedBox(
-                  width: screen.convert(80, width),
+                  width: screen.convert(50, width),
+                  height: screen.convert(50, width),
                   child: Material(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     type: MaterialType.canvas,
@@ -51,11 +53,16 @@ class DateChooser extends StatelessWidget {
                   )),
             ],
           ),
-          Text(
-            addOrEditLogic.date,
-            style: TextStyle(
-                fontSize: globals.screen.convert(22, globals.screen.textScale),
-                fontWeight: FontWeight.w700),
+          Align(
+            alignment: Alignment(-1, 0),
+            child: Text(
+              addOrEditLogic.date,
+              style: TextStyle(
+                  fontSize:
+                      globals.screen.convert(22, globals.screen.textScale),
+                  fontWeight: FontWeight.w700,
+                  color: Colors.orange),
+            ),
           ),
           Divider(
             height: globals.screen.convert(30, height),

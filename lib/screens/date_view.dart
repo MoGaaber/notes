@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:notes/logic/date_view.dart';
+import 'package:notes/logic/globals.dart';
 import 'package:notes/models/date_view_args.dart';
 import 'package:notes/models/main_view_args.dart';
+import 'package:notes/utility/screen.dart';
 import 'package:provider/provider.dart';
 
 class DateView extends StatefulWidget {
@@ -92,6 +94,12 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     DateViewLogic dateViewLogic =
         Provider.of<DateViewLogic>(context, listen: true);
+    Globals globals = Provider.of<Globals>(context, listen: false);
+    double height = globals.screen.height;
+    double width = globals.screen.width;
+    double aspectRatio = globals.screen.aspectRatio;
+    double textScale = globals.screen.textScale;
+    Screen screen = globals.screen;
 
     DateViewArgs dateViewArgs = ModalRoute.of(context).settings.arguments;
     int mainViewIndex = dateViewArgs.index;
@@ -159,6 +167,7 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                       builder: (BuildContext ctx) => ListView.separated(
                         reverse: false,
                         padding: EdgeInsets.only(
+                            bottom: screen.convert(60, height),
                             top: 1 /
                                 dateViewLogic.globals.screen.height *
                                 dateViewLogic.globals.screen.height),
@@ -170,113 +179,95 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                             dateViewLogic.deleteItem(
                                 index: index, context: context);
                           },
-                          child: Column(
-                            children: <Widget>[
-                              ListTile(
-                                contentPadding: EdgeInsets.all(
-                                  dateViewLogic.globals.screen.convert(
-                                      10, dateViewLogic.globals.aspectRatio),
-                                ),
-                                trailing: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    InkWell(
-                                      onTap: () async {
-                                        dateViewLogic.updateItem(
-                                            context: context, dateViewIndex: index);
-                                      },
-                                      child: SizedBox(
-                                        height: dateViewLogic.globals.screen
-                                            .convert(50,
-                                                dateViewLogic.globals.height),
-                                        width: dateViewLogic.globals.screen
-                                            .convert(50,
-                                                dateViewLogic.globals.width),
-                                        child: Material(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20)),
-                                          color: Colors.green,
-                                          type: MaterialType.canvas,
-                                          child: Icon(
-                                            Icons.mode_edit,
-                                            size: 30 /
-                                                dateViewLogic
-                                                    .globals.aspectRatio *
-                                                dateViewLogic
-                                                    .globals.aspectRatio,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: dateViewLogic
-                                                .globals.screen
-                                                .convert(
-                                                    5,
-                                                    dateViewLogic.globals.screen
-                                                        .width))),
-                                    InkWell(
-                                      onTap: () async {
-                                        dateViewLogic.showItemDetails(
-                                            index, context);
-                                      },
-                                      child: SizedBox(
-                                        height: dateViewLogic.globals.screen
-                                            .convert(50,
-                                                dateViewLogic.globals.height),
-                                        width: dateViewLogic.globals.screen
-                                            .convert(50,
-                                                dateViewLogic.globals.width),
-                                        child: Material(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20)),
-                                          color: Colors.orange,
-                                          type: MaterialType.canvas,
-                                          child: Icon(
-                                            Icons.arrow_forward_ios,
-                                            size: 30 /
-                                                dateViewLogic
-                                                    .globals.aspectRatio *
-                                                dateViewLogic
-                                                    .globals.aspectRatio,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                leading: InkWell(
-                                  onTap: () {
-                                    dateViewLogic.showDeleteAlertDialog(
-                                        index, context);
+                          child: ListTile(
+                            contentPadding: EdgeInsets.all(
+                              dateViewLogic.globals.screen.convert(
+                                  10, dateViewLogic.globals.aspectRatio),
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                InkWell(
+                                  onTap: () async {
+                                    dateViewLogic.updateItem(
+                                        context: context, dateViewIndex: index);
                                   },
-                                  child: Material(
-                                    color: Colors.red,
-                                    type: MaterialType.circle,
-                                    child: Icon(
-                                      Icons.remove,
-                                      size: 40 /
-                                          dateViewLogic.globals.aspectRatio *
-                                          dateViewLogic.globals.aspectRatio,
-                                      color: Colors.white,
+                                  child: SizedBox(
+                                    height: dateViewLogic.globals.screen
+                                        .convert(
+                                            50, dateViewLogic.globals.height),
+                                    width: dateViewLogic.globals.screen.convert(
+                                        50, dateViewLogic.globals.width),
+                                    child: Material(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(20)),
+                                      color: Colors.green,
+                                      type: MaterialType.canvas,
+                                      child: Icon(
+                                        Icons.mode_edit,
+                                        size: 30 /
+                                            dateViewLogic.globals.aspectRatio *
+                                            dateViewLogic.globals.aspectRatio,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
                                 ),
-                                title: Text(
-                                  jsonDecode(dateViewLogic.list[index])['Date'],
+                                Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: dateViewLogic.globals.screen
+                                            .convert(
+                                                5,
+                                                dateViewLogic
+                                                    .globals.screen.width))),
+                                InkWell(
+                                  onTap: () async {
+                                    dateViewLogic.showItemDetails(
+                                        index, context);
+                                  },
+                                  child: SizedBox(
+                                    height: dateViewLogic.globals.screen
+                                        .convert(
+                                            50, dateViewLogic.globals.height),
+                                    width: dateViewLogic.globals.screen.convert(
+                                        50, dateViewLogic.globals.width),
+                                    child: Material(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(20)),
+                                      color: Colors.orange,
+                                      type: MaterialType.canvas,
+                                      child: Icon(
+                                        Icons.arrow_forward_ios,
+                                        size: 30 /
+                                            dateViewLogic.globals.aspectRatio *
+                                            dateViewLogic.globals.aspectRatio,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            leading: InkWell(
+                              onTap: () {
+                                dateViewLogic.showDeleteAlertDialog(
+                                    index, context);
+                              },
+                              child: Material(
+                                color: Colors.red,
+                                type: MaterialType.circle,
+                                child: Icon(
+                                  Icons.remove,
+                                  size: 40 /
+                                      dateViewLogic.globals.aspectRatio *
+                                      dateViewLogic.globals.aspectRatio,
+                                  color: Colors.white,
                                 ),
                               ),
-                              index == 0
-                                  ? Divider(
-                                      height: 20 /
-                                          dateViewLogic.globals.height *
-                                          dateViewLogic.globals.height,
-                                    )
-                                  : SizedBox(),
-                            ],
+                            ),
+                            title: Text(
+                              jsonDecode(dateViewLogic.list[index])['Date'],
+                            ),
                           ),
                         ),
                         separatorBuilder: (BuildContext context, int index) =>

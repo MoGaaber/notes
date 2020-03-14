@@ -8,10 +8,6 @@ import 'package:notes/models/details_view_args.dart';
 import 'package:provider/provider.dart';
 
 class DetailsView extends StatelessWidget {
-
-
-
-
   static const route = '/details';
   bool isResult = false;
 //  ExpandableController expandableController = ExpandableController();
@@ -24,7 +20,8 @@ class DetailsView extends StatelessWidget {
     DetailsViewLogic detailsView = Provider.of<DetailsViewLogic>(context);
     DetailsViewArgs detailsViewArgs = ModalRoute.of(context).settings.arguments;
 
-    detailsView.initialize(detailsViewArgs.data, detailsViewArgs.dateViewIndex,detailsViewArgs.mainViewIndex);
+    detailsView.initialize(detailsViewArgs.data, detailsViewArgs.dateViewIndex,
+        detailsViewArgs.mainViewIndex);
 
     return SafeArea(
       child: Scaffold(
@@ -151,7 +148,7 @@ class DetailsView extends StatelessWidget {
                                       .decodedData.keys
                                       .toList()[x]] ==
                                   null
-                          ? Container()
+                          ? null
                           : ListTile(
                               trailing: detailsView.decodedData[detailsView
                                       .decodedData.keys

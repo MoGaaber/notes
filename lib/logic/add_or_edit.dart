@@ -33,10 +33,7 @@ class AddOrEditLogic with ChangeNotifier {
         globals.addOrEditPages[mainViewIndex]['yesNoLength'], false);
 
     this.saveOperation = saveOperation;
-    print(saveOperation);
-print(dateViewIndex.toString());
     if (saveOperation != add) {
-      print('!!!!!!!!!');
       fetches[mainViewIndex]();
     }
   }
