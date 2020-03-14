@@ -52,15 +52,6 @@ class MainView extends StatelessWidget {
                           width: globals.screen.convert(130, globals.width),
                           color: Colors.orange,
                         ),
-                        Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-                        Text(
-                          'Car Note',
-                          style: TextStyle(
-                              color: Colors.white.withOpacity(0.5),
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700),
-                        )
-                      ],
                     )),
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -68,7 +59,7 @@ class MainView extends StatelessWidget {
                   ),
                 ),
                 ListTile(
-                  contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                  contentPadding: EdgeInsets.symmetric(horizontal: globals.screen.convert(10,globals.width)),
                   onTap: () {
                     Share.share(
                         'شارك تطبيقانا مع اصدقائك لتعم الفائده  https://play.google.com/store/apps/details?id=com.HNY.qurancareem',
