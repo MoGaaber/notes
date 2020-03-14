@@ -18,12 +18,34 @@ class DetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     Globals globals = Provider.of<Globals>(context, listen: false);
 
-    DetailsViewLogic detailsView = Provider.of<DetailsViewLogic>(context);
+    DetailsViewLogic detailsView =
+        Provider.of<DetailsViewLogic>(context, listen: false);
     DetailsViewArgs detailsViewArgs = ModalRoute.of(context).settings.arguments;
 
     detailsView.initialize(detailsViewArgs.data, detailsViewArgs.dateViewIndex,
         detailsViewArgs.mainViewIndex);
 
+    List<Map> controllers = [];
+    List<Color> colors = [];
+    for (int i = 0; i < detailsView.decodedData.keys.toList().length; i++) {
+      if (detailsView.decodedData[detailsView.decodedData.keys.toList()[i]]
+          is Map) {
+        controllers
+            .add({'color': Colors.black, 'controller': ExpandableController()});
+        controllers[i]['controller'].addListener(() {
+          ExpandableController expandableController =
+              controllers[i]['controller'];
+          if (expandableController.value == true) {
+            controllers[i]['color'] = Colors.orange;
+          } else {
+            controllers[i]['color'] = Colors.black;
+          }
+          detailsView.notifyListeners();
+        });
+      } else {
+        controllers.add(null);
+      }
+    }
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
@@ -34,23 +56,7 @@ class DetailsView extends StatelessWidget {
                     context, isResult ? detailsView.decodedData : null);
               },
             ),
-            actions: <Widget>[
-/*
-              IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () async {
-                    var result = await Navigator.pushNamed(
-                        context,
-                        globals.addOrEditPages[detailsView.mainViewIndex]
-                            ['route'],arguments: AddOrEditArgs(update, mainViewIndex));
-                    if (result != null) {
-                      this.isResult = true;
-                      print('result');
-                      detailsView.decodedData = jsonDecode(result);
-                    }
-                  }),
-*/
-            ],
+            actions: <Widget>[],
             iconTheme: IconThemeData(color: Colors.white),
             centerTitle: true,
             title: Row(
@@ -79,70 +85,80 @@ class DetailsView extends StatelessWidget {
                   bottom: globals.screen.convert(60, globals.height),
                 ),
                 itemBuilder: (BuildContext context, int x) {
-                  print(x);
                   return detailsView.decodedData[
                           detailsView.decodedData.keys.toList()[x]] is Map
-                      ? ExpandablePanel(
-                          theme: ExpandableThemeData(
-                            iconColor: Colors.orange,
-                          ),
-                          expanded: Column(children: <Widget>[
-                            for (var key in detailsView
-                                .decodedData[
-                                    detailsView.decodedData.keys.toList()[x]]
-                                .keys)
-                              if (detailsView.decodedData[detailsView
-                                      .decodedData.keys
-                                      .toList()[x]][key] !=
-                                  null)
-                                ListTile(
-                                  contentPadding:
-                                      EdgeInsets.symmetric(horizontal: 30),
-                                  trailing: detailsView.decodedData[detailsView
-                                          .decodedData.keys
-                                          .toList()[x]][key] is bool
-                                      ? Material(
-                                          color: detailsView.decodedData[
-                                                  detailsView.decodedData.keys
-                                                      .toList()[x]][key]
-                                              ? Colors.green
-                                              : Colors.red,
-                                          type: MaterialType.circle,
-                                          child: Icon(
+                      ? Consumer<DetailsViewLogic>(
+                          builder:
+                              (BuildContext context, value, Widget child) =>
+                                  ExpandablePanel(
+                            controller: controllers[x]['controller'],
+                            theme: ExpandableThemeData(
+                              iconColor: Colors.orange,
+                            ),
+                            expanded: Column(children: <Widget>[
+                              for (var key in detailsView
+                                  .decodedData[
+                                      detailsView.decodedData.keys.toList()[x]]
+                                  .keys)
+                                if (detailsView.decodedData[detailsView
+                                        .decodedData.keys
+                                        .toList()[x]][key] !=
+                                    null)
+                                  ListTile(
+                                    contentPadding:
+                                        EdgeInsets.symmetric(horizontal: 30),
+                                    trailing: detailsView.decodedData[
+                                            detailsView.decodedData.keys
+                                                .toList()[x]][key] is bool
+                                        ? Material(
+                                            color: detailsView.decodedData[
+                                                    detailsView.decodedData.keys
+                                                        .toList()[x]][key]
+                                                ? Colors.green
+                                                : Colors.red,
+                                            type: MaterialType.circle,
+                                            child: Icon(
+                                              detailsView.decodedData[
+                                                      detailsView
+                                                          .decodedData.keys
+                                                          .toList()[x]][key]
+                                                  ? Icons.check
+                                                  : Icons.close,
+                                              color: Colors.white,
+                                              size: globals.screen.convert(
+                                                  24, globals.aspectRatio),
+                                            ),
+                                          )
+                                        : Text(
                                             detailsView.decodedData[detailsView
                                                     .decodedData.keys
                                                     .toList()[x]][key]
-                                                ? Icons.check
-                                                : Icons.close,
-                                            color: Colors.white,
-                                            size: globals.screen.convert(
-                                                24, globals.aspectRatio),
+                                                .toString(),
+                                            style: TextStyle(
+                                                fontSize: globals.screen
+                                                    .convert(
+                                                        18,
+                                                        globals
+                                                            .textScaleFactor),
+                                                fontWeight: FontWeight.w700,
+                                                color: Colors.green),
                                           ),
-                                        )
-                                      : Text(
-                                          detailsView.decodedData[detailsView
-                                                  .decodedData.keys
-                                                  .toList()[x]][key]
-                                              .toString(),
-                                          style: TextStyle(
-                                              fontSize: globals.screen.convert(
-                                                  18, globals.textScaleFactor),
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.green),
-                                        ),
-                                  title: Text(
-                                    key.toString(),
-                                    style: TextStyle(
+                                    title: Text(
+                                      key.toString(),
+                                      style: TextStyle(
 //                                        color: Colors.orange,
-                                        fontSize: globals.screen.convert(
-                                            21, globals.textScaleFactor),
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                )
-                          ]),
-                          header: ListTile(
-                            title: Text(
-                              detailsView.decodedData.keys.toList()[x],
+                                          fontSize: globals.screen.convert(
+                                              21, globals.textScaleFactor),
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                  )
+                            ]),
+                            header: ListTile(
+                              title: Text(
+                                detailsView.decodedData.keys.toList()[x],
+                                style:
+                                    TextStyle(color: controllers[x]['color']),
+                              ),
                             ),
                           ),
                         )
