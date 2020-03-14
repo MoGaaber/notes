@@ -75,7 +75,9 @@ class DetailsView extends StatelessWidget {
             child: ListView.separated(
                 itemCount: detailsView.decodedData.keys.toList().length,
                 padding: EdgeInsets.only(
-                    top: globals.screen.convert(5, globals.height)),
+                  top: globals.screen.convert(5, globals.height),
+                  bottom: globals.screen.convert(40, globals.height),
+                ),
                 itemBuilder: (BuildContext context, int x) {
                   print(x);
                   return detailsView.decodedData[
