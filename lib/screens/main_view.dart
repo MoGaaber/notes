@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:notes/logic/globals.dart';
 import 'package:notes/logic/main_view.dart';
@@ -41,17 +42,53 @@ class MainView extends StatelessWidget {
                   SizedBox.fromSize(
                     size: Size.fromHeight(
                         globals.screen.convert(250, globals.height)),
-                    child: DrawerHeader(
-                      child: Center(
-                          child: Text('Car Note',style: TextStyle(fontSize: 30,),)),
-                      decoration: BoxDecoration(
-                        color: Colors.orange,
-                      ),
+                    child: Stack(
+                      children: <Widget>[
+                        Container(
+                          color: Colors.orange,
+                        ),
+                        Center(
+                            child: Image.asset(
+                          'assets/images/logo.png',
+                          fit: BoxFit.contain,
+                          width: 200,
+                          height: 200,
+                        )),
+                        Container(
+                          color: Colors.black.withOpacity(0.9),
+                        ),
+                        Center(
+                            child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Text(
+                              'C A R   N O T E',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30,
+                                  color: Colors.white),
+                            ),
+/*
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: Text(
+                                'Note about your car :)',
+                                style: GoogleFonts.adamina(
+                                    fontWeight: FontWeight.w200,
+                                    fontSize: 12,
+                                    color: Colors.white),
+                              ),
+                            ),
+*/
+                          ],
+                        )),
+                      ],
                     ),
                   ),
                   ListTile(
                     contentPadding: EdgeInsets.symmetric(
-                        horizontal: globals.screen.convert(20, globals.width)),
+                      horizontal: globals.screen.convert(20, globals.width),
+                    ),
                     onTap: () {
                       Share.share(
                           'شارك تطبيقانا مع اصدقائك لتعم الفائده  https://play.google.com/store/apps/details?id=com.HNY.qurancareem',

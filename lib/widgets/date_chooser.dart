@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:notes/logic/add_or_edit.dart';
 import 'package:notes/logic/globals.dart';
 import 'package:provider/provider.dart';
@@ -17,12 +18,55 @@ class DateChooser extends StatelessWidget {
 
     var screen = globals.screen;
     return Padding(
-      padding: EdgeInsets.only(
-          top: screen.convert(10, height),
-          right: screen.convert(20, width),
-          left: screen.convert(20, width)),
+      padding: EdgeInsets.only(top: screen.convert(30, height)),
       child: Column(
         children: <Widget>[
+          ListTile(
+            trailing: SizedBox(
+                width: screen.convert(120, width),
+                height: screen.convert(80, height),
+                child: FlatButton(
+                  color: Colors.green,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(5))),
+                  onPressed: () {
+                    addOrEditLogic.showDatePick(context);
+                  },
+                  child: Text(
+                    'Change',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                        fontSize: screen.convert(18, screen.aspectRatio)),
+                  ),
+                )),
+            title: Row(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(
+                      bottom: screen.convert(3, height),
+                      right: screen.convert(5, width)),
+                  child: Icon(
+                    Icons.date_range,
+                    size: screen.convert(25, screen.aspectRatio),
+                    color: Colors.orange,
+                  ),
+                ),
+                Text(
+                  addOrEditLogic.date,
+                  style: TextStyle(
+                      fontSize:
+                          globals.screen.convert(22, globals.screen.textScale),
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black54),
+                ),
+              ],
+            ),
+          ),
+          Divider(
+            height: 30,
+          )
+/*
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -53,8 +97,7 @@ class DateChooser extends StatelessWidget {
                   )),
             ],
           ),
-          Align(
-            alignment: Alignment(-1, 0),
+          Center(
             child: Text(
               addOrEditLogic.date,
               style: TextStyle(
@@ -67,6 +110,7 @@ class DateChooser extends StatelessWidget {
           Divider(
             height: globals.screen.convert(30, height),
           ),
+*/
         ],
       ),
     );

@@ -83,12 +83,16 @@ class Globals {
   Globals(BuildContext context) {
     initializeAddOrEditPages();
     FirebaseAdMob.instance.initialize(appId: AdsIds.appId).then((x) {
-      bannerAd = BannerAd(adUnitId: BannerAd.testAdUnitId, size: AdSize.banner);
+      bannerAd = createBannerAd();
       bannerAd..load();
       bannerAd..show();
       interstitialAd = createInterstitialAd()..load();
     });
   }
+  BannerAd createBannerAd() {
+    return BannerAd(adUnitId: BannerAd.testAdUnitId, size: AdSize.banner);
+  }
+
   InterstitialAd createInterstitialAd() {
     return InterstitialAd(
       adUnitId: InterstitialAd.testAdUnitId,

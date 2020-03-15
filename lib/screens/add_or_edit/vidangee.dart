@@ -113,15 +113,31 @@ class Vidangee extends StatelessWidget {
                 ),
               Divider(),
               Padding(
-                padding: EdgeInsets.all(
-                  screen.convert(8, aspectRatio),
+                padding: EdgeInsets.symmetric(
+                  vertical: screen.convert(8, height),
                 ),
-                child: Text(
-                  'Filtres ',
-                  style: TextStyle(
-                      color: Colors.orange,
-                      fontSize: screen.convert(30, aspectRatio),
-                      fontWeight: FontWeight.w700),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Text(
+                      'Filtres',
+                      style: TextStyle(
+                          color: Colors.orange,
+                          fontSize: screen.convert(30, aspectRatio),
+                          fontWeight: FontWeight.w700),
+                    ),
+                    Padding(
+                        padding: EdgeInsets.symmetric(
+                      horizontal: screen.convert(8, width),
+                    )),
+                    Text(
+                      'Prices',
+                      style: TextStyle(
+                          color: Colors.orange,
+                          fontSize: screen.convert(30, aspectRatio),
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ],
                 ),
               ),
               for (int i = 3; i < 7; i++)
@@ -143,15 +159,11 @@ class Vidangee extends StatelessWidget {
                       ),
                     ],
                   ),
-                  trailing: Padding(
-                    padding: EdgeInsets.only(
-                        bottom: globals.screen.convert(10, height)),
-                    child: SizedBox.fromSize(
-                      size: Size.fromWidth(globals.screen.convert(100, width)),
-                      child: MyTextField(
-                        textFieldType: TextFieldType.price,
-                        textEditingController: addOrEditLogic.controllers[i],
-                      ),
+                  trailing: SizedBox.fromSize(
+                    size: Size.fromWidth(globals.screen.convert(110, width)),
+                    child: MyTextField(
+                      textFieldType: TextFieldType.price,
+                      textEditingController: addOrEditLogic.controllers[i],
                     ),
                   ),
                 ),

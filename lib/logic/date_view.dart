@@ -123,9 +123,12 @@ class DateViewLogic extends ChangeNotifier {
   }
 
   void showItemDetails(int dateViewIndex, BuildContext context) async {
+    Map<String, dynamic> decodedData = jsonDecode(list[dateViewIndex]);
+
     var result = await Navigator.pushNamed(context, DetailsView.route,
-        arguments: DetailsViewArgs(jsonDecode(list[dateViewIndex]),
-            dateViewIndex, this.mainViewIndex));
+        arguments:
+            DetailsViewArgs(decodedData, dateViewIndex, this.mainViewIndex));
+
     if (result != null) {
       list[dateViewIndex] = jsonEncode(result);
       notifyListeners();

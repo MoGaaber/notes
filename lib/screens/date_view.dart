@@ -45,7 +45,27 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
             ),
           ),
         ),
-        Text('Add your first one now by clicking on plus button :)'),
+        Text('Add your first one now by clicking on below button :)'),
+        Padding(
+          padding: const EdgeInsets.only(top: 30),
+          child: ButtonTheme(
+            height: 50,
+            minWidth: 200,
+            child: FlatButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(5))),
+              color: Colors.orange,
+              onPressed: () {
+                dateViewLogic.addItem(context);
+              },
+              child: Text(
+                'Add ${dateViewLogic.globals.addOrEditPages[dateViewLogic.mainViewIndex]['name']}',
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+              ),
+            ),
+          ),
+        ),
         Spacer(
           flex: 6,
         ),
@@ -61,22 +81,11 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
 
   AnimationController slideAnimationController;
   Animation<Offset> slideAnimation;
-
+  DateViewLogic dateViewLogic;
   @override
   void initState() {
     super.initState();
-/*
-    scaleAnimationController =
-        AnimationController(vsync: this, duration: Duration(seconds: 1));
-    scaleAnimation = Tween<double>(begin: 1, end: 1.1).animate(CurvedAnimation(
-        parent: scaleAnimationController, curve: Curves.elasticInOut));
-
-    rotateAnimationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 400));
-
-    rotateAnimation =
-        Tween<double>(begin: 0, end: 0.5).animate(rotateAnimationController);
-*/
+    dateViewLogic = Provider.of<DateViewLogic>(context, listen: false);
     slideAnimationController =
         AnimationController(vsync: this, duration: Duration(seconds: 1));
     slideAnimation = Tween<Offset>(begin: Offset(0, 0), end: Offset(0.0, -0.1))
@@ -93,8 +102,6 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    DateViewLogic dateViewLogic =
-        Provider.of<DateViewLogic>(context, listen: false);
     Globals globals = Provider.of<Globals>(context, listen: false);
     double height = globals.screen.height;
     Screen screen = globals.screen;
@@ -117,12 +124,11 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                   builder:
                       (BuildContext context, AsyncSnapshot<bool> snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
+                      dateViewLogic.list = [];
                       return empty();
                     } else {
                       return Center(
-                        child: CircularProgressIndicator(
-                          backgroundColor: Colors.orange,
-                        ),
+                        child: CircularProgressIndicator(),
                       );
                     }
                   },
@@ -134,7 +140,6 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                       child: Builder(
                         builder: (BuildContext ctx) => NestedScrollView(
                           body: ListView.separated(
-                            physics: BouncingScrollPhysics(),
                             reverse: false,
                             padding: EdgeInsets.only(
                                 bottom: screen.convert(60, height),
@@ -173,14 +178,19 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                                         child: Material(
                                           color: Colors.transparent,
                                           type: MaterialType.canvas,
-                                          child: Icon(
-                                            Icons.remove,
-                                            size: 40 /
-                                                dateViewLogic
-                                                    .globals.aspectRatio *
-                                                dateViewLogic
-                                                    .globals.aspectRatio,
-                                            color: Colors.white,
+                                          child: Padding(
+                                            padding: EdgeInsets.all(
+                                                screen.convert(
+                                                    8, screen.aspectRatio)),
+                                            child: Icon(
+                                              Icons.remove,
+                                              size: 30 /
+                                                  dateViewLogic
+                                                      .globals.aspectRatio *
+                                                  dateViewLogic
+                                                      .globals.aspectRatio,
+                                              color: Colors.white,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -215,7 +225,7 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                                                     8, screen.aspectRatio)),
                                             child: Icon(
                                               Icons.arrow_forward_ios,
-                                              size: 35 /
+                                              size: 30 /
                                                   dateViewLogic
                                                       .globals.aspectRatio *
                                                   dateViewLogic
@@ -230,7 +240,7 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                                 ),
                                 leading: InkWell(
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
+                                      BorderRadius.all(Radius.circular(10)),
                                   highlightColor: Colors.black.withOpacity(0.1),
                                   child: Material(
                                     borderRadius:
@@ -260,7 +270,7 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                                 ),
                                 title: Text(
                                   jsonDecode(dateViewLogic.list[index])['Date'],
-                                  style: GoogleFonts.workSans(),
+                                  style: TextStyle(),
                                 ),
                               ),
                             ),
@@ -278,19 +288,26 @@ class _DateViewState extends State<DateView> with TickerProviderStateMixin {
                               snap: true,
                               floating: true,
                               actions: <Widget>[
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.add,
-                                    size: 30 /
-                                        dateViewLogic
-                                            .globals.screen.aspectRatio *
-                                        dateViewLogic
-                                            .globals.screen.aspectRatio,
-                                    color: Colors.white,
+                                ButtonTheme(
+                                  minWidth: 40,
+                                  child: FlatButton(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.horizontal(
+                                            left: Radius.circular(0))),
+                                    color: Colors.orangeAccent,
+                                    child: Icon(
+                                      Icons.add,
+                                      size: 30 /
+                                          dateViewLogic
+                                              .globals.screen.aspectRatio *
+                                          dateViewLogic
+                                              .globals.screen.aspectRatio,
+                                      color: Colors.white,
+                                    ),
+                                    onPressed: () {
+                                      dateViewLogic.addItem(context);
+                                    },
                                   ),
-                                  onPressed: () {
-                                    dateViewLogic.addItem(context);
-                                  },
                                 )
                               ],
                               centerTitle: true,

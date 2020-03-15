@@ -11,7 +11,6 @@ class MyTextField extends StatelessWidget {
   TextInputType textInputType;
   TextEditingController textEditingController;
   String label;
-  Map<String, dynamic> fields;
   TextFieldType textFieldType;
   MyTextField(
       {@required this.textFieldType,
@@ -25,12 +24,13 @@ class MyTextField extends StatelessWidget {
     double aspectRatio = globals.screen.aspectRatio;
 
     return Padding(
-      padding:
-          EdgeInsets.symmetric(vertical: globals.screen.convert(10, height)),
+      padding: textFieldType == TextFieldType.price
+          ? EdgeInsets.zero
+          : EdgeInsets.symmetric(vertical: globals.screen.convert(15, height)),
       child: SizedBox(
         width: 280 / width * width,
         child: TextFormField(
-          style: TextStyle(fontSize: 14),
+          style: TextStyle(fontSize: globals.screen.convert(18, aspectRatio)),
           maxLines: this.textFieldType == TextFieldType.text ? null : 1,
           textAlignVertical: TextAlignVertical.center,
           textAlign: TextAlign.center,
@@ -39,24 +39,25 @@ class MyTextField extends StatelessWidget {
                   focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                           color: Colors.orange, width: 3 / width * width),
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                      borderRadius: BorderRadius.all(Radius.circular(5))),
                   enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                           style: BorderStyle.solid,
                           color: Colors.orange.withOpacity(0.8),
                           width: 2 / width * width),
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                      borderRadius: BorderRadius.all(Radius.circular(5))),
                   border: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.orange),
-                      borderRadius: BorderRadius.all(Radius.circular(10))))
+                      borderRadius: BorderRadius.all(Radius.circular(5))))
               : InputDecoration(
-                  errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Colors.red, width: 2 / width * width),
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
                   contentPadding:
                       EdgeInsets.all(20 / aspectRatio * aspectRatio),
                   labelText: this.label,
+                  labelStyle: TextStyle(
+                    fontSize: globals.screen.convert(16, aspectRatio),
+                    color: Colors.black.withOpacity(0.3),
+                    fontWeight: FontWeight.w600,
+                  ),
                   focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                           color: Colors.orange, width: 3 / width * width),
@@ -64,11 +65,8 @@ class MyTextField extends StatelessWidget {
                   enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                           style: BorderStyle.solid,
-                          color: Colors.orange.withOpacity(0.8),
+                          color: Colors.orange.withOpacity(0.3),
                           width: 2 / width * width),
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.orange),
                       borderRadius: BorderRadius.all(Radius.circular(10))),
                 ),
           inputFormatters: textFieldType == TextFieldType.text
@@ -78,6 +76,10 @@ class MyTextField extends StatelessWidget {
           keyboardType: textFieldType == TextFieldType.text
               ? TextInputType.text
               : TextInputType.number,
+          textInputAction: TextInputAction.next,
+          onFieldSubmitted: (v) {
+            FocusScope.of(context).nextFocus();
+          },
         ),
       ),
     );

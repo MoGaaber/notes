@@ -12,6 +12,7 @@ class DetailsView extends StatelessWidget {
 //  ExpandableController expandableController = ExpandableController();
 
   Color color = Colors.black;
+  int index;
   @override
   Widget build(BuildContext context) {
     Globals globals = Provider.of<Globals>(context, listen: false);
@@ -46,13 +47,6 @@ class DetailsView extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.pop(
-                    context, isResult ? detailsView.decodedData : null);
-              },
-            ),
             actions: <Widget>[],
             iconTheme: IconThemeData(color: Colors.white),
             centerTitle: true,
@@ -68,9 +62,8 @@ class DetailsView extends StatelessWidget {
                 ),
                 Text(globals.addOrEditPages[detailsView.mainViewIndex]['name'],
                     style: TextStyle(
-                        color: Colors.white,
-                        fontSize:
-                            globals.screen.convert(24, globals.aspectRatio))),
+                      color: Colors.white,
+                    )),
               ],
             ),
           ),
@@ -83,6 +76,15 @@ class DetailsView extends StatelessWidget {
                   bottom: globals.screen.convert(60, globals.height),
                 ),
                 itemBuilder: (BuildContext context, int x) {
+                  bool check = detailsView.decodedData[
+                              detailsView.decodedData.keys.toList()[x]] ==
+                          '' ||
+                      detailsView.decodedData[
+                              detailsView.decodedData.keys.toList()[x]] ==
+                          null;
+                  if (check) {
+                    this.index = x;
+                  }
                   return detailsView.decodedData[
                           detailsView.decodedData.keys.toList()[x]] is Map
                       ? Consumer<DetailsViewLogic>(
@@ -160,14 +162,8 @@ class DetailsView extends StatelessWidget {
                             ),
                           ),
                         )
-                      : detailsView.decodedData[detailsView.decodedData.keys
-                                      .toList()[x]] ==
-                                  '' ||
-                              detailsView.decodedData[detailsView
-                                      .decodedData.keys
-                                      .toList()[x]] ==
-                                  null
-                          ? null
+                      : check
+                          ? SizedBox.shrink()
                           : ListTile(
                               trailing: detailsView.decodedData[detailsView
                                       .decodedData.keys
@@ -228,7 +224,7 @@ class DetailsView extends StatelessWidget {
                             );
                 },
                 separatorBuilder: (BuildContext context, int index) {
-                  return Divider();
+                  return this.index == index ? SizedBox.shrink() : Divider();
                 }),
           )),
     );
