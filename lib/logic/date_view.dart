@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:notes/logic/globals.dart';
 import 'package:notes/models/add_edit_args.dart';
 import 'package:notes/models/details_view_args.dart';
 import 'package:notes/screens/details_view.dart';
+import 'package:notes/utility/screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -73,15 +75,38 @@ class DateViewLogic extends ChangeNotifier {
   }
 
   void showDeleteAlertDialog(int index, BuildContext context) {
+    Globals globals = Provider.of<Globals>(context, listen: false);
+    double height = globals.screen.height;
+    Screen screen = globals.screen;
+    double width = globals.screen.width;
+
     showDialog(
         context: context,
         builder: (_) => AlertDialog(
-              title: Text('Delete confirmation'),
-              content: Text('Are you sure ?!'),
+              title: Row(
+                children: <Widget>[
+                  Icon(
+                    Icons.not_interested,
+                    color: Colors.red,
+                  ),
+                  Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: screen.convert(4, width))),
+                  Text(
+                    'Delete confirmation',
+                    style: TextStyle(
+                        color: Colors.red, fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
+              content: Text('Are you sure ? '),
               backgroundColor: Colors.white,
               actions: <Widget>[
                 FlatButton(
-                    child: Text('Yes'),
+                    child: Text(
+                      'Yes !',
+                      style: TextStyle(fontSize: 20, color: Colors.red),
+                    ),
                     textColor: Colors.orange,
                     onPressed: () async {
                       deleteItem(index: index, context: context);

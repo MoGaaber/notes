@@ -30,67 +30,67 @@ class MainView extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         //
-        drawer: Drawer(
-          child: Material(
-            color: Colors.white,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                SizedBox.fromSize(
-                  size: Size.fromHeight(
-                      globals.screen.convert(250, globals.height)),
-                  child: DrawerHeader(
-                    child: Center(
-                        child: Image.asset(
-                      'assets/images/fff.png',
-                      fit: BoxFit.contain,
-                      width: globals.screen.convert(130, globals.width),
-                      color: Colors.white,
-                    )),
-                    decoration: BoxDecoration(
-                      color: Colors.orange,
+        drawer: SizedBox.fromSize(
+          size: Size.fromWidth(globals.screen.convert(300, globals.width)),
+          child: Drawer(
+            child: Material(
+              color: Colors.white,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  SizedBox.fromSize(
+                    size: Size.fromHeight(
+                        globals.screen.convert(250, globals.height)),
+                    child: DrawerHeader(
+                      child: Center(
+                          child: Text('Car Note',style: TextStyle(fontSize: 30,),)),
+                      decoration: BoxDecoration(
+                        color: Colors.orange,
+                      ),
                     ),
                   ),
-                ),
-                ListTile(
-                  contentPadding: EdgeInsets.symmetric(
-                      horizontal: globals.screen.convert(20, globals.width)),
-                  onTap: () {
-                    Share.share(
-                        'شارك تطبيقانا مع اصدقائك لتعم الفائده  https://play.google.com/store/apps/details?id=com.HNY.qurancareem',
-                        subject: 'Look what I made!');
-                  },
-                  leading: Icon(FontAwesomeIcons.share,
-                      size: globals.screen.convert(28, globals.aspectRatio)),
-                  title: Text(
-                    'Share App',
-                    style: TextStyle(
-                      fontSize: globals.screen.convert(20, globals.aspectRatio),
-                      fontWeight: FontWeight.w700,
+                  ListTile(
+                    contentPadding: EdgeInsets.symmetric(
+                        horizontal: globals.screen.convert(20, globals.width)),
+                    onTap: () {
+                      Share.share(
+                          'شارك تطبيقانا مع اصدقائك لتعم الفائده  https://play.google.com/store/apps/details?id=com.HNY.qurancareem',
+                          subject: 'Look what I made!');
+                    },
+                    leading: Icon(FontAwesomeIcons.share,
+                        size: globals.screen.convert(28, globals.aspectRatio)),
+                    title: Text(
+                      'Share App',
+                      style: TextStyle(
+                        fontSize:
+                            globals.screen.convert(20, globals.aspectRatio),
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
-                ),
-                Divider(),
-                ListTile(
-                  contentPadding: EdgeInsets.symmetric(
-                      horizontal: globals.screen.convert(20, globals.width)),
-                  onTap: () {
-                    LaunchReview.launch(
-                        androidAppId:
-                            "https://play.google.com/store/apps/details?id=com.HNY.qurancareem");
-                  },
-                  leading: Icon(Icons.star,
-                      color: Colors.orange,
-                      size: globals.screen.convert(33, globals.aspectRatio)),
-                  title: Text(
-                    'Rate Us',
-                    style: TextStyle(
-                      fontSize: globals.screen.convert(20, globals.aspectRatio),
-                      fontWeight: FontWeight.w700,
+                  Divider(),
+                  ListTile(
+                    contentPadding: EdgeInsets.symmetric(
+                        horizontal: globals.screen.convert(20, globals.width)),
+                    onTap: () {
+                      LaunchReview.launch(
+                          androidAppId:
+                              "https://play.google.com/store/apps/details?id=com.HNY.qurancareem");
+                    },
+                    leading: Icon(Icons.star,
+                        color: Colors.orange,
+                        size: globals.screen.convert(33, globals.aspectRatio)),
+                    title: Text(
+                      'Rate Us',
+                      style: TextStyle(
+                        fontSize:
+                            globals.screen.convert(20, globals.aspectRatio),
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         ),
