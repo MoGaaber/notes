@@ -76,72 +76,69 @@ class Armortisseur extends StatelessWidget {
                   })
             ],
           ),
-          body: Form(
-            key: addOrEditLogic.formKey,
-            child: ScrollConfiguration(
-              behavior: ScrollBehavior(),
-              child: ListView(
-                padding: EdgeInsets.symmetric(
-                    horizontal: globals.screen.convert(10, width)),
-                children: <Widget>[
-                  DateChooser(
-                    addOrEditLogic: addOrEditLogic,
-                  ),
-                  for (int i = 0; i < 2; i++)
-                    Center(
-                      child: MyTextField(
-                        textFieldType: globals.addOrEditPages[1]['textFields']
-                            [i]['type'],
-                        textEditingController: addOrEditLogic.controllers[i],
-                        label: globals.addOrEditPages[1]['textFields'][i]
-                            ['label'],
-                      ),
+          body: ScrollConfiguration(
+            behavior: ScrollBehavior(),
+            child: ListView(
+              padding: EdgeInsets.symmetric(
+                  horizontal: globals.screen.convert(10, width)),
+              children: <Widget>[
+                DateChooser(
+                  addOrEditLogic: addOrEditLogic,
+                ),
+                for (int i = 0; i < 2; i++)
+                  Center(
+                    child: MyTextField(
+                      textFieldType: globals.addOrEditPages[1]['textFields']
+                          [i]['type'],
+                      textEditingController: addOrEditLogic.controllers[i],
+                      label: globals.addOrEditPages[1]['textFields'][i]
+                          ['label'],
                     ),
-                  Padding(
-                      padding: EdgeInsets.only(
-                          top: globals.screen
-                              .convert(30, globals.screen.height))),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          Text(
-                            'Front / AV',
-                            style: TextStyle(
-                                color: Colors.orangeAccent,
-                                fontSize: screen.convert(20, aspectRatio),
-                                fontWeight: FontWeight.w700),
-                          ),
-                          Checkbox(
-                              value: addOrEditLogic.yesOrNo[0],
-                              onChanged: (x) {
-                                addOrEditLogic.yesOrNo[0] = x;
-                                addOrEditLogic.notifyListeners();
-                              })
-                        ],
-                      ),
-                      Column(
-                        children: <Widget>[
-                          Text(
-                            'Rear / AR',
-                            style: TextStyle(
-                                color: Colors.orangeAccent,
-                                fontSize: screen.convert(20, aspectRatio),
-                                fontWeight: FontWeight.w700),
-                          ),
-                          Checkbox(
-                              value: addOrEditLogic.yesOrNo[1],
-                              onChanged: (x) {
-                                addOrEditLogic.yesOrNo[1] = x;
-                                addOrEditLogic.notifyListeners();
-                              })
-                        ],
-                      )
-                    ],
                   ),
-                ],
-              ),
+                Padding(
+                    padding: EdgeInsets.only(
+                        top: globals.screen
+                            .convert(30, globals.screen.height))),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          'Front / AV',
+                          style: TextStyle(
+                              color: Colors.orangeAccent,
+                              fontSize: screen.convert(20, aspectRatio),
+                              fontWeight: FontWeight.w700),
+                        ),
+                        Checkbox(
+                            value: addOrEditLogic.yesOrNo[0],
+                            onChanged: (x) {
+                              addOrEditLogic.yesOrNo[0] = x;
+                              addOrEditLogic.notifyListeners();
+                            })
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Text(
+                          'Rear / AR',
+                          style: TextStyle(
+                              color: Colors.orangeAccent,
+                              fontSize: screen.convert(20, aspectRatio),
+                              fontWeight: FontWeight.w700),
+                        ),
+                        Checkbox(
+                            value: addOrEditLogic.yesOrNo[1],
+                            onChanged: (x) {
+                              addOrEditLogic.yesOrNo[1] = x;
+                              addOrEditLogic.notifyListeners();
+                            })
+                      ],
+                    )
+                  ],
+                ),
+              ],
             ),
           ),
         ),

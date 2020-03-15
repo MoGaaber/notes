@@ -73,8 +73,7 @@ class Batterie extends StatelessWidget {
               ],
             ),
           ),
-          body: Form(
-            key: addOrEditLogic.formKey,
+          body: ScrollConfiguration(behavior:ScrollBehavior(),
             child: ListView(
               padding: EdgeInsets.symmetric(
                   horizontal: globals.screen.convert(10, width)),

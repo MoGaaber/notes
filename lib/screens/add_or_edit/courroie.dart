@@ -80,24 +80,27 @@ class Courroie extends StatelessWidget {
                   ),
                 )
               ]),
-          body: ListView(
-            padding: EdgeInsets.symmetric(
-                horizontal: globals.screen.convert(10, width)),
-            children: <Widget>[
-              DateChooser(
-                addOrEditLogic: addOrEditLogic,
-              ),
-              for (int i = 0; i < 3; i++)
-                Center(
-                  child: MyTextField(
-                    textFieldType: globals.addOrEditPages[1]['textFields'][i]
-                        ['type'],
-                    textEditingController: addOrEditLogic.controllers[i],
-                    label: globals.addOrEditPages[1]['textFields'][i]
-                        ['label'],
-                  ),
+          body: ScrollConfiguration(
+            behavior: ScrollBehavior(),
+            child: ListView(
+              padding: EdgeInsets.symmetric(
+                  horizontal: globals.screen.convert(10, width)),
+              children: <Widget>[
+                DateChooser(
+                  addOrEditLogic: addOrEditLogic,
                 ),
-            ],
+                for (int i = 0; i < 3; i++)
+                  Center(
+                    child: MyTextField(
+                      textFieldType: globals.addOrEditPages[1]['textFields'][i]
+                          ['type'],
+                      textEditingController: addOrEditLogic.controllers[i],
+                      label: globals.addOrEditPages[1]['textFields'][i]
+                          ['label'],
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
       ),
