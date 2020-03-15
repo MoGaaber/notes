@@ -43,6 +43,7 @@ class MyApp extends StatelessWidget {
         color: Colors.orange,
         title: 'Car Note',
         theme: ThemeData(
+            fontFamily: 'Ubuntu',
             textTheme: TextTheme(
               subhead: TextStyle(
                   fontSize: (25 / MediaQuery.textScaleFactorOf(context)) *

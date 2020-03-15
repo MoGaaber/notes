@@ -26,7 +26,7 @@ class DateChooser extends StatelessWidget {
                 width: screen.convert(120, width),
                 height: screen.convert(80, height),
                 child: FlatButton(
-                  color: Colors.green,
+                  color: Colors.orange,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(5))),
                   onPressed: () {
@@ -42,23 +42,13 @@ class DateChooser extends StatelessWidget {
                 )),
             title: Row(
               children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(
-                      bottom: screen.convert(3, height),
-                      right: screen.convert(5, width)),
-                  child: Icon(
-                    Icons.date_range,
-                    size: screen.convert(25, screen.aspectRatio),
-                    color: Colors.orange,
-                  ),
-                ),
                 Text(
                   addOrEditLogic.date,
                   style: TextStyle(
                       fontSize:
-                          globals.screen.convert(22, globals.screen.textScale),
+                          globals.screen.convert(25, globals.screen.textScale),
                       fontWeight: FontWeight.w700,
-                      color: Colors.black54),
+                      color: Colors.black),
                 ),
               ],
             ),
