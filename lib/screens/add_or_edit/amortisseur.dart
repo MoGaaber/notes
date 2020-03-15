@@ -88,8 +88,8 @@ class Armortisseur extends StatelessWidget {
                 for (int i = 0; i < 2; i++)
                   Center(
                     child: MyTextField(
-                      textFieldType: globals.addOrEditPages[1]['textFields']
-                          [i]['type'],
+                      textFieldType: globals.addOrEditPages[1]['textFields'][i]
+                          ['type'],
                       textEditingController: addOrEditLogic.controllers[i],
                       label: globals.addOrEditPages[1]['textFields'][i]
                           ['label'],
@@ -97,8 +97,8 @@ class Armortisseur extends StatelessWidget {
                   ),
                 Padding(
                     padding: EdgeInsets.only(
-                        top: globals.screen
-                            .convert(30, globals.screen.height))),
+                        top:
+                            globals.screen.convert(30, globals.screen.height))),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[

@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:notes/logic/globals.dart';
 import 'package:notes/models/add_edit_args.dart';
 import 'package:notes/models/details_view_args.dart';
@@ -76,7 +75,6 @@ class DateViewLogic extends ChangeNotifier {
 
   void showDeleteAlertDialog(int index, BuildContext context) {
     Globals globals = Provider.of<Globals>(context, listen: false);
-    double height = globals.screen.height;
     Screen screen = globals.screen;
     double width = globals.screen.width;
 

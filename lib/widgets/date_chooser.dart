@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:notes/logic/add_or_edit.dart';
 import 'package:notes/logic/globals.dart';
 import 'package:provider/provider.dart';
